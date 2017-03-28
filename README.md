@@ -5,11 +5,10 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 Install via deb file. PPA will be created later.
 
 #Officially supported distros [64-bit]
-
-Linux Mint 18.1
-Linux Mint 18
-Linux Mint 17.3
-Ubuntu 17.04 ~comming soon
-Ubuntu 16.10 ~comming soon
-Ubuntu 16.04
-Ubuntu 14.04
+-Linux Mint 18.1
+-Linux Mint 18
+-Linux Mint 17.3
+-Ubuntu 17.04 ~comming soon
+-Ubuntu 16.10 ~comming soon
+-Ubuntu 16.04
+-Ubuntu 14.04
