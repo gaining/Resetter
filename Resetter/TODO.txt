@@ -1,0 +1,4 @@
+add install option for reading file from generated list (backup)
+add more distro manifests
+create better launcher icon
+

@@ -79,8 +79,7 @@ class Apply(QtGui.QDialog):
         self.error_msg.setWindowTitle("Error")
         self.buttonCancel = QtGui.QPushButton()
         self.buttonCancel.setText("Cancel")
-        self.buttonUser = QtGui.QPushButton()
-        self.buttonUser.setText("remove users")
+        self.buttonCancel.clicked.connect(self.cancel)
         self.progress = QtGui.QProgressBar(self)
         self.lbl1 = QtGui.QLabel()
         gif = os.path.abspath("/usr/lib/resetter/data/icons/chassingarrows.gif")
@@ -108,7 +107,6 @@ class Apply(QtGui.QDialog):
         verticalLayout.addSpacing(20)
         verticalLayout.addLayout(gridLayout)
         verticalLayout.addWidget(self.buttonCancel, 0, QtCore.Qt.AlignRight)
-        verticalLayout.addWidget(self.buttonUser, 0, QtCore.Qt.AlignRight)
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         handler = logging.FileHandler('/var/log/resetter/resetter.log')
@@ -116,8 +114,6 @@ class Apply(QtGui.QDialog):
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(funcName)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
-        self.buttonCancel.clicked.connect(self.cancel)
-        self.buttonUser.clicked.connect(self.removeUsers)
         self.progressView = ProgressThread(self.file_in)
         self.account = AccountDialog(self)
         self.connect(self.progressView, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
@@ -161,7 +157,7 @@ class Apply(QtGui.QDialog):
             self.movie.stop()
             self.labels[(2, 1)].setPixmap(self.pixmap2)
             self.progress.setValue(int(100))
-            #self.removeUsers()
+            self.removeUsers()
             self.fixBroken()
         except Exception as arg:
             self.movie.stop()
@@ -261,7 +257,7 @@ class Apply(QtGui.QDialog):
     def addUser(self):
         choice = QtGui.QMessageBox.question\
             (self, 'Would you like set your new account?',
-             "Set your own account? Click No so that I can create a default account for you instead",
+             "Set your own account? Click 'No' so that I can create a default account for you instead",
              QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if choice == QtGui.QMessageBox.Yes:
             self.show()
