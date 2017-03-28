@@ -11,7 +11,7 @@ Install via deb file. PPA will be created later.
 - Linux Mint 18.1
 - Linux Mint 18
 - Linux Mint 17.3
-- Ubuntu 17.04 ~comming soon
+- Ubuntu 17.04 ~coming soon
 - Ubuntu 16.10 
 - Ubuntu 16.04
 - Ubuntu 14.04
