@@ -1,4 +1,7 @@
 add install option for reading file from generated list (backup)
-add more distro manifests
+add support for ubuntu 16.10 unity
+add support for ubuntu 17.04 unity
+add manifest support for other distros
 create better launcher icon
+add command line options
 
