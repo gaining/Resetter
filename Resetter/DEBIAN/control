@@ -1,6 +1,6 @@
 Package: resetter
-Version: 0.0.1-beta
-Installed-Size: 992
+Version: 0.0.2-beta
+Installed-Size: 1032
 Maintainer: gaining <gaining7@outlook.com>
 Section: python
 Homepage: https://github.com/gaining/resetter

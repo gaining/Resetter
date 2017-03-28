@@ -4,7 +4,7 @@ ecbc0eefc3f66a3ab1a73e1131cefe64  usr/lib/resetter/Resetter.py
 fb140764b378fc18119cac25006e208f  usr/lib/resetter/CustomApplyDialog.py
 8cb3e2f6f2420ea19f63eca71eba483f  usr/lib/resetter/Account.py
 7055beb358e870f7cf368a6775da7784  usr/lib/resetter/CustomReset.py
-3524ed00f084d3e07a8adc03061a07b4  usr/lib/resetter/AboutPage.py
+1bb0b93e7f24030f62e0f93f83143dba  usr/lib/resetter/AboutPage.py
 9772f66393d2aef25b7094fd4c64ece9  usr/lib/resetter/LicenceDialog.py
 990f24f2babe3ad46987ea2af647f7ad  usr/lib/resetter/AptProgress.py
 dcc705a2c6e61c2bb7f37dbf2fadd7bf  usr/lib/resetter/ApplyDialog.py
@@ -21,6 +21,7 @@ abf3ff450c736654c50570c75135a206  usr/lib/resetter/data/icons/custom-reset-icon-
 3589b0ac1f65cb66cb76621b1b59bbd5  usr/lib/resetter/data/scripts/remove-old-kernels.sh
 af4af7e39fcc8907259228c0781e18e3  usr/lib/resetter/data/scripts/fix-broken.sh
 918fa3a4b8534bf29322aca8845c17a1  usr/lib/resetter/data/scripts/new-user.sh
+84cb8cec5b9785cf9cfb0b7b08977aba  usr/lib/resetter/data/manifests/ubuntu-16.10-unity.manifest
 913131e66ea5eb02ed5e991b0cc6cc10  usr/lib/resetter/data/manifests/mint-17.3-cinnamon.manifest
 1c8affd5c7f1cc9f31eb9e42b317e1ba  usr/lib/resetter/data/manifests/ubuntu-14.04-unity.manifest
 20eb9c904246b9b8ad75ea6acbc1a093  usr/lib/resetter/data/manifests/ubuntu-16.04-unity.manifest
@@ -28,5 +29,5 @@ af4af7e39fcc8907259228c0781e18e3  usr/lib/resetter/data/scripts/fix-broken.sh
 7dad20c85851cce4a97fd90b81e26fa2  usr/lib/resetter/data/manifests/mint-18.1-cinnamon.manifest
 343ad895e19fc427e6838d58c0929e49  usr/share/applications/Resetter.desktop
 79ba3652a6290aea1a33017aa4c7f735  usr/share/polkit-1/actions/org.freedesktop.pkexec.resetter.policy
-ab9eea5b0e3a6ee53c22259428c52fc7  usr/share/doc/resetter/changelog.gz
+2e42f717011b1f7024025fbe4d205b0d  usr/share/doc/resetter/changelog.gz
 7efd4be4e2ede2ec841ebf0bc4de6140  usr/share/doc/resetter/copyright
