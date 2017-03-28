@@ -1,0 +1,19 @@
+#!/bin/sh
+
+set -e
+
+USER_HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
+LOGF="/var/log/resetter"
+RHOME="$USER_HOME/.resetter"
+
+if [ -d $LOGF ]; then
+     rm -rf $LOGF
+fi
+
+if [ -d $RHOME ]; then
+     rm -rf $RHOME
+fi
+
+rm -rf /usr/lib/resetter
+
+exit 0
