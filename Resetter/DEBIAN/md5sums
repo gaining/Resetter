@@ -29,4 +29,4 @@ af4af7e39fcc8907259228c0781e18e3  usr/lib/resetter/data/scripts/fix-broken.sh
 343ad895e19fc427e6838d58c0929e49  usr/share/applications/Resetter.desktop
 79ba3652a6290aea1a33017aa4c7f735  usr/share/polkit-1/actions/org.freedesktop.pkexec.resetter.policy
 ab9eea5b0e3a6ee53c22259428c52fc7  usr/share/doc/resetter/changelog.gz
-4c690a8212d11010fa977ae515b6478b  usr/share/doc/resetter/copyright
+7efd4be4e2ede2ec841ebf0bc4de6140  usr/share/doc/resetter/copyright
