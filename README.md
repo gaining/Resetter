@@ -4,7 +4,7 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 # How to install
 Install via deb file. PPA will be created later.
 
-#Officially supported distros [64-bit]
+# Officially supported distros [64-bit]
 - Linux Mint 18.1
 - Linux Mint 18
 - Linux Mint 17.3
