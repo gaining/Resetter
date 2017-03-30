@@ -444,10 +444,14 @@ class UiMainWindow(QtGui.QMainWindow):
 
 
 if __name__ == '__main__':
-    key = 'Ubuntu Resetter'
+    key = 'Resetter'
     app = SingleApplication(sys.argv, key)
     window = UiMainWindow()
     if app.isRunning():
+        message = QtGui.QMessageBox()
+        message.setWindowTitle("Already Running")
+        message.setText("{} is already running".format(key))
+        message.exec_()
         print('%s is already running' % key)
         sys.exit(1)
     else:
