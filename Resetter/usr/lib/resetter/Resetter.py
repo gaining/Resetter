@@ -107,9 +107,7 @@ class UiMainWindow(QtGui.QMainWindow):
         font.setPointSize(25)
         button_style = ("""
                     QPushButton {
-                    color: #333;
                     border: 2px solid #555;
-                    background-color: #99ccff;
                     border-radius: 30px;
                     padding: 5px;
                     background: qradialgradient(cx: 0.5, cy: -0.6,
@@ -205,6 +203,27 @@ class UiMainWindow(QtGui.QMainWindow):
                 shutil.copy(source, destination)
             else:
                pass
+
+    def getMissingPackages(self):
+        try:
+            self.logger.info("generating install list")
+            self.setCursor(QtCore.Qt.WaitCursor)
+            cmd = subprocess.Popen(['grep', '-vxf', 'installed', 'processed-manifest'], stderr=subprocess.STDOUT,
+                                   stdout=subprocess.PIPE)
+            cmd.wait()
+            result = cmd.stdout
+            with open("apps-to-install", "w") as output:
+                for line in result:
+                    output.writelines(line)
+            self.logger.info("instsallMissing() Completed")
+            self.unsetCursor()
+        except (subprocess.CalledProcessError, Exception) as e:
+            self.unsetCursor()
+            self.logger.error("Error comparing files [{}]".format(e), exc_info=True)
+            self.error_msg.setText("Error generating removable package list. Please see details")
+            self.error_msg.setDetailedText("Error: {}".format(e))
+            self.error_msg.exec_()
+            self.exit(1)
 
     def save(self):
         self.getInstalledList()

@@ -5,7 +5,7 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 
 # Status
 
-The software is currently in beta state. Feedback will be greatly appreciated.
+The software is currently in its early beta stage. Feedback will be greatly appreciated.
 
 # How to install
 Install via deb file. PPA will be created later.

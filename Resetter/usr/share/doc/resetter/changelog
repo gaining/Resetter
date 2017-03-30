@@ -1,0 +1,13 @@
+resetter (0.0.2-beta) trusty; urgency=low
+
+  * version 0.0.2-beta
+    added support for ubuntu 16.10
+
+ -- gaining <gaining7@outlook.com>  Tue, 28 Mar 2017 05:29:43 -0400
+
+
+resetter (0.0.1-beta) trusty; urgency=low
+
+  * initial release
+
+ -- gaining <gaining7@outlook.com>  Tue, 28 Mar 2017 01:53:05 -0400

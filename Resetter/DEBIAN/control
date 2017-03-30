@@ -1,6 +1,6 @@
 Package: resetter
-Version: 0.0.2-beta
-Installed-Size: 1032
+Version: 0.0.3-beta
+Installed-Size: 1004
 Maintainer: gaining <gaining7@outlook.com>
 Section: python
 Homepage: https://github.com/gaining/resetter
@@ -9,5 +9,5 @@ Priority: optional
 Depends: python-qt4 (>=4.10), python-apt (>=0.9.3), coreutils (>=7.0)
 Pre-Depends: python (>=2.7.5), policykit-1 (>=0.105)
 Description: Resets Ubuntu/Linux-Mint to stock
- This application will help to reset an Ubuntu or Linux-Mint system to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. It will detect packages that have been installed after the initial system install.
+ Resetter is an easy way to reset your debian based linux back to stock.
 

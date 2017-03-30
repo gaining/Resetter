@@ -263,7 +263,7 @@ class Apply(QtGui.QDialog):
         msg.setWindowTitle("User Credentials")
         msg.setIcon(QtGui.QMessageBox.Information)
         msg.setText("Please use these credentials the next time you log-in")
-        msg.setInformativeText("USERNAME: <b>default</b><br/> PASSWORD: <b>NewLife3</b>")
+        msg.setInformativeText("USERNAME: <b>default</b><br/> PASSWORD: <b>NewLife3!</b>")
         msg.setDetailedText("This username was automatically created as your backup user")
         msg.exec_()
         self.logger.info("Credential message info shown")
