@@ -28,7 +28,7 @@ af4af7e39fcc8907259228c0781e18e3  usr/lib/resetter/data/scripts/fix-broken.sh
 20eb9c904246b9b8ad75ea6acbc1a093  usr/lib/resetter/data/manifests/ubuntu-16.04-unity.manifest
 997ebc7f608ce5cf2b98e51ad705d33a  usr/lib/resetter/data/manifests/mint-18-cinnamon.manifest
 7dad20c85851cce4a97fd90b81e26fa2  usr/lib/resetter/data/manifests/mint-18.1-cinnamon.manifest
-953c0585d0045f7372433ea793a59228  usr/share/applications/Resetter.desktop
+343ad895e19fc427e6838d58c0929e49  usr/share/applications/Resetter.desktop
 79ba3652a6290aea1a33017aa4c7f735  usr/share/polkit-1/actions/org.freedesktop.pkexec.resetter.policy
-3fe36a0e1ffd89501befeae919fd05a0  usr/share/doc/resetter/changelog.gz
+79ac71e42311163f6638dbb041082b60  usr/share/doc/resetter/changelog.gz
 ff8b2c5b3b785bdccba43c0d5c4d7ad4  usr/share/doc/resetter/copyright
