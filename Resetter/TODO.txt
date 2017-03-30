@@ -1,7 +1,10 @@
-add install option for reading file from generated list (backup)
+add install option for reading packages from generated list (backup)
+upgrade  to python3 and pyqt5
 add support for ubuntu 16.10 unity
 add support for ubuntu 17.04 unity
-add manifest support for other distros
+support more debian based linux distributions
 create better launcher icon
+create nice logo
 add command line options
+
 
