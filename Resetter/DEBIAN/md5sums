@@ -1,13 +1,13 @@
 1c10d1af87689b242e07da65d715cfdf  usr/bin/resetter
 26629ddf3450a3093e26050df4346118  usr/lib/resetter/singleton.py
-cdc3fa3a88765af530e337b475389733  usr/lib/resetter/Resetter.py
+2cd22761abf10d4f5e8e573c58be0bb3  usr/lib/resetter/Resetter.py
 fb140764b378fc18119cac25006e208f  usr/lib/resetter/CustomApplyDialog.py
 8cb3e2f6f2420ea19f63eca71eba483f  usr/lib/resetter/Account.py
 7055beb358e870f7cf368a6775da7784  usr/lib/resetter/CustomReset.py
-76e84b3f7957652d4947b996f5cc19e1  usr/lib/resetter/AboutPage.py
+07e7dfd9db837405db4974fb2ab7956b  usr/lib/resetter/AboutPage.py
 9772f66393d2aef25b7094fd4c64ece9  usr/lib/resetter/LicenceDialog.py
 990f24f2babe3ad46987ea2af647f7ad  usr/lib/resetter/AptProgress.py
-f4049f1f5e0723bb27e9bccf5a9bbf8e  usr/lib/resetter/ApplyDialog.py
+59f4476bfe483e7564f3a7e52c66f818  usr/lib/resetter/ApplyDialog.py
 33efadaae37cb7255b8bb4d73d11d3f2  usr/lib/resetter/Installed.py
 2d4e80f6eff50c865f45d5f0fa9a73fd  usr/lib/resetter/data/icons/resetter-48x48.png
 2628dbbab4fed8f1e4f65d01d26899ee  usr/lib/resetter/data/icons/custom-reset-icon.png
@@ -30,5 +30,5 @@ af4af7e39fcc8907259228c0781e18e3  usr/lib/resetter/data/scripts/fix-broken.sh
 7dad20c85851cce4a97fd90b81e26fa2  usr/lib/resetter/data/manifests/mint-18.1-cinnamon.manifest
 343ad895e19fc427e6838d58c0929e49  usr/share/applications/Resetter.desktop
 79ba3652a6290aea1a33017aa4c7f735  usr/share/polkit-1/actions/org.freedesktop.pkexec.resetter.policy
-79ac71e42311163f6638dbb041082b60  usr/share/doc/resetter/changelog.gz
+2a19ae2987f984b420c9fb7faea6a331  usr/share/doc/resetter/changelog.gz
 ff8b2c5b3b785bdccba43c0d5c4d7ad4  usr/share/doc/resetter/copyright

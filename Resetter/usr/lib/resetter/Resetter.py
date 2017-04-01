@@ -25,9 +25,9 @@ class UiMainWindow(QtGui.QMainWindow):
         self.error_msg.setWindowTitle("Error")
         self.euid = os.geteuid()
         self.detectRoot()
-        directory = ".resetter/data"
+        self.directory = ".resetter/data"
         logdir = "/var/log/resetter"
-        manifests = "/usr/lib/resetter/data/manifests"
+        self.manifests = "/usr/lib/resetter/data/manifests"
         if not os.path.exists(logdir):
             os.makedirs(logdir)
         self.logger = logging.getLogger(__name__)
@@ -43,17 +43,10 @@ class UiMainWindow(QtGui.QMainWindow):
             working_dir = '/home/{}'.format(self.user)
             os.chdir(working_dir)
         elif self.euid == 0 and 'PKEXEC_UID' not in os.environ:
+            self.user = os.environ["SUDO_USER"]
             self.logger.debug("program was called via sudo or gksu")
-        #self.uidChange = pwd.getpwnam(self.user).pw_uid
-        #os.setuid(self.uidChange)
-        #os.seteuid(os.environ["PKEXEC_UID"])
-        if not os.path.exists(directory):
-            os.makedirs(directory)
-        os.chdir(directory)
-        cwd = os.getcwd()
-        data_dir = os.path.abspath(cwd + "/manifests")
-        self.copy (manifests, data_dir)
-        #os.seteuid(0)
+        self.createDirs()
+        os.chdir(self.directory)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
         self.resize(850, 650)
         palette = QtGui.QPalette()
@@ -150,13 +143,16 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_name_label = QtGui.QLabel()
         self.os_codename_label = QtGui.QLabel()
         self.os_info = lsb_release.get_lsb_information()
+        self.manifest_label = QtGui.QLabel()
         dse = QtGui.QGraphicsDropShadowEffect();
         dse.setBlurRadius(5)
+        self.manifest = self.detectOS()
         self.os_name_label.setText('OS Name: '+self.os_info['ID'])
         self.os_version_label.setText('OS version: '+self.os_info['RELEASE'])
         self.os_name_label.setGraphicsEffect(dse)
         self.os_codename_label.setText('codename: '+self.os_info['CODENAME'])
         self.image_label = QtGui.QLabel()
+        self.manifest_label.setText("Using: {}".format(self.manifest))
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/resetter-logo.png")
         self.pixmap2 = self.pixmap.scaled(614, 182)
         self.image_label.setPixmap(self.pixmap2)
@@ -165,6 +161,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.verticalLayout2.addWidget(self.os_name_label)
         self.verticalLayout2.addWidget(self.os_version_label)
         self.verticalLayout2.addWidget(self.os_codename_label)
+        self.verticalLayout2.addWidget(self.manifest_label)
         self.verticalLayout2.setAlignment(QtCore.Qt.AlignRight)
         self.verticalLayout.setAlignment(QtCore.Qt.AlignCenter)
         self.verticalLayout.addWidget(self.image_label)
@@ -174,8 +171,22 @@ class UiMainWindow(QtGui.QMainWindow):
         self.centralWidget.setLayout(self.verticalLayout)
         self.setCentralWidget(self.centralWidget)
         self.center()
-        self.manifest = self.detectOS()
         print self.manifest
+
+    def createDirs(self):
+        uidChange = pwd.getpwnam(self.user).pw_uid
+        pidx = os.fork()
+        if pidx == 0:
+            try:
+                os.setuid(uidChange)
+                if not os.path.exists(self.directory):
+                    os.makedirs(self.directory)
+                os.chdir(self.directory)
+                data_dir = os.path.abspath("manifests")
+                self.copy(self.manifests, data_dir)
+            finally:
+                os._exit(0)
+        os.waitpid(pidx, 0)
 
     def detectRoot(self):
         if self.euid != 0:
@@ -255,7 +266,7 @@ class UiMainWindow(QtGui.QMainWindow):
                     self.error_msg.setDetailedText("without a system manifest, this program won't function")
                     self.error_msg.show()
             elif self.os_info['RELEASE'] == '18.1':
-                self.setWindowTitle(self.os_info['DESCRIPTION'] + "Resetter")
+                self.setWindowTitle(self.os_info['DESCRIPTION'] + " Resetter")
                 manifest = "manifests/mint-18.1-cinnamon.manifest"
                 if os.path.isfile(manifest):
                     return manifest
@@ -276,7 +287,7 @@ class UiMainWindow(QtGui.QMainWindow):
                     self.error_msg.setDetailedText("without a system manifest, this program won't function")
                     self.error_msg.show()
             elif self.os_info['RELEASE'] == '16.04':
-                self.setWindowTitle(self.os_info['DESCRIPTION'] + "Resetter")
+                self.setWindowTitle(self.os_info['DESCRIPTION'] + " Resetter")
                 manifest = 'manifests/ubuntu-16.04-unity.manifest'
                 if os.path.isfile(manifest):
                     return manifest

@@ -268,11 +268,3 @@ class Apply(QtGui.QDialog):
         msg.exec_()
         self.logger.info("Credential message info shown")
         self.rebootMessage()
-
-
-if __name__ == '__main__':
-    file = "apps-to-remove"
-    app = QtGui.QApplication(sys.argv)
-    apply = Apply(file)
-    apply.show()
-    sys.exit(app.exec_())
