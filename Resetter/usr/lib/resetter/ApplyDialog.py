@@ -98,6 +98,8 @@ class Apply(QtGui.QDialog):
         self.labels[(2, 2)].setText("Removing Apps")
         self.labels[(3, 2)].setText("Deleting Users")
         self.labels[(4, 2)].setText("Cleaning Up")
+        self.labels[(5,2)].setText("Installing packages")
+
         verticalLayout.addWidget(self.lbl1)
         verticalLayout.addWidget(self.progress)
         verticalLayout.addSpacing(20)
@@ -203,7 +205,7 @@ class Apply(QtGui.QDialog):
         self.prcs = QtCore.QProcess()
         self.prcs.finished.connect(self.onFinished)
         self.prcs.start('bash', ['/usr/lib/resetter/data/scripts/fix-broken.sh'])
-        self.prcs.waitForFinished(-1)
+        #self.prcs.waitForFinished(-1)
 
     def onFinished(self, exit_code, exit_status):
         if exit_code or exit_status != 0:

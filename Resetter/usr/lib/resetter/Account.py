@@ -67,7 +67,7 @@ class AccountDialog(QtGui.QDialog):
         self.buttonOk.clicked.connect(self.custom_user)
         self.buttonCancel.clicked.connect(self.close)
         self.user = 'default'
-        self.password = 'NewLife!3'
+        self.password = 'NewLife3!'
 
     def salt(self):
         saltchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"

@@ -12,8 +12,9 @@ from time import gmtime, strftime
 
 from AboutPage import About
 from CustomReset import AppWizard
-from Installed import AppView
+from PackageView import AppView
 from singleton import SingleApplication
+import webbrowser
 
 class UiMainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -74,10 +75,14 @@ class UiMainWindow(QtGui.QMainWindow):
         self.actionShow_Installed = QtGui.QAction(self)
         self.actionShow_Installed.setStatusTip('Show list of installed packages')
         self.actionShow_Installed.triggered.connect(self.showInstalled)
+        self.actionShow_missing = QtGui.QAction(self)
+        self.actionShow_missing.setStatusTip('Show removed packages from initial install')
+        self.actionShow_missing.triggered.connect(self.showMissings)
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSaveSnapshot)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
+        self.menuTools.addAction(self.actionShow_missing)
         self.menuTools.addAction(self.actionShow_Installed)
         self.menuHelp.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
@@ -94,6 +99,9 @@ class UiMainWindow(QtGui.QMainWindow):
         self.menuTools.addAction(self.actionCustom_Reset)
         self.actionCustom_Reset.setText("Custom Reset")
         self.actionCustom_Reset.setStatusTip('Custom Reset')
+        self.actionShow_missing.setText("Show missing pre-installed packages")
+        self.actionShow_missing.setVisible(False)# will set visibility and enable to true once features are implemented
+        self.actionShow_missing.setEnabled(False)
         self.actionCustom_Reset.triggered.connect(self.customReset)
         self.actionShow_Installed.setText("Show installed")
         font = QtGui.QFont()
@@ -152,7 +160,8 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_name_label.setGraphicsEffect(dse)
         self.os_codename_label.setText('codename: '+self.os_info['CODENAME'])
         self.image_label = QtGui.QLabel()
-        self.manifest_label.setText("Using: {}".format(self.manifest))
+        m = self.manifest.split('/')[-1]
+        self.manifest_label.setText("Using: {}".format(m))
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/resetter-logo.png")
         self.pixmap2 = self.pixmap.scaled(614, 182)
         self.image_label.setPixmap(self.pixmap2)
@@ -171,13 +180,15 @@ class UiMainWindow(QtGui.QMainWindow):
         self.centralWidget.setLayout(self.verticalLayout)
         self.setCentralWidget(self.centralWidget)
         self.center()
-        print self.manifest
 
+    #create working directory with local user permmissions
     def createDirs(self):
         uidChange = pwd.getpwnam(self.user).pw_uid
+        gidChange = pwd.getpwnam(self.user).pw_gid
         pidx = os.fork()
         if pidx == 0:
             try:
+                os.setgid(gidChange)
                 os.setuid(uidChange)
                 if not os.path.exists(self.directory):
                     os.makedirs(self.directory)
@@ -203,6 +214,8 @@ class UiMainWindow(QtGui.QMainWindow):
                                             'manifests', "manifest file (*.manifest)")
             if os.path.isfile(manifest):
                 self.manifest = manifest
+                manifest = str(manifest).split('/')[-1]
+                self.manifest_label.setText('using: {}'.format(manifest))
         except IOError:
             pass
 
@@ -345,7 +358,8 @@ class UiMainWindow(QtGui.QMainWindow):
             if self.lineCount("apps-to-remove") != 0:
                 self.getLocalUserList()
                 view = AppView(self)
-                view.showUninstallList("apps-to-remove")
+                tip = "These packages will be removed"
+                view.showView("apps-to-remove", "Packages To Remove", tip, True)
                 view.show()
             else:
                 self.error_msg.setWindowTitle("Nothing left to remove")
@@ -436,8 +450,16 @@ class UiMainWindow(QtGui.QMainWindow):
     def showInstalled(self):
         self.getInstalledList()
         viewInstalled = AppView(self)
-        viewInstalled.showInstalledList("installed")
+        text = "These packages are currently installed on your system"
+        viewInstalled.showView("installed", "Installed List", text, False)
         viewInstalled.show()
+
+    def showMissings(self):
+        self.getMissingPackages()
+        text = "These were pre-installed packages that are missing but due for install"
+        view_missing = AppView(self)
+        view_missing.showView("apps-to-install", "Packages To Install", text, False)
+        view_missing.show()
 
     def getLocalUserList(self):
         try:
@@ -458,6 +480,7 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.error("Error comparing files: ".format(e), exc_info=True)
 
     def customReset(self):
+        #self.getMissingPackages
         self.getLocalUserList()
         self.getInstalledList()
         self.getOldKernels()
