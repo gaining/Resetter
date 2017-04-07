@@ -27,6 +27,7 @@ Install via deb file. PPA will be created later.
 - option to install missing pre-installed packages
 
 # distant future plans
+- translations
 - migrate to python3 and pyqt5
 - more reset options
 - support more debian based distro 
