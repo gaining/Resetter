@@ -14,12 +14,12 @@ Install via deb file. PPA will be created later.
 
 | Features List                          | Option 1: Automatic Reset | Option 2: Custom Reset |
 |----------------------------------------|:-------------------------:|-----------------------:|
-| Auto remove apps for reset             |             ✓             |            ✓           |
-| Choose which apps to remove for reset  |             ✗             |            ✓           |
-| Remove old kernels                     |             ✗             |            ✓           |
-| Delete only user                       |             ✗             |            ✓           |
-| Delete both users and Home directory   |             ✓             |            ✓           |
-| Choose which user to delete            |             ✗             |            ✓           |
+| Auto remove apps for reset             |             ✓             |           ✓            |
+| Choose which apps to remove for reset  |             ✗             |           ✓            |
+| Remove old kernels                     |             ✗             |           ✓            |
+| Delete only user                       |             ✗             |           ✓            |
+| Delete both users and Home directory   |             ✓             |           ✓            |
+| Choose which user to delete            |             ✗             |           ✓            |
 
 
 # Officially supported distros [64-bit]
