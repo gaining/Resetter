@@ -13,6 +13,7 @@ Install via deb file. PPA will be created later.
 # Options comparison
 
 <center>
+
 | Features List                          | Option 1: Automatic Reset | Option 2: Custom Reset |
 |----------------------------------------|:-------------------------:|:----------------------:|
 | Auto remove apps for reset             |             ✓             |            ✓           |
@@ -23,6 +24,7 @@ Install via deb file. PPA will be created later.
 | Choose which user to delete            |             ✗             |            ✓           |
 | Create default backup user             |             ✓             |            ✓           |
 | Create custom backup user              |             ✗             |            ✓           |
+
 </center>
 
 # Officially supported distros [64-bit]
