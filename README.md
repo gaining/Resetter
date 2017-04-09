@@ -57,4 +57,11 @@ MPIA means missing pre-installed apps
 - support more debian based distro 
 - stabilize resetter
 
+# Donate
+
+If you liked this project and willing to make a monetary contribution, here's my paypal link.
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8FET8RGU2ZKQ8)
+
+
 
