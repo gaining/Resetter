@@ -12,12 +12,15 @@ Install via deb file. PPA will be created later.
 
 # Options comparison
 
-| Feature list        | Option1: Auto Reset | Option 2: Custom Reset  |
-| ------------- |:-------------:| -----:|
-| Delete User      | | X |
-| Delete User/Home Directory      | X  | X  |
-| Choose packages to remove |  | X  |
-| remove old kernels |  | X  |
+| Features List                          | Option 1: Automatic Reset | Option 2: Custom Reset |
+|----------------------------------------|:-------------------------:|-----------------------:|
+| Auto remove apps for reset             |             ✓             |            ✓           |
+| Choose which apps to remove for reset  |             ✗             |            ✓           |
+| Remove old kernels                     |             ✗             |            ✓           |
+| Delete only user                       |             ✗             |            ✓           |
+| Delete both users and Home directory   |             ✓             |            ✓           |
+| Choose which user to delete            |             ✗             |            ✓           |
+
 
 # Officially supported distros [64-bit]
 - Linux Mint 18.1
