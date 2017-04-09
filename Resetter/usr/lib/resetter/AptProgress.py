@@ -30,15 +30,10 @@ class UIAcquireProgress(AcquireProgress):
         if current_item > self.total_items:
             current_item = self.total_items
         if self.current_cps > 0:
-            text = (("Downloading file %(current)li of %(total)li with "
-                      "%(speed)s/s") %
-                    {"current": current_item,
-                     "total": self.total_items,
-                     "speed": apt_pkg.size_to_str(self.current_cps)})
+            text = "Downloading package {} of {} at {} mb/s".format(current_item, self.total_items,
+                                                                    (self.current_cps/1000000))
         else:
-            text = (("Downloading file %(current)li of %(total)li") %
-                    {"current": current_item,
-                     "total": self.total_items})
+            text = "Downloading package {} of {}".format(current_item, self.total_items)
         self.status_label.setText(text)
         percent = (((self.current_bytes + self.current_items) * 100.0) /
                    float(self.total_bytes + self.total_items))
@@ -54,8 +49,8 @@ class UIAcquireProgress(AcquireProgress):
         QtGui.qApp.processEvents()
 
     def done(self, item):
-        print "[Fetched] %s" % item.shortdesc
-        self.status_label.setText("[Fetched] %s" % item.shortdesc)
+        print "[downloaded] %s" % item.shortdesc
+        self.status_label.setText("[downloaded] %s" % item.shortdesc)
         QtGui.qApp.processEvents()
 
     def fail(self, item):

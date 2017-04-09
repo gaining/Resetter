@@ -1,16 +1,21 @@
-# Resetter
+# Resetter beta-0.0.6 
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu or Linux-Mint system to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. It will detect packages that have been installed after the initial system install. 
 
 # Status
+- The software is currently in its early stage. Feedback will be greatly appreciated.
+- If you're on a version lower than beta-0.0.6, please remove resetter with "sudo apt remove resetter" to install the new one. 
+- beta-0.0.6 is a milestone release that has performance improvements, new features, and critical bug fixes hence it's a lot more stable than previous versions.
+- Please check the changelog for more details.
 
-The software is currently in its early beta stage. Feedback will be greatly appreciated.
 
 # How to install
-Install via deb file. PPA will be created later.
+Install via deb file. PPA will be created soon as.
 
 # Options comparison
+
+MPIA means missing pre-installed apps
 
 <center>
 
@@ -24,6 +29,9 @@ Install via deb file. PPA will be created later.
 | Choose which user to delete            |             ✗             |            ✓           |
 | Create default backup user             |             ✓             |            ✓           |
 | Create custom backup user              |             ✗             |            ✓           |
+| Auto install MPIAs                     |             ✓             |            ✓           |
+| Choose which MPIAs to install          |             ✗             |            ✓           |
+
 
 </center>
 
@@ -37,7 +45,6 @@ Install via deb file. PPA will be created later.
 - Ubuntu 14.04
 
 # Upcoming changes in the near future
-- New Logo and improved logo
 - command line options
 - different install options
 - pick from backup list to install or remove

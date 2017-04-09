@@ -1,14 +1,19 @@
 #!/usr/bin/python
-from PyQt4 import QtCore, QtGui
-import sys
-from CustomApplyDialog import Apply
+import apt
+import apt.package
 import logging
-class AppRemovalPage(QtGui.QWizardPage):
+import sys
+import textwrap
+from PyQt4 import QtCore, QtGui
 
-    def __init__(self, parent = None):
+from CustomApplyDialog import Apply
+
+
+class AppRemovalPage(QtGui.QWizardPage):
+    def __init__(self, parent=None):
         super(AppRemovalPage, self).__init__(parent=parent)
-        self.setTitle('Apps to Remove')
-        self.setSubTitle('For a proper system reset, all apps on this list should be checked for removal')
+        self.setTitle('Packages To Remove')
+        self.setSubTitle('For a proper system reset, all packages on this list should be checked for removal')
         self.uninstall_view = QtGui.QListView(self)
         self.uninstall_view.setMinimumSize(465, 200)
         self.select_button = QtGui.QPushButton(self)
@@ -46,19 +51,25 @@ class AppRemovalPage(QtGui.QWizardPage):
         self.oldKernelRemoval = False
         self.isWritten = False
         self.items = []
+        self.cache = apt.Cache()
         remove_list = "apps-to-remove"
         self.model = QtGui.QStandardItemModel(self.uninstall_view)
         self.model.itemChanged.connect(self.setItems)
 
         with open(remove_list) as f_in:
-            if f_in is not None:
-                self.item = f_in.readlines()
-            for line in self.item:
-                self.item = QtGui.QStandardItem(line)
-                self.item.setCheckable(True)
-                self.item.setCheckState(QtCore.Qt.Unchecked)
-                self.model.appendRow(self.item)
-                self.item.row()
+            for line in f_in:
+                try:
+                    pkg = self.cache[line.strip()]
+                    text = (pkg.versions[0].description)
+                    self.item = QtGui.QStandardItem(line)
+                    self.item.setCheckable(True)
+                    self.item.setCheckState(QtCore.Qt.Unchecked)
+                    self.model.appendRow(self.item)
+                    self.item.row()
+                    self.item.setToolTip((textwrap.fill(text, 70)))
+                except KeyError:
+                    continue
+
             self.uninstall_view.setModel(self.model)
 
     def toggleCheckbox(self):
@@ -108,7 +119,112 @@ class AppRemovalPage(QtGui.QWizardPage):
         mode = 'a' if self.isWritten else 'w'
         with open(path, mode) as f_out:
             for item in self.items:
-                print('%s' % item.text())
+                print('{}'.format(item.text()))
+                f_out.write(item.text())
+
+
+class AppInstallPage(QtGui.QWizardPage):
+    def __init__(self, parent=None):
+        super(AppInstallPage, self).__init__(parent=parent)
+        self.setTitle('Packages to Install')
+        self.setSubTitle('These are pre-installed packages that are missing from your system. '
+                         'For a proper system reset, all of these packages should be checked for install')
+        self.uninstall_view = QtGui.QListView(self)
+        self.uninstall_view.setMinimumSize(465, 200)
+        self.select_button = QtGui.QPushButton(self)
+        self.select_button.setText("Select All")
+        self.select_button.setMaximumSize(QtCore.QSize(100, 100))
+        self.select_button.clicked.connect(self.selectAll)
+        self.searchEditText = QtGui.QLineEdit()
+        self.searchEditText.setPlaceholderText("Search for packages")
+        self.font = QtGui.QFont()
+        self.font.setBold(True)
+        self.font2 = QtGui.QFont()
+        self.font2.setBold(False)
+        palette = QtGui.QPalette()
+        palette.setColor(QtGui.QPalette.Foreground, QtCore.Qt.red)
+        self.label = QtGui.QLabel()
+        self.label.setPalette(palette)
+        self.searchEditText.textChanged.connect(self.searchItem)
+        self.verticalLayout = QtGui.QVBoxLayout(self)
+        self.horizontalLayout = QtGui.QHBoxLayout()
+        self.horizontalLayout.addWidget(self.label, 0, QtCore.Qt.AlignLeft)
+        self.horizontalLayout.addWidget(self.select_button)
+        self.verticalLayout.addWidget(self.searchEditText)
+        self.verticalLayout.addWidget(self.uninstall_view)
+        self.verticalLayout.addLayout(self.horizontalLayout)
+        self.logger = logging.getLogger(__name__)
+        self.logger.setLevel(logging.DEBUG)
+        handler = logging.FileHandler('/var/log/resetter/resetter.log')
+        handler.setLevel(logging.DEBUG)
+        formatter = logging.Formatter('%(asctime)s - %(name)s - %(funcName)s - %(levelname)s - %(message)s')
+        handler.setFormatter(formatter)
+        self.logger.addHandler(handler)
+        self.oldKernelRemoval = False
+        self.isWritten = False
+        self.items = []
+        install_list = "apps-to-install"
+        self.model = QtGui.QStandardItemModel(self.uninstall_view)
+        self.model.itemChanged.connect(self.setItems)
+        self.cache = apt.Cache()
+
+        with open(install_list) as f_in:
+            for line in f_in:
+                try:
+                    pkg = self.cache[line.strip()]
+                    text = (pkg.versions[0].description)
+                    self.item = QtGui.QStandardItem(line)
+                    self.item.setCheckable(True)
+                    self.item.setCheckState(QtCore.Qt.Unchecked)
+                    self.model.appendRow(self.item)
+                    self.item.row()
+                    self.item.setToolTip((textwrap.fill(text, 70)))
+                except KeyError:
+                    continue
+            self.uninstall_view.setModel(self.model)
+
+    def searchItem(self):
+        search_string = self.searchEditText.text()
+        items = self.model.findItems(search_string, QtCore.Qt.MatchStartsWith)
+        if len(items) > 0:
+            for item in items:
+                if search_string is not None:
+                    item.setEnabled(True)
+                    self.model.takeRow(item.row())
+                    self.model.insertRow(0, item)
+                    if item.text()[:3] == search_string:
+                        item.setFont(self.font)
+                        self.label.clear()
+                    if len(search_string) == 0:
+                        self.label.clear()
+                        item.setFont(self.font2)
+            self.uninstall_view.scrollToTop()
+        else:
+            self.label.setText("Package doesn't exist")
+
+    def selectAll(self):
+        model = self.model
+        for index in range(model.rowCount()):
+            item = model.item(index)
+            if item.isCheckable() and item.checkState() == QtCore.Qt.Unchecked:
+                item.setCheckState(QtCore.Qt.Checked)
+                self.select_button.setText("Deselect all")
+            else:
+                item.setCheckState(QtCore.Qt.Unchecked)
+                self.select_button.setText("Select all")
+
+    def setItems(self, item):
+        if item.checkState() == QtCore.Qt.Checked:
+            self.items.append(item)
+        if item.checkState() == QtCore.Qt.Unchecked and len(self.items) > 0:
+            self.items.remove(item)
+
+    def selectedAppsInstall(self):
+        path = "custom-install"
+        mode = 'a' if self.isWritten else 'w'
+        with open(path, mode) as f_out:
+            for item in self.items:
+                print('{}'.format(item.text()))
                 f_out.write(item.text())
 
 
@@ -151,9 +267,7 @@ class UserRemovalPage(QtGui.QWizardPage):
         table.horizontalHeader().setStretchLastSection(True)
         user_list = []
         with open("users") as in_file:
-            if in_file is not None:
-                users = in_file.readlines()
-            for line in users:
+            for line in in_file:
                 user_list.append(line)
                 rowf += 1
 
@@ -170,7 +284,7 @@ class UserRemovalPage(QtGui.QWizardPage):
                 if column % 3:
                     self.item = QtGui.QTableWidgetItem(column)
                     self.item.setFlags(QtCore.Qt.ItemIsUserCheckable |
-                                  QtCore.Qt.ItemIsEnabled)
+                                       QtCore.Qt.ItemIsEnabled)
                     self.item.setCheckState(QtCore.Qt.Unchecked)
                     table.setItem(row, column, self.item)
 
@@ -196,11 +310,11 @@ class UserRemovalPage(QtGui.QWizardPage):
                 user.item(row, 1).setCheckState(QtCore.Qt.Unchecked)
                 text += 'userdel -r -f %s' % user.item(row, 0).text()
                 self.logger.debug(text)
-            elif value == 2:    # only second is checked
+            elif value == 2:  # only second is checked
                 print('%s' % user.item(row, 0).text() + 'is marked for %s' % user.horizontalHeaderItem(2).text())
                 text += 'userdel -r -f %s' % user.item(row, 0).text()
                 self.logger.debug(text)
-            elif value == 1:    # only first is checked
+            elif value == 1:  # only first is checked
                 print('%s' % user.item(row, 0).text() + 'is marked for %s' % user.horizontalHeaderItem(1).text())
                 text += 'userdel %s' % user.item(row, 0).text()
                 self.logger.debug(text)
@@ -209,16 +323,18 @@ class UserRemovalPage(QtGui.QWizardPage):
 
 
 class AppWizard(QtGui.QWizard):
-
     def __init__(self, parent=None):
         super(AppWizard, self).__init__(parent)
         self.setWindowTitle("Custom Reset")
         self.appremoval = AppRemovalPage()
+        self.appinstall = AppInstallPage()
         self.addPage(self.appremoval)
+        self.addPage(self.appinstall)
         self.userremoval = UserRemovalPage()
         self.addPage(self.userremoval)
         self.addPage(self.createConclusionPage())
         self.button(QtGui.QWizard.NextButton).clicked.connect(self.appremoval.selectedAppsRemoval)
+        self.button(QtGui.QWizard.NextButton).clicked.connect(self.appinstall.selectedAppsInstall)
         self.button(QtGui.QWizard.NextButton).clicked.connect(self.userremoval.printChecked)
         self.button(QtGui.QWizard.FinishButton).clicked.connect(self.apply)
 
@@ -239,16 +355,3 @@ class AppWizard(QtGui.QWizard):
         page.setLayout(layout)
 
         return page
-
-
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    wizard = QtGui.QWizard()
-    appremoval = AppRemovalPage()
-    wizard.addPage(appremoval)
-    userremoval = UserRemovalPage()
-    wizard.addPage(userremoval)
-    wizard.button(QtGui.QWizard.NextButton).clicked.connect(appremoval.user_custom_remove)
-    wizard.button(QtGui.QWizard.FinishButton).clicked.connect(userremoval.printChecked)
-    wizard.show()
-    sys.exit(app.exec_())

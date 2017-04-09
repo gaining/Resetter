@@ -1,0 +1,49 @@
+resetter (0.0.6-beta) trusty; urgency=medium
+
+  * performance improvements
+  * bug fixes
+  * new logo
+  * fixed postinst and postrm scripts for upgrade
+  * new package description feature in listview tooltips
+  * new install missing pre-installed packages feature
+
+ -- gaining <gaining7@outlook.com>  Sun, 09 Apr 2017 05:03:04 -0400
+
+
+resetter (0.0.5-beta) trusty; urgency=low
+
+  * added install options
+  * miscellaneous changes and performance improvements
+  * fixed process order bugs in custom reset
+
+ -- gaining <gaining7@outlook.com>  Sun, 02 Apr 2017 02:59:36 -0400
+
+
+resetter (0.0.4-beta) trusty; urgency=low
+
+  * fixed working directory permissions
+  * tweaked remove algorithm for ubuntu-unity 16.04
+
+ -- gaining <gaining7@outlook.com>  Fri, 31 Mar 2017 21:32:20 -0400
+
+
+resetter (0.0.3-beta) trusty; urgency=low
+
+  * fixed issue with default account password
+  * added already running message
+
+ -- gaining <gaining7@outlook.com>  Thu, 30 Mar 2017 08:45:52 -0400
+
+
+resetter (0.0.2-beta) trusty; urgency=low
+
+  * added support for ubuntu 16.10
+
+ -- gaining <gaining7@outlook.com>  Tue, 28 Mar 2017 05:29:43 -0400
+
+
+resetter (0.0.1-beta) trusty; urgency=low
+
+  * initial release
+
+ -- gaining <gaining7@outlook.com>  Tue, 28 Mar 2017 01:53:05 -0400

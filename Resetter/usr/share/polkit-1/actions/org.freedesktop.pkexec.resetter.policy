@@ -5,7 +5,7 @@
 <policyconfig>
   <vendor>Resetter</vendor>
   <vendor_url>http://github.com/gaining</vendor_url>
-  <icon_name></icon_name>
+  <icon_name>resetter</icon_name>
 
   <action id="org.freedesktop.pkexec.resetter">
     <description>Resetter</description>

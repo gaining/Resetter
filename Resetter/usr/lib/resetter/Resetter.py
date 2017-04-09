@@ -7,6 +7,7 @@ import pwd
 import shutil
 import subprocess
 import sys
+import textwrap
 from PyQt4 import QtCore, QtGui
 from time import gmtime, strftime
 
@@ -14,13 +15,13 @@ from AboutPage import About
 from CustomReset import AppWizard
 from PackageView import AppView
 from singleton import SingleApplication
-import webbrowser
+
 
 class UiMainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
         super(UiMainWindow, self).__init__(parent)
         QtGui.QApplication.setStyle("GTK")
-        self.setWindowIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/resetter-launcher2.png'))
+        self.setWindowIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/resetter-launcher.png'))
         self.error_msg = QtGui.QMessageBox()
         self.error_msg.setIcon(QtGui.QMessageBox.Critical)
         self.error_msg.setWindowTitle("Error")
@@ -50,11 +51,11 @@ class UiMainWindow(QtGui.QMainWindow):
         os.chdir(self.directory)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
         self.resize(850, 650)
+        self.setFixedSize(850, 650)
         palette = QtGui.QPalette()
 
         self.setPalette(palette)
         self.menubar = QtGui.QMenuBar(self)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 798, 25))
         self.menuFile = QtGui.QMenu(self.menubar)
         self.menuTools = QtGui.QMenu(self.menubar)
         self.menuHelp = QtGui.QMenu(self.menubar)
@@ -100,8 +101,6 @@ class UiMainWindow(QtGui.QMainWindow):
         self.actionCustom_Reset.setText("Custom Reset")
         self.actionCustom_Reset.setStatusTip('Custom Reset')
         self.actionShow_missing.setText("Show missing pre-installed packages")
-        self.actionShow_missing.setVisible(False)# will set visibility and enable to true once features are implemented
-        self.actionShow_missing.setEnabled(False)
         self.actionCustom_Reset.triggered.connect(self.customReset)
         self.actionShow_Installed.setText("Show installed")
         font = QtGui.QFont()
@@ -136,6 +135,10 @@ class UiMainWindow(QtGui.QMainWindow):
         self.btnReset.setFont(font)
         self.btnReset.setStyleSheet(button_style)
         self.btnReset.setIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/auto-reset-icon.png'))
+        auto_text = "By choosing this option, resetter will automatically choose which packages to remove. " \
+                    "Your home directory and user account will also be removed. Choose the custom reset option if you'd" \
+                    "like to keep your user account and choose which packages to remove. "
+        self.btnReset.setToolTip(textwrap.fill(auto_text, 70))
         self.btnReset.setIconSize(QtCore.QSize(130, 150))
         self.btnReset.clicked.connect(self.warningPrompt)
         self.btnCustomReset = QtGui.QPushButton(self)
@@ -146,6 +149,8 @@ class UiMainWindow(QtGui.QMainWindow):
         self.btnCustomReset.clicked.connect(self.customReset)
         self.btnCustomReset.setIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/custom-reset-icon.png'))
         self.btnCustomReset.setIconSize(QtCore.QSize(80, 80))
+        custom_text = "Choose this option if you would like to control how your system gets reset"
+        self.btnCustomReset.setToolTip(textwrap.fill(custom_text, 70))
         self.centralWidget = QtGui.QWidget()
         self.os_version_label = QtGui.QLabel()
         self.os_name_label = QtGui.QLabel()
@@ -160,10 +165,12 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_name_label.setGraphicsEffect(dse)
         self.os_codename_label.setText('codename: '+self.os_info['CODENAME'])
         self.image_label = QtGui.QLabel()
-        m = self.manifest.split('/')[-1]
-        self.manifest_label.setText("Using: {}".format(m))
+        if self.manifest is not None:
+            m = self.manifest.split('/')[-1]
+            self.manifest_label.setText("Using: {}".format(m))
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/resetter-logo.png")
-        self.pixmap2 = self.pixmap.scaled(614, 182)
+
+        self.pixmap2 = self.pixmap.scaled(650, 226)
         self.image_label.setPixmap(self.pixmap2)
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout2 = QtGui.QVBoxLayout()
@@ -228,7 +235,16 @@ class UiMainWindow(QtGui.QMainWindow):
             else:
                pass
 
+    def showMissings(self):
+        self.getMissingPackages()
+        text = "These were pre-installed packages that are missing but due for install"
+        view_missing = AppView(self)
+        view_missing.showView("apps-to-install", "Missing pre-installed packages", text, False)
+        view_missing.show()
+
     def getMissingPackages(self):
+        self.getInstalledList()
+        self.processManifest()
         try:
             self.logger.info("generating install list")
             self.setCursor(QtCore.Qt.WaitCursor)
@@ -236,10 +252,18 @@ class UiMainWindow(QtGui.QMainWindow):
                                    stdout=subprocess.PIPE)
             cmd.wait()
             result = cmd.stdout
+            if self.os_info['RELEASE'] == '17.3':
+                word = "vivid"
+            else:
+                word = None
+            black_list = ['linux-image', 'linux-headers', "openjdk-7-jre"]
             with open("apps-to-install", "w") as output:
                 for line in result:
-                    output.writelines(line)
-            self.logger.info("instsallMissing() Completed")
+                    if word is not None and word in line:
+                        black_list.append(line)
+                    if not any(s in line for s in black_list):
+                        output.writelines(line)
+            self.logger.info("getmissingPackages() Completed")
             self.unsetCursor()
         except (subprocess.CalledProcessError, Exception) as e:
             self.unsetCursor()
@@ -247,7 +271,6 @@ class UiMainWindow(QtGui.QMainWindow):
             self.error_msg.setText("Error generating removable package list. Please see details")
             self.error_msg.setDetailedText("Error: {}".format(e))
             self.error_msg.exec_()
-            self.exit(1)
 
     def save(self):
         self.getInstalledList()
@@ -264,30 +287,21 @@ class UiMainWindow(QtGui.QMainWindow):
                 if os.path.isfile(manifest):
                     return manifest
                 else:
-                    self.error_msg.setText(
-                        "Manifest could not be found, please choose a manifest for your system if you have one")
-                    self.error_msg.setDetailedText("without a system manifest, this program won't function")
-                    self.error_msg.show()
+                    self.manifestNotFound()
             elif self.os_info['RELEASE'] == '18':
                 self.setWindowTitle(self.os_info['ID'] + " Resetter")
                 manifest = "manifests/mint-18-cinnamon.manifest"
                 if os.path.isfile(manifest):
                     return manifest
                 else:
-                    self.error_msg.setText(
-                        "Manifest could not be found, please choose a manifest for your system if you have one")
-                    self.error_msg.setDetailedText("without a system manifest, this program won't function")
-                    self.error_msg.show()
+                    self.manifestNotFound()
             elif self.os_info['RELEASE'] == '18.1':
-                self.setWindowTitle(self.os_info['DESCRIPTION'] + " Resetter")
+                self.setWindowTitle(self.os_info['ID'] + " Resetter")
                 manifest = "manifests/mint-18.1-cinnamon.manifest"
                 if os.path.isfile(manifest):
                     return manifest
                 else:
-                    self.error_msg.setText(
-                        "Manifest could not be found, please choose a manifest for your system if you have one")
-                    self.error_msg.setDetailedText("without a system manifest, this program won't function")
-                    self.error_msg.show()
+                    self.manifestNotFound()
         elif self.os_info['ID'] == ('Ubuntu'):
             if self.os_info['RELEASE'] == '14.04':
                 self.setWindowTitle(self.os_info['ID'] + " Resetter")
@@ -295,20 +309,14 @@ class UiMainWindow(QtGui.QMainWindow):
                 if os.path.isfile(manifest):
                     return manifest
                 else:
-                    self.error_msg.setText(
-                        "Manifest could not be found, please choose a manifest for your system if you have one")
-                    self.error_msg.setDetailedText("without a system manifest, this program won't function")
-                    self.error_msg.show()
+                    self.manifestNotFound()
             elif self.os_info['RELEASE'] == '16.04':
-                self.setWindowTitle(self.os_info['DESCRIPTION'] + " Resetter")
+                self.setWindowTitle(self.os_info['ID'] + " Resetter")
                 manifest = 'manifests/ubuntu-16.04-unity.manifest'
                 if os.path.isfile(manifest):
                     return manifest
                 else:
-                    self.error_msg.setText(
-                        "Manifest could not be found, please choose a manifest for your system if you have one")
-                    self.error_msg.setDetailedText("without a system manifest, this program won't function")
-                    self.error_msg.exec_()
+                    self.manifestNotFound()
 
             elif self.os_info['RELEASE'] == '16.10':
                 self.setWindowTitle(self.os_info['ID'] + " Resetter")
@@ -316,16 +324,19 @@ class UiMainWindow(QtGui.QMainWindow):
                 if os.path.isfile(manifest):
                     return manifest
                 else:
-                    self.error_msg.setText(
-                        "Manifest could not be found, please choose a manifest for your system if you have one")
-                    self.error_msg.setDetailedText("without a system manifest, this program won't function")
-                    self.error_msg.show()
+                    self.manifestNotFound()
         else:
             self.error_msg.setText("Your distro isn't supported at the moment.")
             self.error_msg.setDetailedText(
                 "If your distro is debian based, please send an email to gaining7@outlook.com for further support")
             self.error_msg.exec_()
             sys.exit(1)
+
+    def manifestNotFound(self):
+        self.error_msg.setText(
+            "Manifest could not be found, please choose a manifest for your system if you have one")
+        self.error_msg.setDetailedText("without a system manifest, this program won't function")
+        self.error_msg.show()
 
     def getOldKernels(self):
         try:
@@ -346,15 +357,15 @@ class UiMainWindow(QtGui.QMainWindow):
 
     def warningPrompt(self):
         choice = QtGui.QMessageBox.warning \
-            (self, 'RESET EVERYTHING?!',
+            (self, 'RESET EVERYTHING?',
              "Reset Everything? \n\n This will reset your " + str(self.os_info['DESCRIPTION']) + " installation to its "
-             "factory defaults. Human users accounts will also be removed. \nIf you would not like user removals,"
-             " please choose the custom reset option instead. \n\nAre you sure you\'d like to continue?",
+             "factory defaults. local user accounts and home directories will also be removed."
+                "\n\nAre you sure you\'d like to continue?",
              QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if choice == QtGui.QMessageBox.Yes:
             self.logger.warning("auto reset chosen")
             self.getInstalledList()
-            self.processManifest()
+            self.getMissingPackages()
             if self.lineCount("apps-to-remove") != 0:
                 self.getLocalUserList()
                 view = AppView(self)
@@ -454,13 +465,6 @@ class UiMainWindow(QtGui.QMainWindow):
         viewInstalled.showView("installed", "Installed List", text, False)
         viewInstalled.show()
 
-    def showMissings(self):
-        self.getMissingPackages()
-        text = "These were pre-installed packages that are missing but due for install"
-        view_missing = AppView(self)
-        view_missing.showView("apps-to-install", "Packages To Install", text, False)
-        view_missing.show()
-
     def getLocalUserList(self):
         try:
             self.logger.info("getting local users...")
@@ -480,11 +484,9 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.error("Error comparing files: ".format(e), exc_info=True)
 
     def customReset(self):
-        #self.getMissingPackages
+        self.getMissingPackages()
         self.getLocalUserList()
-        self.getInstalledList()
         self.getOldKernels()
-        self.processManifest()
         custom_reset = AppWizard(self)
         custom_reset.show()
 

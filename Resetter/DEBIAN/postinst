@@ -1,9 +1,0 @@
-#!/bin/sh
-
-set -e 
-
-chmod 755 /usr/bin/resetter
-chmod 755 /usr/lib/resetter/Resetter.py
-chmod -R 755 /usr/lib/resetter/data/scripts
-
-exit 0

@@ -9,10 +9,10 @@ import time
 from PyQt4 import QtCore, QtGui
 from AptProgress import UIAcquireProgress, UIInstallProgress
 import apt_pkg
+from InstallMissingDialog import Install
 
 
 class ProgressThread(QtCore.QThread):
-
     end_of_thread = QtCore.pyqtSignal()
 
     def __init__(self, file_in):
@@ -52,26 +52,26 @@ class ProgressThread(QtCore.QThread):
             loading = 0
             x = float(100) / self.file_len()
             with open(self.file_in) as packages:
-                    for pkg_name in packages:
-                        try:
-                            loading += x
-                            self.pkg = self._cache[pkg_name.strip()]
-                            self.pkg.mark_delete(True, purge=True)
-                            print "{} will be removed".format(self.pkg)
-                            self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
-                        except KeyError as error:
-                            self.logger.error("{}".format(error))
-                            continue
-                    self.logger.info("finished loading packages into cache")
-                    self.isDone = True
-                    self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, self.isDone)
+                for pkg_name in packages:
+                    try:
+                        loading += x
+                        self.pkg = self._cache[pkg_name.strip()]
+                        self.pkg.mark_delete(True, purge=True)
+                        print "{} will be removed".format(self.pkg)
+                        self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
+                    except KeyError as error:
+                        self.logger.error("{}".format(error))
+                        continue
+                self.logger.info("finished loading packages into cache")
+                self.isDone = True
+                self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, self.isDone)
         else:
             self.isDone = True
             print "All removable packages are already removed"
             self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, self.isDone)
 
-class Apply(QtGui.QDialog):
 
+class Apply(QtGui.QDialog):
     def __init__(self, file_in, parent=None):
         super(Apply, self).__init__(parent)
         self.setMinimumSize(400, 250)
@@ -96,9 +96,9 @@ class Apply(QtGui.QDialog):
         gridLayout.setAlignment(QtCore.Qt.AlignCenter)
         self.labels[(1, 2)].setText("Loading Apps")
         self.labels[(2, 2)].setText("Removing Apps")
-        self.labels[(3, 2)].setText("Deleting Users")
-        self.labels[(4, 2)].setText("Cleaning Up")
-        self.labels[(5,2)].setText("Installing packages")
+        self.labels[(3, 2)].setText("Cleaning Up")
+        self.labels[(4, 2)].setText("Installing packages")
+        self.labels[(5, 2)].setText("Deleting Users")
 
         verticalLayout.addWidget(self.lbl1)
         verticalLayout.addWidget(self.progress)
@@ -130,19 +130,17 @@ class Apply(QtGui.QDialog):
     def updateProgressBar(self, percent, isDone):
         self.lbl1.setText("Loading Package List")
         self.progress.setValue(percent)
-        self.labels[(1,1)].setMovie(self.movie)
+        self.labels[(1, 1)].setMovie(self.movie)
 
         self.movie.start()
         if isDone:
             self.buttonCancel.setDisabled(True)
-            #self.progressView.end_of_thread.disconnect()
-            #self.progressView = None
             self.movie.stop()
             self.labels[(1, 1)].setPixmap(self.pixmap2)
             self.removePackages()
 
     def start(self):
-        #self.progressView.end_of_thread.connect(self.updateProgressBar)
+        # self.progressView.end_of_thread.connect(self.updateProgressBar)
         self.progressView.start()
 
     def cancel(self):
@@ -150,25 +148,21 @@ class Apply(QtGui.QDialog):
         self.progressView.terminate()
         self.close()
 
-    def removeUsers(self):
-        self.logger.info("Starting user removal")
-        self.labels[(3, 1)].setMovie(self.movie)
-        self.movie.start()
-
-        with open("users") as f_in, open("users-to-delete.sh", "w") as output:
-            for line in f_in:
-                line = ("userdel -rf ", line)
-                output.writelines(line)
+    def addUser(self):
+        time.sleep(2)
+        self.lbl1.setText("Creating Default user")
         try:
-            subprocess.Popen(['bash', 'users-to-delete.sh'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
-        except subprocess.CalledProcessError, e:
-                print "error: {}".format(e.output)
-        self.movie.stop()
-        self.labels[(3, 1)].setPixmap(self.pixmap2)
+            self.logger.info("Adding default user...")
+            p = subprocess.Popen(['bash', '/usr/lib/resetter/data/scripts/new-user.sh'], stderr=subprocess.STDOUT,
+                                 stdout=subprocess.PIPE)
+            p.wait()
+            self.logger.info("Default user added")
+        except subprocess.CalledProcessError as e:
+            self.logger.error("unable to add user Error: {}".format(e.output))
 
     def removePackages(self):
         print "removing packages..."
-        self.labels[(2,1)].setMovie(self.movie)
+        self.labels[(2, 1)].setMovie(self.movie)
         self.movie.start()
         try:
             self.logger.info("Removing packages...")
@@ -186,10 +180,6 @@ class Apply(QtGui.QDialog):
             self.progress.setValue(int(100))
             self.addUser()
             self.fixBroken()
-            self.removeUsers()
-            self.showUserInfo()
-            self.lbl1.setText("Finished")
-
         except Exception as arg:
             self.logger.error("Package removal failed [{}]".format(str(arg)))
             self.error_msg.setText("Something went wrong... please check details")
@@ -197,26 +187,79 @@ class Apply(QtGui.QDialog):
             self.error_msg.exec_()
 
     def fixBroken(self):
-        self.logger.info("Cleaning up..." )
+        self.logger.info("Cleaning up...")
         self.lbl1.setText("Cleaning up...")
-        self.labels[(4, 1)].setMovie(self.movie)
+        self.labels[(3, 1)].setMovie(self.movie)
         self.movie.start()
         self.setCursor(QtCore.Qt.BusyCursor)
         self.prcs = QtCore.QProcess()
         self.prcs.finished.connect(self.onFinished)
         self.prcs.start('bash', ['/usr/lib/resetter/data/scripts/fix-broken.sh'])
-        #self.prcs.waitForFinished(-1)
 
     def onFinished(self, exit_code, exit_status):
         if exit_code or exit_status != 0:
             self.logger.error("fixBroken() finished with exit code: {} and exit_status {}."
                               .format(exit_code, exit_status))
+            self.error_msg.setText("Error occured, unable to continue.")
+            self.error_msg.exec_()
+
         else:
             self.logger.debug("Cleanup finished with exit code: {} and exit_status {}.".format(exit_code, exit_status))
             self.movie.stop()
-            self.labels[(4, 1)].setPixmap(self.pixmap2)
+            self.labels[(3, 1)].setPixmap(self.pixmap2)
             self.unsetCursor()
             self.lbl1.setText("Cleanup done.")
+            self.installPackages()
+
+    def installPackages(self):
+        self.logger.info("Starting package installation...")
+        self.labels[(4, 1)].setMovie(self.movie)
+        self.movie.start()
+        self.install = Install("apps-to-install", "Installing packages", True)
+        self.install.show()
+        self.install.exec_()
+        self.labels[(4, 1)].setPixmap(self.pixmap2)
+        self.removeUsers()
+
+    def removeUsers(self):
+        self.logger.info("Starting user removal")
+        self.labels[(5, 1)].setMovie(self.movie)
+        self.movie.start()
+
+        with open("users") as f_in, open("users-to-delete.sh", "w") as output:
+            for line in f_in:
+                line = ("userdel -rf ", line)
+                output.writelines(line)
+        try:
+            subprocess.Popen(['bash', 'users-to-delete.sh'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+        except subprocess.CalledProcessError as e:
+            print "error: {}".format(e.output)
+        self.movie.stop()
+        self.labels[(5, 1)].setPixmap(self.pixmap2)
+        self.lbl1.setText("Finished")
+        self.showUserInfo()
+
+    def showUserInfo(self):
+        msg = QtGui.QMessageBox(self)
+        msg.setWindowTitle("User Credentials")
+        msg.setIcon(QtGui.QMessageBox.Information)
+        msg.setText("Please use these credentials the next time you log-in")
+        msg.setInformativeText("USERNAME: <b>default</b><br/> PASSWORD: <b>NewLife3!</b>")
+        msg.setDetailedText("This username was automatically created as your backup user")
+        msg.exec_()
+        self.logger.info("Credential message info shown")
+        self.rebootMessage()
+
+    def rebootMessage(self):
+        choice = QtGui.QMessageBox.information \
+            (self, 'Please reboot to complete system changes',
+             "Reboot now?",
+             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if choice == QtGui.QMessageBox.Yes:
+            self.logger.info("system rebooted after package removals")
+            os.system('reboot')
+        else:
+            self.logger.info("reboot was delayed.")
 
     def getDependencies(self):
         try:
@@ -238,35 +281,3 @@ class Apply(QtGui.QDialog):
         except subprocess.CalledProcessError as e:
             print "error: {}".format(e.output)
             self.logger.error("getting Dependencies failed: {}".format(e.output))
-
-    def addUser(self):
-        self.lbl1.setText("Creating Default user")
-        try:
-            self.logger.info("Adding default user...")
-            p = subprocess.Popen(['bash', '/usr/lib/resetter/data/scripts/new-user.sh'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
-            p.wait()
-            self.logger.info("Default user added")
-        except subprocess.CalledProcessError as e:
-            self.logger.error("unable to add user Error: {}".format(e.output))
-
-    def rebootMessage(self):
-        choice = QtGui.QMessageBox.information \
-            (self, 'Please reboot to complete system changes',
-             "Reboot now?",
-             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if choice == QtGui.QMessageBox.Yes:
-            self.logger.info("system rebooted after package removals")
-            os.system('reboot')
-        else:
-            self.logger.info("reboot was delayed.")
-
-    def showUserInfo(self):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("User Credentials")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("Please use these credentials the next time you log-in")
-        msg.setInformativeText("USERNAME: <b>default</b><br/> PASSWORD: <b>NewLife3!</b>")
-        msg.setDetailedText("This username was automatically created as your backup user")
-        msg.exec_()
-        self.logger.info("Credential message info shown")
-        self.rebootMessage()

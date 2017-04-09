@@ -1466,13 +1466,13 @@ linux-firmware
 linux-generic
 linux-headers-4.8.0-22
 linux-headers-4.8.0-22-generic
-linux-headers-4.8.0-44
-linux-headers-4.8.0-44-generic
+linux-headers-4.8.0-46
+linux-headers-4.8.0-46-generic
 linux-headers-generic
 linux-image-4.8.0-22-generic
-linux-image-4.8.0-44-generic
+linux-image-4.8.0-46-generic
 linux-image-extra-4.8.0-22-generic
-linux-image-extra-4.8.0-44-generic
+linux-image-extra-4.8.0-46-generic
 linux-image-generic
 linux-libc-dev:amd64
 linux-sound-base

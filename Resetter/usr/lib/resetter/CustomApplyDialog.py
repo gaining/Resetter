@@ -4,13 +4,15 @@ import apt.package
 import logging
 import os
 import subprocess
-import threading
 import sys
+import threading
 import time
 from PyQt4 import QtCore, QtGui
-from AptProgress import UIAcquireProgress, UIInstallProgress
-from Account import AccountDialog
+
 import apt_pkg
+from Account import AccountDialog
+from AptProgress import UIAcquireProgress, UIInstallProgress
+from InstallMissingDialog import Install
 
 
 class ProgressThread(QtCore.QThread):
@@ -93,7 +95,7 @@ class Apply(QtGui.QDialog):
         verticalLayout.addWidget(self.progress)
         gridLayout = QtGui.QGridLayout()
         self.labels = {}
-        for i in range(1, 6):
+        for i in range(1, 7):
             for j in range(1, 3):
                 self.labels[(i, j)] = QtGui.QLabel()
                 self.labels[(i, j)].setMinimumHeight(20)
@@ -102,12 +104,12 @@ class Apply(QtGui.QDialog):
         self.labels[(1, 2)].setText("Loading packages")
         self.labels[(2, 2)].setText("Removing packages")
         self.labels[(3, 2)].setText("Cleaning Up")
-        # self.labels[(4,2)].setText("Installing packages")
+        self.labels[(4,2)].setText("Installing packages")
         if self.response:
-            self.labels[(4, 2)].setText("Removing old kernels")
-            self.labels[(5, 2)].setText("Deleting Users")
+            self.labels[(5, 2)].setText("Removing old kernels")
+            self.labels[(6, 2)].setText("Deleting Users")
         else:
-            self.labels[(4, 2)].setText("Deleting Users")
+            self.labels[(5, 2)].setText("Deleting Users")
 
         verticalLayout.addSpacing(20)
         verticalLayout.addLayout(gridLayout)
@@ -123,7 +125,7 @@ class Apply(QtGui.QDialog):
         self.installProgress = ProgressThread("apps-to-install", True)
         self.connect(self.installProgress, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
         self.install_cache = self.installProgress._cache
-        self.account = AccountDialog(self)
+        self.account = AccountDialog()
         self.connect(self.progressView, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
         self._cache = self.progressView._cache
         self.aprogress = UIAcquireProgress(self.progress, self.lbl1)
@@ -148,7 +150,6 @@ class Apply(QtGui.QDialog):
         self.close()
 
     def removePackages(self):
-        print "removing"
         self.logger.info("Removing Programs")
         try:
             dep_list = "deplist"
@@ -193,43 +194,34 @@ class Apply(QtGui.QDialog):
             self.labels[(3, 1)].setPixmap(self.pixmap2)
             self.unsetCursor()
             self.lbl1.setText("Done fixing")
-            # self.installPackages()
+            self.installPackages()
             self.removeOldKernels(self.response)
 
-    # experimental way of installing missing pre-installed packages n
     def installPackages(self):
-        try:
-            self.progressView.terminate()
-            self.logger.info("Starting kernel removal")
-            self.labels[(4, 1)].setMovie(self.movie)
-            self.movie.start()
-            self.setCursor(QtCore.Qt.BusyCursor)
-            self.inst.commit(self.aprogress, self.iprogress)
-            self.progress.setValue(100)
-            self.labels[(4, 1)].setPixmap(self.pixmap2)
-            self.unsetCursor()
-        except Exception as arg:
-            self.logger.error("package install failed [{}]".format(str(arg)))
-            print "Sorry, package install failed [{}]".format(str(arg))
+        self.logger.info("Starting kernel removal...")
+        self.labels[(4, 1)].setMovie(self.movie)
+        self.movie.start()
+        self.install = Install("custom-install", "Installing packages",True)
+        self.install.show()
+        self.install.exec_()
+        self.labels[(4, 1)].setPixmap(self.pixmap2)
+
 
     def removeOldKernels(self, response):
         if response:
             self.logger.info("Starting kernel removal...")
-            self.labels[(4, 1)].setMovie(self.movie)
+            self.labels[(5, 1)].setMovie(self.movie)
             self.movie.start()
             self.setCursor(QtCore.Qt.BusyCursor)
             self._cache.clear()
             self.progress.setValue(0)
             try:
-                with open("Kernels", "r") as kernels:
-                    for kernel in kernels:
-                        pkg = self._cache[kernel.strip()]
-                        if pkg.is_installed:
-                            pkg.mark_delete(True, True)
                 self.logger.info("Removing old kernels...")
-                self._cache.commit(self.aprogress, self.iprogress)
+                self.install = Install("Kernels","removing old kernels", False)
+                self.install.show()
+                self.install.exec_()
+                self.labels[(5, 1)].setPixmap(self.pixmap2)
                 self.progress.setValue(100)
-                self.labels[(4, 1)].setPixmap(self.pixmap2)
                 self.unsetCursor()
                 self.lbl1.setText("Finished")
             except Exception, arg:
@@ -245,10 +237,21 @@ class Apply(QtGui.QDialog):
 
     def start(self):
         self.progressView.start()
-        #self.installProgress.start()
 
     def removeUsers(self, response):
         if response:
+            self.logger.info("Starting user removal")
+            self.labels[(6, 1)].setMovie(self.movie)
+            self.movie.start()
+            try:
+                subprocess.Popen(['bash', 'custom-users-to-delete.sh'], stderr=subprocess.STDOUT,
+                                 stdout=subprocess.PIPE)
+                self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
+            except subprocess.CalledProcessError, e:
+                self.logger.error("unable removing user [{}]".format(e.output))
+            self.movie.stop()
+            self.labels[(6, 1)].setPixmap(self.pixmap2)
+        else:
             self.logger.info("Starting user removal")
             self.labels[(5, 1)].setMovie(self.movie)
             self.movie.start()
@@ -260,18 +263,6 @@ class Apply(QtGui.QDialog):
                 self.logger.error("unable removing user [{}]".format(e.output))
             self.movie.stop()
             self.labels[(5, 1)].setPixmap(self.pixmap2)
-        else:
-            self.logger.info("Starting user removal")
-            self.labels[(4, 1)].setMovie(self.movie)
-            self.movie.start()
-            try:
-                subprocess.Popen(['bash', 'custom-users-to-delete.sh'], stderr=subprocess.STDOUT,
-                                 stdout=subprocess.PIPE)
-                self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
-            except subprocess.CalledProcessError, e:
-                self.logger.error("unable removing user [{}]".format(e.output))
-            self.movie.stop()
-            self.labels[(4, 1)].setPixmap(self.pixmap2)
 
     def getDependencies(self):
         try:

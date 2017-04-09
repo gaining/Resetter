@@ -14,6 +14,4 @@ if [ -d $RHOME ]; then
      rm -rf $RHOME
 fi
 
-rm -rf /usr/lib/resetter
-
 exit 0

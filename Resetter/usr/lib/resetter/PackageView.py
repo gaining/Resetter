@@ -1,9 +1,12 @@
 #!/usr/bin/python
-import sys
-from PyQt4 import QtCore, QtGui
-import os
 import apt
+import os
+import sys
+import textwrap
+from PyQt4 import QtCore, QtGui
+
 from ApplyDialog import Apply
+
 
 class AppView(QtGui.QDialog):
 
@@ -20,6 +23,9 @@ class AppView(QtGui.QDialog):
         palette.setColor(QtGui.QPalette.Foreground, QtCore.Qt.red)
         self.label = QtGui.QLabel()
         self.label.setPalette(palette)
+        self.cache = apt.Cache()
+
+
 
     def searchItem(self, model, view):
         search_string = self.searchEditText.text()
@@ -56,7 +62,7 @@ class AppView(QtGui.QDialog):
         horizontalLayout.addWidget(buttonBox)
         verticalLayout.addLayout(horizontalLayout)
         if start:
-            buttonBox.accepted.connect(self.startRemoval)
+            buttonBox.accepted.connect(lambda: self.startRemoval(file_in))
         else:
             buttonBox.accepted.connect(self.close)
         buttonBox.rejected.connect(self.close)
@@ -64,15 +70,22 @@ class AppView(QtGui.QDialog):
         self.searchEditText.textChanged.connect(lambda: self.searchItem(model, list_view))
         with open(file_in) as f:
             for line in f:
-                item = QtGui.QStandardItem(line)
-                item.setCheckState(QtCore.Qt.Checked)
+                try:
+                    pkg = self.cache[line.strip()]
+                    text = (pkg.versions[0].description)
+                    item = QtGui.QStandardItem(line)
+                    item.setCheckState(QtCore.Qt.Checked)
+                    item.setToolTip((textwrap.fill(text, 70)))
+                except KeyError:
+                    continue
+
                 model.appendRow(item)
         list_view.setModel(model)
         list_view.show()
 
-    def startRemoval(self):
+    def startRemoval(self, file_in):
         self.close()
-        self.apply = Apply(self.file_in)
+        self.apply = Apply(file_in)
         self.apply.show()
         self.apply.raise_()
 
