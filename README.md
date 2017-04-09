@@ -14,10 +14,10 @@ Install via deb file. PPA will be created later.
 
 | Feature list        | Option1: Auto Reset | Option 2: Custom Reset  |
 | ------------- |:-------------:| -----:|
-| delete user      | | * |
-| delete user/Home Dir      | *      |   * |
-| Choose packages to remove | are neat      |    * |
-| remove old kernels |  | * |
+| delete user      | | X |
+| delete user/Home Dir      | X      | X |
+| Choose packages to remove | are neat      | X |
+| remove old kernels |  |X |
 
 # Officially supported distros [64-bit]
 - Linux Mint 18.1
