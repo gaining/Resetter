@@ -14,9 +14,9 @@ Install via deb file. PPA will be created later.
 
 | Feature list        | Option1: Auto Reset | Option 2: Custom Reset  |
 | ------------- |:-------------:| -----:|
-| delete user      | | X |
-| delete user/Home Dir      | X  | X  |
-| Choose packages to remove |      | X  |
+| Delete User      | | X |
+| Delete User/Home Directory      | X  | X  |
+| Choose packages to remove |  | X  |
 | remove old kernels |  | X  |
 
 # Officially supported distros [64-bit]
