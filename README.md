@@ -4,7 +4,7 @@
 It is an application built with python and pyqt that will help to reset an Ubuntu or Linux-Mint system to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. It will detect packages that have been installed after the initial system install. 
 
 # Status
-- The software is currently in its early stage. Feedback will be greatly appreciated.
+- The software is currently in beta stage. Feedback will be greatly appreciated.
 - If you're on a version lower than beta-0.0.6, please remove resetter with "sudo apt remove resetter" to install the new one. 
 - beta-0.0.6 is a milestone release that has performance improvements, new features, and critical bug fixes hence it's a lot more stable than previous versions.
 - Please check the changelog for more details.
