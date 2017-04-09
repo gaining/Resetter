@@ -11,7 +11,7 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 
 
 # How to install
-Install via deb file. PPA will be created soon as.
+Install via deb file. PPA will be created soon.
 
 # Options comparison
 
