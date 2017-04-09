@@ -10,6 +10,15 @@ The software is currently in its early beta stage. Feedback will be greatly appr
 # How to install
 Install via deb file. PPA will be created later.
 
+# Options comparison
+
+| Feature list        | Option1: Auto Reset | Option 2: Custom Reset  |
+| ------------- |:-------------:| -----:|
+| delete user      | | * |
+| delete user/Home Dir      | *      |   * |
+| Choose packages to remove | are neat      |    * |
+| remove old kernels |  | * |
+
 # Officially supported distros [64-bit]
 - Linux Mint 18.1
 - Linux Mint 18
