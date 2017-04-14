@@ -12,7 +12,7 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 
 
 # How to install
-Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/0.0.7-beta) PPA will be created as soon.
+Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/0.0.7-beta) PPA will be created soon.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run sudo apt install gdebi.
 
