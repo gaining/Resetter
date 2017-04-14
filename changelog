@@ -1,3 +1,14 @@
+resetter (0.0.7-beta) trusty; urgency=medium
+
+  * misc changes
+  * ubuntu 17.04 support
+  * elementary os support
+  * updated ubuntu 14.04 manifest
+  * fixes issue #6
+
+ -- gaining <gaining7@outlook.com>  Fri, 14 Apr 2017 00:22:18 -0400
+
+
 resetter (0.0.6-beta) trusty; urgency=medium
 
   * performance improvements
