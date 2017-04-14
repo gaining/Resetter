@@ -56,7 +56,7 @@ class ProgressThread(QtCore.QThread):
                     try:
                         loading += x
                         self.pkg = self._cache[pkg_name.strip()]
-                        self.pkg.mark_delete(True, purge=True)
+                        self.pkg.mark_delete(True, True)
                         print "{} will be removed".format(self.pkg)
                         self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
                     except KeyError as error:

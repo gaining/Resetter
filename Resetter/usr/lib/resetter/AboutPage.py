@@ -36,7 +36,7 @@ class About(QtGui.QDialog):
         cr_text = "Copyright (c) 2017 all rights reserved"
         desc_text = "Built With PyQt\n\n " \
                     "This is a great utility software that will help you reset your linux installation its stock state"
-        version_text = "Version: 0.0.6-beta"
+        version_text = "Version: 0.0.7-beta"
         donate_text = 'If you liked my project, please ' \
                       '<a href="https://github.com/gaining/Resetter/blob/master/DONATE.md">Donate </a>'
         more_text = 'To find out more about this project, please visit my github:' \
@@ -69,11 +69,3 @@ class About(QtGui.QDialog):
     def showLicence(self):
         lic = Licence(self)
         lic.show()
-
-
-
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    about = About()
-    about.show()
-    sys.exit(app.exec_())

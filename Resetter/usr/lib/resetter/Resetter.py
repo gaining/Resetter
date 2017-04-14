@@ -137,7 +137,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.btnReset.setIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/auto-reset-icon.png'))
         auto_text = "By choosing this option, resetter will automatically choose which packages to remove. " \
                     "Your home directory and user account will also be removed. Choose the custom reset option if you'd" \
-                    "like to keep your user account and choose which packages to remove. "
+                    " like to keep your user account and select which packages to remove. "
         self.btnReset.setToolTip(textwrap.fill(auto_text, 70))
         self.btnReset.setIconSize(QtCore.QSize(130, 150))
         self.btnReset.clicked.connect(self.warningPrompt)
@@ -209,7 +209,6 @@ class UiMainWindow(QtGui.QMainWindow):
     def detectRoot(self):
         if self.euid != 0:
             print "need to be root to run this program"
-            self.logger.error("Not root, program exited")
             self.error_msg.setText("You need to be root to run this program")
             self.error_msg.setDetailedText("You won't be able to run this program unless you're root")
             self.error_msg.exec_()
@@ -325,6 +324,21 @@ class UiMainWindow(QtGui.QMainWindow):
                     return manifest
                 else:
                     self.manifestNotFound()
+            elif self.os_info['RELEASE'] == '17.04':
+                self.setWindowTitle(self.os_info['ID'] + " Resetter")
+                manifest = 'manifests/ubuntu-17.04-unity.manifest'
+                if os.path.isfile(manifest):
+                    return manifest
+                else:
+                    self.manifestNotFound()
+        elif self.os_info['ID'] == ('elementary'):
+            if self.os_info['RELEASE'] == '0.4':
+                self.setWindowTitle(self.os_info['ID'] + " Resetter")
+                manifest = 'manifests/eos-0.4.manifest'
+                if os.path.isfile(manifest):
+                    return manifest
+                else:
+                    self.manifestNotFound()
         else:
             self.error_msg.setText("Your distro isn't supported at the moment.")
             self.error_msg.setDetailedText(
@@ -389,10 +403,10 @@ class UiMainWindow(QtGui.QMainWindow):
             self.unsetCursor()
             result = p1.stdout
             i = 0
+            tab = '\t'
             with open("installed", "w") as output:
                 for line in result:
                     i += 1
-                    tab = '\t'
                     line = line.split(tab, 1)[0]
                     output.write(line + '\n')
             self.logger.debug("installed list was generated with {} apps installed".format(i))
@@ -443,7 +457,7 @@ class UiMainWindow(QtGui.QMainWindow):
             result = cmd.stdout
             black_list = ['linux-image', 'linux-headers', 'ca-certificates', 'pyqt4-dev-tools',
                           'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
-                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'snap', 'gksu', 'resetter']
+                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'snap', 'gksu', 'resetter', 'python-evdev']
             with open("apps-to-remove", "w") as output:
                 for line in result:
                     if not any(s in line for s in black_list):
@@ -508,8 +522,10 @@ if __name__ == '__main__':
         message.setText("{} is already running".format(key))
         message.exec_()
         print('%s is already running' % key)
-        sys.exit(1)
+        window.show()
+        #sys.exit(1)
     else:
         window.show()
 
     sys.exit(app.exec_())
+

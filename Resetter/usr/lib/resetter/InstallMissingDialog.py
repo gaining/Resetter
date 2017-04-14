@@ -53,7 +53,7 @@ class ProgressThread(QtCore.QThread):
                         loading += x
                         self.pkg = self._cache[pkg_name.strip()]
                         if not self.install:
-                            self.pkg.mark_delete(True, purge=True)
+                            self.pkg.mark_delete(True, True)
                             print "{} will be removed".format(self.pkg)
                         else:
                             self.pkg.mark_install()
@@ -76,7 +76,7 @@ class ProgressThread(QtCore.QThread):
 class Install(QtGui.QDialog):
     def __init__(self, file_in, action, action_type, parent=None):
         super(Install, self).__init__(parent)
-        self.setMinimumSize(295, 100)
+        self.setMinimumSize(305, 100)
         self.file_in = file_in
         self.setWindowTitle("Working...")
         QtGui.QApplication.setStyle("GTK")

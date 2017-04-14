@@ -10,6 +10,7 @@ import crypt
 import random
 import logging
 
+
 class AccountDialog(QtGui.QDialog):
     def __init__(self, parent=None):
         super(AccountDialog, self).__init__(parent)

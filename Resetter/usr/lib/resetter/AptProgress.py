@@ -2,7 +2,7 @@
 from PyQt4 import QtCore, QtGui
 from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
 import apt_pkg
-
+from evdev import uinput, ecodes as e
 
 class UIOpProgress(OpProgress):
     def __init__(self, pbar):
@@ -29,11 +29,8 @@ class UIAcquireProgress(AcquireProgress):
         current_item = self.current_items + 1
         if current_item > self.total_items:
             current_item = self.total_items
-        if self.current_cps > 0:
-            text = "Downloading package {} of {} at {} mb/s".format(current_item, self.total_items,
-                                                                    (self.current_cps/1000000))
-        else:
-            text = "Downloading package {} of {}".format(current_item, self.total_items)
+        text = "Downloading package {} of {} at {:.2f} mb/s".format(current_item, self.total_items,
+                                                                         (float(self.current_cps)/10**6))
         self.status_label.setText(text)
         percent = (((self.current_bytes + self.current_items) * 100.0) /
                    float(self.total_bytes + self.total_items))
@@ -45,25 +42,20 @@ class UIAcquireProgress(AcquireProgress):
         QtGui.qApp.processEvents()
 
     def stop(self):
-        self.status_label.setText("Finished downloading.")
+        self.status_label.setText("Finished")
         QtGui.qApp.processEvents()
 
     def done(self, item):
-        print "[downloaded] %s" % item.shortdesc
-        self.status_label.setText("[downloaded] %s" % item.shortdesc)
+        print "{} [Downloaded]".format(item.shortdesc)
         QtGui.qApp.processEvents()
 
     def fail(self, item):
-        print "[Failed] %s" % item.shortdesc
+        print "{} Failed".format(item.shortdesc)
 
     def ims_hit(self, item):
-        print "[Hit] %s" % item.shortdesc
-        self.status_label.setText("[Hit] %s" % item.shortdesc)
+        print "{} [Hit]".format(item.shortdesc)
+        self.status_label.setText("{} [Hit]".format(item.shortdesc))
         QtGui.qApp.processEvents()
-
-    def media_change(self, media, drive):
-        print "[Waiting] Please insert media '%s' in drive '%s'" % (
-            media, drive)
 
 
 class UIInstallProgress(InstallProgress):
@@ -89,10 +81,15 @@ class UIInstallProgress(InstallProgress):
         pass
 
     def processing(self, pkg, stage):
-        print "starting '%s' stage for %s" % (stage, pkg)
+        print "starting {} stage for {}".format(stage, pkg)
 
     def conffile(self, current, new):
-        print "WARNING: conffile prompt: %s %s" % (current, new)
+        #keeps current conf file by pressing enter key
+        print "WARNING: conffile prompt: {} {}".format(current, new)
+        with uinput.UInput() as ui:
+            ui.write(e.EV_KEY, e.KEY_ENTER, 1)
+            ui.write(e.EV_KEY, e.KEY_ENTER, 0)
+            ui.syn()
 
     def error(self, errorstr):
-        print "ERROR: got dpkg error: '%s'" % errorstr
+        print "ERROR: {}".format(errorstr)

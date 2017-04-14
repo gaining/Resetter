@@ -52,12 +52,7 @@ class ProgressThread(QtCore.QThread):
                     try:
                         loading += x
                         self.pkg = self._cache[pkg_name.strip()]
-                        if not self.install:
-                            self.pkg.mark_delete(True, purge=True)
-                            print "{} will be removed".format(self.pkg)
-                        else:
-                            self.pkg.mark_install()
-                            print "{} will be installed ".format(self.pkg)
+                        self.pkg.mark_delete(True, True)
                         self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
                     except KeyError as error:
                         self.logger.error("{}".format(error))
@@ -65,9 +60,8 @@ class ProgressThread(QtCore.QThread):
                 self.isDone = True
                 self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, self.isDone)
         else:
-            self.isDone = True
             print "All removable packages are already removed"
-            self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, self.isDone)
+            self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, True)
 
 
 class Apply(QtGui.QDialog):
@@ -104,7 +98,7 @@ class Apply(QtGui.QDialog):
         self.labels[(1, 2)].setText("Loading packages")
         self.labels[(2, 2)].setText("Removing packages")
         self.labels[(3, 2)].setText("Cleaning Up")
-        self.labels[(4,2)].setText("Installing packages")
+        self.labels[(4, 2)].setText("Installing packages")
         if self.response:
             self.labels[(5, 2)].setText("Removing old kernels")
             self.labels[(6, 2)].setText("Deleting Users")
@@ -122,15 +116,39 @@ class Apply(QtGui.QDialog):
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
         self.progressView = ProgressThread(self.file_in, False)
-        self.installProgress = ProgressThread("apps-to-install", True)
-        self.connect(self.installProgress, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
-        self.install_cache = self.installProgress._cache
         self.account = AccountDialog()
         self.connect(self.progressView, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
         self._cache = self.progressView._cache
         self.aprogress = UIAcquireProgress(self.progress, self.lbl1)
         self.iprogress = UIInstallProgress(self.progress, self.lbl1)
         self.addUser()
+
+    def addUser(self):
+        choice = QtGui.QMessageBox.question \
+            (self, 'Would you like set your new account?',
+             "Set your own account? Click 'No' so that I can create a default account for you instead",
+             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
+        if choice == QtGui.QMessageBox.Yes:
+            self.show()
+            self.account.exec_()
+            self.start()
+            self.showMinimized()
+            print "Adding custom user"
+
+        if choice == QtGui.QMessageBox.No:
+            print "Adding default user"
+            try:
+                p = subprocess.Popen(['bash', '/usr/lib/resetter/data/scripts/new-user.sh'], stderr=subprocess.STDOUT,
+                                     stdout=subprocess.PIPE)
+                self.logger.info("Default user added")
+                p.wait()
+                self.start()
+            except subprocess.CalledProcessError as e:
+                self.logger.error("unable to add default user [{}]".format(e.output), exc_info=True)
+                print e.output
+
+    def start(self):
+        self.progressView.start()
 
     def updateProgressBar(self, percent, isdone):
         self.lbl1.setText("Loading Package List")
@@ -152,11 +170,6 @@ class Apply(QtGui.QDialog):
     def removePackages(self):
         self.logger.info("Removing Programs")
         try:
-            dep_list = "deplist"
-            with open(dep_list, "w") as dl:
-                for self.pkg in self._cache.get_changes():
-                    if self.pkg != self.pkg.name:
-                        dl.write('{}\n'.format(self.pkg))
             self.getDependencies()
             self.logger.info("Keep Count before commit: {}".format(self._cache.keep_count))
             self.logger.info("Delete Count before commit: {}".format(self._cache.delete_count))
@@ -193,7 +206,7 @@ class Apply(QtGui.QDialog):
             self.movie.stop()
             self.labels[(3, 1)].setPixmap(self.pixmap2)
             self.unsetCursor()
-            self.lbl1.setText("Done fixing")
+            self.lbl1.setText("Done Cleanup")
             self.installPackages()
             self.removeOldKernels(self.response)
 
@@ -201,11 +214,10 @@ class Apply(QtGui.QDialog):
         self.logger.info("Starting kernel removal...")
         self.labels[(4, 1)].setMovie(self.movie)
         self.movie.start()
-        self.install = Install("custom-install", "Installing packages",True)
+        self.install = Install("custom-install", "Installing packages", True)
         self.install.show()
         self.install.exec_()
         self.labels[(4, 1)].setPixmap(self.pixmap2)
-
 
     def removeOldKernels(self, response):
         if response:
@@ -224,7 +236,7 @@ class Apply(QtGui.QDialog):
                 self.progress.setValue(100)
                 self.unsetCursor()
                 self.lbl1.setText("Finished")
-            except Exception, arg:
+            except Exception as arg:
                 self.logger.error("Kernel removal failed [{}]".format(str(arg)))
                 print "Sorry, kernel removal failed [{}]".format(str(arg))
             self.removeUsers(response)
@@ -234,9 +246,6 @@ class Apply(QtGui.QDialog):
             self.removeUsers(response)
             self.showUserInfo()
             self.logger.info("Old kernel removal option not chosen")
-
-    def start(self):
-        self.progressView.start()
 
     def removeUsers(self, response):
         if response:
@@ -267,47 +276,26 @@ class Apply(QtGui.QDialog):
     def getDependencies(self):
         try:
             self.setCursor(QtCore.Qt.WaitCursor)
-            cmd = subprocess.Popen(['grep', '-vxf', self.file_in, 'deplist'],
-                                   stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
-            cmd.wait()
-            result = cmd.stdout
+            dep_list = "deplist"
+            sq = '\''
+            col = ':'
+            with open(dep_list, "w") as dl:
+                for pkg in self._cache.get_changes():
+                    dependencies = pkg.versions[0].dependencies
+                    for dependency in dependencies:
+                        dependency = str(dependency).split(sq, 1)[1].split(sq, 1)[0]
+                        if col in dependency:
+                            dependency = dependency.split(col, 1)[0]
+                        dl.write('{}\n'.format(dependency))
+            with open("keep", "w") as output, open("deplist", "r") as dl, open(self.file_in, "r") as apps:
+                diff = set(dl).difference(apps)
+                for line in diff:
+                    output.writelines(line)
             self.unsetCursor()
-            with open("keep", "w") as output:
-                for l in result:
-                    try:
-                        self.pkg = self._cache[l.strip()]
-                        self.pkg.mark_keep()
-                        output.writelines(l)
-                    except KeyError as ke:
-                        self.logger.error("{}".format(ke))
-                        continue
-        except subprocess.CalledProcessError as e:
-            print "error: {}".format(e.output)
-            self.logger.error("getting Dependencies failed: {}".format(e.output))
-
-    def addUser(self):
-        choice = QtGui.QMessageBox.question \
-            (self, 'Would you like set your new account?',
-             "Set your own account? Click 'No' so that I can create a default account for you instead",
-             QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
-        if choice == QtGui.QMessageBox.Yes:
-            self.show()
-            self.account.exec_()
-            self.start()
-            self.showMinimized()
-            print "Adding custom user"
-
-        if choice == QtGui.QMessageBox.No:
-            print "Adding default user"
-            try:
-                p = subprocess.Popen(['bash', '/usr/lib/resetter/data/scripts/new-user.sh'], stderr=subprocess.STDOUT,
-                                     stdout=subprocess.PIPE)
-                self.logger.info("Default user added")
-                p.wait()
-                self.start()
-            except subprocess.CalledProcessError as e:
-                self.logger.error("unable to add default user [{}]".format(e.output), exc_info=True)
-                print e.output
+        except Exception as e:
+            self.unsetCursor()
+            print "error: {}".format(e)
+            self.logger.error("getting Dependencies failed: {}".format(e))
 
     def rebootMessage(self):
         choice = QtGui.QMessageBox.information \

@@ -1,4 +1,4 @@
-# Resetter beta-0.0.6 
+# Resetter
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu or Linux-Mint system to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. It will detect packages that have been installed after the initial system install. 
@@ -6,12 +6,16 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 # Status
 - The software is currently in beta stage. Feedback will be greatly appreciated.
 - If you're on a version lower than beta-0.0.6, please remove resetter with "sudo apt remove resetter" to install the new one. 
-- beta-0.0.6 is a milestone release that has performance improvements, new features, and critical bug fixes hence it's a lot more stable than previous versions.
+- current version is beta 0.0.7
 - Please check the changelog for more details.
+- if you find a bug, please create an issue or email me about it. Everyone benefits once a bug is fixed.
 
 
 # How to install
-Install via deb file. PPA will be created soon.
+Install via deb file. PPA will be created as soon.
+It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
+On the terminal, run sudo apt install gdebi.
+
 
 # Options comparison
 
@@ -32,26 +36,27 @@ MPIA means missing pre-installed apps
 | Auto install MPIAs                     |             ✓             |            ✓           |
 | Choose which MPIAs to install          |             ✗             |            ✓           |
 
-
 </center>
 
 # Officially supported distros [64-bit]
 - Linux Mint 18.1
 - Linux Mint 18
 - Linux Mint 17.3
-- Ubuntu 17.04 ~coming soon
+- Ubuntu 17.04
 - Ubuntu 16.10 
 - Ubuntu 16.04
 - Ubuntu 14.04
+- Elementary OS 0.4 
+- Debian jessie ~ comming soon via resetter-cli
 
 # Upcoming changes in the near future
-- command line options
+- command line options - in the works
 - different install options
 - pick from backup list to install or remove
 - option to install missing pre-installed packages
 
 # distant future plans
-- translations
+- translations - 
 - migrate to python3 and pyqt5
 - more reset options
 - support more debian based distro 
@@ -59,7 +64,7 @@ MPIA means missing pre-installed apps
 
 # Donate
 
-If you liked this project and willing to make a monetary contribution, here's my paypal link.
+If you like this project and are willing to make a monetary donation, here's my paypal link. Thanks in advance.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8FET8RGU2ZKQ8)
 
