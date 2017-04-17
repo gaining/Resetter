@@ -1,10 +1,7 @@
-add install option for reading packages from generated list (backup)
+add install option for reading packages from generated list (backup) #due for next release.
 upgrade  to python3 and pyqt5
-add support for ubuntu 16.10 unity
-add support for ubuntu 17.04 unity
 support more debian based linux distributions
 create better launcher icon
-create nice logo
 add command line options
 
 

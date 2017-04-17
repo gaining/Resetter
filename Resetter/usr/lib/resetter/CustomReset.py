@@ -2,7 +2,6 @@
 import apt
 import apt.package
 import logging
-import sys
 import textwrap
 from PyQt4 import QtCore, QtGui
 

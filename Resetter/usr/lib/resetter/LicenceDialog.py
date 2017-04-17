@@ -1,7 +1,5 @@
 #!/usr/bin/python
-import sys
 from PyQt4 import QtGui, QtCore
-import os
 
 
 class Licence(QtGui.QDialog):

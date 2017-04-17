@@ -33,6 +33,8 @@ class ProgressThread(QtCore.QThread):
         QtGui.qApp.processEvents()
         apt_pkg.init()
         self.install = install
+        self.broken_list = []
+
 
     def file_len(self):
         try:
@@ -54,8 +56,11 @@ class ProgressThread(QtCore.QThread):
                         self.pkg = self._cache[pkg_name.strip()]
                         self.pkg.mark_delete(True, True)
                         self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
-                    except KeyError as error:
+                    except (KeyError, SystemError) as error:
                         self.logger.error("{}".format(error))
+                        if self.pkg.is_inst_broken or self.pkg.is_now_broken:
+                            self.broken_list.append(self.pkg.fullname)
+                        self.logger.critical("{}".format(error))
                         continue
                 self.isDone = True
                 self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, self.isDone)
@@ -173,6 +178,9 @@ class Apply(QtGui.QDialog):
             self.getDependencies()
             self.logger.info("Keep Count before commit: {}".format(self._cache.keep_count))
             self.logger.info("Delete Count before commit: {}".format(self._cache.delete_count))
+            self.logger.info("Broken Count before commit: {}".format(self._cache.broken_count))
+            if len(self.progressView.broken_list) > 0:
+                self.showMessage()
             self._cache.commit(self.aprogress, self.iprogress)
             self.logger.info("Broken Count after commit: {}".format(self._cache.broken_count))
             self.movie.stop()
@@ -190,6 +198,7 @@ class Apply(QtGui.QDialog):
         self.lbl1.setText("Cleaning up...")
         self.logger.info("Cleaning up...")
         self.labels[(3, 1)].setMovie(self.movie)
+        self.progress.setRange(0, 0)
 
         self.movie.start()
         self.setCursor(QtCore.Qt.BusyCursor)
@@ -199,9 +208,11 @@ class Apply(QtGui.QDialog):
 
     def onFinished(self, exit_code, exit_status):
         if exit_code or exit_status != 0:
+            self.progress.setRange(0, 1)
             self.logger.error("fixBroken() finished with exit code: {} and exit_status {}."
                               .format(exit_code, exit_status))
         else:
+            self.progress.setRange(0, 1)
             self.logger.debug("Cleanup finished with exit code: {} and exit_status {}.".format(exit_code, exit_status))
             self.movie.stop()
             self.labels[(3, 1)].setPixmap(self.pixmap2)
@@ -276,10 +287,9 @@ class Apply(QtGui.QDialog):
     def getDependencies(self):
         try:
             self.setCursor(QtCore.Qt.WaitCursor)
-            dep_list = "deplist"
             sq = '\''
             col = ':'
-            with open(dep_list, "w") as dl:
+            with open("deplist2", "w") as dl:
                 for pkg in self._cache.get_changes():
                     dependencies = pkg.versions[0].dependencies
                     for dependency in dependencies:
@@ -287,14 +297,13 @@ class Apply(QtGui.QDialog):
                         if col in dependency:
                             dependency = dependency.split(col, 1)[0]
                         dl.write('{}\n'.format(dependency))
-            with open("keep", "w") as output, open("deplist", "r") as dl, open(self.file_in, "r") as apps:
+            with open("keep", "w") as output, open("deplist2", "r") as dl, open(self.file_in, "r") as apps:
                 diff = set(dl).difference(apps)
                 for line in diff:
                     output.writelines(line)
             self.unsetCursor()
         except Exception as e:
             self.unsetCursor()
-            print "error: {}".format(e)
             self.logger.error("getting Dependencies failed: {}".format(e))
 
     def rebootMessage(self):
@@ -307,6 +316,15 @@ class Apply(QtGui.QDialog):
             os.system('reboot')
         else:
             self.logger.info("reboot was delayed.")
+
+    def showMessage(self):
+        msg = QtGui.QMessageBox(self)
+        msg.setWindowTitle("Packages kept back")
+        msg.setIcon(QtGui.QMessageBox.Information)
+        msg.setText("These packages could cause problems if removed so they've been kept back.")
+        text = "\n".join(self.progressView.broken_list)
+        msg.setInformativeText(text)
+        msg.exec_()
 
     def showUserInfo(self):
         msg = QtGui.QMessageBox(self)

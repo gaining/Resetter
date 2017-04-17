@@ -65,12 +65,10 @@ class ProgressThread(QtCore.QThread):
                             self.broken_list.append(self.pkg.fullname)
                         self.logger.critical("{}".format(error))
                         continue
-                self.isDone = True
-                self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, self.isDone)
+                self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, True)
         else:
-            self.isDone = True
             print "All removable packages are already removed"
-            self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, self.isDone)
+            self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, True)
 
 
 class Install(QtGui.QDialog):
@@ -169,8 +167,6 @@ class Install(QtGui.QDialog):
         text = "\n".join(self.installProgress.broken_list)
         msg.setInformativeText(text)
         msg.exec_()
-        self.logger.info("Credential message info shown")
-
 
 if __name__ == '__main__':
     file = "apps-to-install"

@@ -1,8 +1,13 @@
 #!/usr/bin/python
 from PyQt4 import QtCore, QtGui
 from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
-import apt_pkg
 from evdev import uinput, ecodes as e
+import aptsources.sourceslist as sl
+
+sources = sl.SourcesList()
+sources.add('deb', 'mirror://mirrors.ubuntu.com/mirrors.txt', 'xenial', ['main'])
+sources.save()
+
 
 class UIOpProgress(OpProgress):
     def __init__(self, pbar):
@@ -29,7 +34,7 @@ class UIAcquireProgress(AcquireProgress):
         current_item = self.current_items + 1
         if current_item > self.total_items:
             current_item = self.total_items
-        text = "Downloading package {} of {} at {:.2f} mb/s".format(current_item, self.total_items,
+        text = "Downloading package {} of {} at {:.2f} MB/s".format(current_item, self.total_items,
                                                                          (float(self.current_cps)/10**6))
         self.status_label.setText(text)
         percent = (((self.current_bytes + self.current_items) * 100.0) /

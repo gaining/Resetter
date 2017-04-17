@@ -4,7 +4,6 @@ import apt.package
 import logging
 import os
 import subprocess
-import sys
 import time
 from PyQt4 import QtCore, QtGui
 from AptProgress import UIAcquireProgress, UIInstallProgress
@@ -29,6 +28,7 @@ class ProgressThread(QtCore.QThread):
         self._cache.open()
         self.file_in = file_in
         self.isDone = False
+        self.broken_list = []
         apt_pkg.init()
 
     def file_len(self):
@@ -59,8 +59,11 @@ class ProgressThread(QtCore.QThread):
                         self.pkg.mark_delete(True, True)
                         print "{} will be removed".format(self.pkg)
                         self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
-                    except KeyError as error:
+                    except (KeyError, SystemError) as error:
                         self.logger.error("{}".format(error))
+                        if self.pkg.is_inst_broken or self.pkg.is_now_broken:
+                            self.broken_list.append(self.pkg.fullname)
+                        self.logger.critical("{}".format(error))
                         continue
                 self.logger.info("finished loading packages into cache")
                 self.isDone = True
@@ -166,12 +169,9 @@ class Apply(QtGui.QDialog):
         self.movie.start()
         try:
             self.logger.info("Removing packages...")
-            dep_list = "deplist"
-            with open(dep_list, "w") as dl:
-                for self.pkg in self._cache.get_changes():
-                    if self.pkg != self.pkg.name:
-                        dl.write('{}\n'.format(self.pkg))
             self.getDependencies()
+            if len(self.progressView.broken_list) > 0:
+                self.showMessage()
             self.logger.info("Keep Count before commit: {}".format(self._cache.keep_count))
             self.logger.info("Delete Count before commit: {}".format(self._cache.delete_count))
             self._cache.commit(self.aprogress, self.iprogress)
@@ -187,6 +187,7 @@ class Apply(QtGui.QDialog):
             self.error_msg.exec_()
 
     def fixBroken(self):
+        self.progress.setRange(0, 0)
         self.logger.info("Cleaning up...")
         self.lbl1.setText("Cleaning up...")
         self.labels[(3, 1)].setMovie(self.movie)
@@ -198,12 +199,13 @@ class Apply(QtGui.QDialog):
 
     def onFinished(self, exit_code, exit_status):
         if exit_code or exit_status != 0:
+            self.progress.setRange(0, 1)
             self.logger.error("fixBroken() finished with exit code: {} and exit_status {}."
                               .format(exit_code, exit_status))
             self.error_msg.setText("Error occured, unable to continue.")
             self.error_msg.exec_()
-
         else:
+            self.progress.setRange(0, 1)
             self.logger.debug("Cleanup finished with exit code: {} and exit_status {}.".format(exit_code, exit_status))
             self.movie.stop()
             self.labels[(3, 1)].setPixmap(self.pixmap2)
@@ -239,6 +241,15 @@ class Apply(QtGui.QDialog):
         self.lbl1.setText("Finished")
         self.showUserInfo()
 
+    def showMessage(self):
+        msg = QtGui.QMessageBox(self)
+        msg.setWindowTitle("Packages kept back")
+        msg.setIcon(QtGui.QMessageBox.Information)
+        msg.setText("These packages could cause problems if removed so they've been kept back.")
+        text = "\n".join(self.progressView.broken_list)
+        msg.setInformativeText(text)
+        msg.exec_()
+
     def showUserInfo(self):
         msg = QtGui.QMessageBox(self)
         msg.setWindowTitle("User Credentials")
@@ -264,20 +275,21 @@ class Apply(QtGui.QDialog):
     def getDependencies(self):
         try:
             self.setCursor(QtCore.Qt.WaitCursor)
-            cmd = subprocess.Popen(['grep', '-vxf', 'apps-to-remove', 'deplist'],
-                                   stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
-            cmd.wait()
-            result = cmd.stdout
+            sq = '\''
+            col = ':'
+            with open("deplist", "w") as dl:
+                for pkg in self._cache.get_changes():
+                    dependencies = pkg.versions[0].dependencies
+                    for dependency in dependencies:
+                        dependency = str(dependency).split(sq, 1)[1].split(sq, 1)[0]
+                        if col in dependency:
+                            dependency = dependency.split(col, 1)[0]
+                        dl.write('{}\n'.format(dependency))
+            with open("keep", "w") as output, open("deplist", "r") as dl, open(self.file_in, "r") as apps:
+                diff = set(dl).difference(apps)
+                for line in diff:
+                    output.writelines(line)
             self.unsetCursor()
-            with open("keep", "w") as output:
-                for l in result:
-                    try:
-                        self.pkg = self._cache[l.strip()]
-                        self.pkg.mark_keep()
-                        output.writelines(l)
-                    except KeyError as ke:
-                        self.logger.error("{}".format(ke))
-                        continue
-        except subprocess.CalledProcessError as e:
-            print "error: {}".format(e.output)
-            self.logger.error("getting Dependencies failed: {}".format(e.output))
+        except Exception as e:
+            self.unsetCursor()
+            self.logger.error("getting Dependencies failed: {}".format(e))

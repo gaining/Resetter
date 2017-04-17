@@ -16,7 +16,6 @@ from CustomReset import AppWizard
 from PackageView import AppView
 from singleton import SingleApplication
 
-
 class UiMainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
         super(UiMainWindow, self).__init__(parent)
@@ -522,8 +521,7 @@ if __name__ == '__main__':
         message.setText("{} is already running".format(key))
         message.exec_()
         print('%s is already running' % key)
-        window.show()
-        #sys.exit(1)
+        sys.exit(1)
     else:
         window.show()
 

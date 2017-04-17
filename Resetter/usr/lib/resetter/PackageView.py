@@ -1,7 +1,5 @@
 #!/usr/bin/python
 import apt
-import os
-import sys
 import textwrap
 from PyQt4 import QtCore, QtGui
 
@@ -24,8 +22,6 @@ class AppView(QtGui.QDialog):
         self.label = QtGui.QLabel()
         self.label.setPalette(palette)
         self.cache = apt.Cache()
-
-
 
     def searchItem(self, model, view):
         search_string = self.searchEditText.text()
@@ -72,7 +68,7 @@ class AppView(QtGui.QDialog):
             for line in f:
                 try:
                     pkg = self.cache[line.strip()]
-                    text = (pkg.versions[0].description)
+                    text = pkg.versions[0].description
                     item = QtGui.QStandardItem(line)
                     item.setCheckState(QtCore.Qt.Checked)
                     item.setToolTip((textwrap.fill(text, 70)))
