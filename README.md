@@ -6,13 +6,13 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 # Status
 - The software is currently in beta stage. Feedback will be greatly appreciated.
 - If you're on a version lower than beta-0.0.6, please remove resetter with "sudo apt remove resetter" to install the new one. 
-- current version is beta 0.0.7
+- current version is beta 0.1.0
 - Please check the changelog for more details.
 - if you find a bug, please create an issue or email me about it. Everyone benefits once a bug is fixed.
 
 
 # How to install
-Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/0.0.7-beta). PPA will be created soon.
+Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/0.1.0-beta). PPA will be created soon.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run sudo apt install gdebi.
 
