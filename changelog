@@ -1,7 +1,7 @@
 resetter (0.1.2-beta) trusty; urgency=low
 
   * fixed file not found bug
-  * droped grep for comparing files in favor of  using unordered sets for diffs
+  * dropped grep for comparing files in favour of  using unordered sets for diffs
   * performance improvements
 
  -- gaining <gaining7@outlook.com>  Tue, 18 Apr 2017 13:16:24 -0400
