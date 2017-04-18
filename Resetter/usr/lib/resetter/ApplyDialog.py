@@ -237,6 +237,7 @@ class Apply(QtGui.QDialog):
         except subprocess.CalledProcessError as e:
             print "error: {}".format(e.output)
         self.movie.stop()
+        self.progress.setValue(100)
         self.labels[(5, 1)].setPixmap(self.pixmap2)
         self.lbl1.setText("Finished")
         self.showUserInfo()

@@ -267,6 +267,7 @@ class Apply(QtGui.QDialog):
                 subprocess.Popen(['bash', 'custom-users-to-delete.sh'], stderr=subprocess.STDOUT,
                                  stdout=subprocess.PIPE)
                 self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
+                self.progress.setValue(100)
             except subprocess.CalledProcessError, e:
                 self.logger.error("unable removing user [{}]".format(e.output))
             self.movie.stop()
@@ -279,6 +280,7 @@ class Apply(QtGui.QDialog):
                 subprocess.Popen(['bash', 'custom-users-to-delete.sh'], stderr=subprocess.STDOUT,
                                  stdout=subprocess.PIPE)
                 self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
+                self.progress.setValue(100)
             except subprocess.CalledProcessError, e:
                 self.logger.error("unable removing user [{}]".format(e.output))
             self.movie.stop()

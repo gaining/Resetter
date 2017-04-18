@@ -243,13 +243,16 @@ class UiMainWindow(QtGui.QMainWindow):
         QtGui.QApplication.restoreOverrideCursor()
 
     def getMissingPackages(self):
+        self.getInstalledList()
+        self.processManifest()
         try:
             if self.os_info['RELEASE'] == '17.3':
                 word = "vivid"
             else:
                 word = None
             black_list = ['linux-image', 'linux-headers', "openjdk-7-jre"]
-            with open("apps-to-install", "w") as output, open("installed", "r") as installed, open(self.manifest, "r") as man:
+            with open("apps-to-install", "w") as output, open("installed", "r") as installed, \
+                    open(self.manifest, "r") as man:
                 diff = set(man).difference(installed)
                 for line in diff:
                     if word is not None and word in line:
@@ -368,6 +371,7 @@ class UiMainWindow(QtGui.QMainWindow):
                 "\n\nAre you sure you\'d like to continue?",
              QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if choice == QtGui.QMessageBox.Yes:
+            QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
             self.logger.warning("auto reset chosen")
             self.getInstalledList()
             self.getMissingPackages()
@@ -377,6 +381,8 @@ class UiMainWindow(QtGui.QMainWindow):
                 tip = "These packages will be removed"
                 view.showView("apps-to-remove", "Packages To Remove", tip, True)
                 view.show()
+                QtGui.QApplication.restoreOverrideCursor()
+
             else:
                 self.error_msg.setWindowTitle("Nothing left to remove")
                 self.error_msg.setIcon(QtGui.QMessageBox.Information)
@@ -440,23 +446,16 @@ class UiMainWindow(QtGui.QMainWindow):
 
     def compareFiles(self):
         try:
-            self.logger.info("comparing updated manifest and installed list...")
-            self.setCursor(QtCore.Qt.WaitCursor)
-            cmd = subprocess.Popen(['grep', '-vxf', 'processed-manifest', 'installed'], stderr=subprocess.STDOUT,
-                                   stdout=subprocess.PIPE)
-            cmd.wait()
-            result = cmd.stdout
             black_list = ['linux-image', 'linux-headers', 'ca-certificates', 'pyqt4-dev-tools',
                           'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
                           'pyqt4-dev-tools', 'openjdk', 'python-sip', 'snap', 'gksu', 'resetter', 'python-evdev']
-            with open("apps-to-remove", "w") as output:
-                for line in result:
+            with open("apps-to-remove", "w") as output, open("installed", "r") as installed, \
+                    open(self.manifest, "r") as pman:
+                diff = set(installed).difference(pman)
+                for line in diff:
                     if not any(s in line for s in black_list):
                         output.writelines(line)
-            self.logger.info("CompareFiles() Completed")
-            self.unsetCursor()
-        except (subprocess.CalledProcessError, Exception) as e:
-            self.unsetCursor()
+        except Exception as e:
             self.logger.error("Error comparing files [{}]".format(e), exc_info=True)
             self.error_msg.setText("Error generating removable package list. Please see details")
             self.error_msg.setDetailedText("Error: {}".format(e))
@@ -512,8 +511,8 @@ if __name__ == '__main__':
         message = QtGui.QMessageBox()
         message.setWindowTitle("Already Running")
         message.setText("{} is already running".format(key))
+        print'{} is already running'.format(key)
         message.exec_()
-        print('%s is already running' % key)
         sys.exit(1)
     else:
         window.show()
