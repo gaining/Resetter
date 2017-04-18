@@ -305,17 +305,17 @@ class UserRemovalPage(QtGui.QWizardPage):
         text = ""
         for row, value in d.iteritems():
             if value == 3:  # They are both checked
-                print('%s' % user.item(row, 0).text() + 'is marked for %s' % user.horizontalHeaderItem(2).text())
+                print'{} is marked for {}'.format(user.item(row, 0).text(), user.horizontalHeaderItem(2).text())
                 user.item(row, 1).setCheckState(QtCore.Qt.Unchecked)
-                text += 'userdel -r -f %s' % user.item(row, 0).text()
+                text += 'userdel -r -f {}'.format(user.item(row, 0).text())
                 self.logger.debug(text)
             elif value == 2:  # only second is checked
-                print('%s' % user.item(row, 0).text() + 'is marked for %s' % user.horizontalHeaderItem(2).text())
-                text += 'userdel -r -f %s' % user.item(row, 0).text()
+                print'{} is marked for {}'.format(user.item(row, 0).text(), user.horizontalHeaderItem(2).text())
+                text += 'userdel -r -f {}'.format(user.item(row, 0).text())
                 self.logger.debug(text)
             elif value == 1:  # only first is checked
-                print('%s' % user.item(row, 0).text() + 'is marked for %s' % user.horizontalHeaderItem(1).text())
-                text += 'userdel %s' % user.item(row, 0).text()
+                print'{} is makred for {}'.format(user.item(row, 0).text(), user.horizontalHeaderItem(1).text())
+                text += 'userdel -f {}'.format(user.item(row, 0).text())
                 self.logger.debug(text)
         with open(path, mode) as f:
             f.write(text)

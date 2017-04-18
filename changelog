@@ -1,9 +1,9 @@
-resetter (0.1.0-beta) trusty; urgency=medium
+resetter (0.1.1-beta) trusty; urgency=low
 
-  * fixed #7 and #8
-  * progress bar improvements
+  * changed behaviour of remove user
+  * slight code refactoring
 
- -- gaining <gaining7@outlook.com>  Mon, 17 Apr 2017 05:22:47 -0400
+ -- gaining <gaining7@outlook.com>  Tue, 18 Apr 2017 02:52:42 -0400
 
 
 resetter (0.0.7-beta) trusty; urgency=medium

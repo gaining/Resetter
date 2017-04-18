@@ -234,37 +234,29 @@ class UiMainWindow(QtGui.QMainWindow):
                pass
 
     def showMissings(self):
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         self.getMissingPackages()
         text = "These were pre-installed packages that are missing but due for install"
         view_missing = AppView(self)
         view_missing.showView("apps-to-install", "Missing pre-installed packages", text, False)
         view_missing.show()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def getMissingPackages(self):
-        self.getInstalledList()
-        self.processManifest()
         try:
-            self.logger.info("generating install list")
-            self.setCursor(QtCore.Qt.WaitCursor)
-            cmd = subprocess.Popen(['grep', '-vxf', 'installed', 'processed-manifest'], stderr=subprocess.STDOUT,
-                                   stdout=subprocess.PIPE)
-            cmd.wait()
-            result = cmd.stdout
             if self.os_info['RELEASE'] == '17.3':
                 word = "vivid"
             else:
                 word = None
             black_list = ['linux-image', 'linux-headers', "openjdk-7-jre"]
-            with open("apps-to-install", "w") as output:
-                for line in result:
+            with open("apps-to-install", "w") as output, open("installed", "r") as installed, open(self.manifest, "r") as man:
+                diff = set(man).difference(installed)
+                for line in diff:
                     if word is not None and word in line:
                         black_list.append(line)
                     if not any(s in line for s in black_list):
                         output.writelines(line)
-            self.logger.info("getmissingPackages() Completed")
-            self.unsetCursor()
-        except (subprocess.CalledProcessError, Exception) as e:
-            self.unsetCursor()
+        except Exception as e:
             self.logger.error("Error comparing files [{}]".format(e), exc_info=True)
             self.error_msg.setText("Error generating removable package list. Please see details")
             self.error_msg.setDetailedText("Error: {}".format(e))
@@ -469,7 +461,6 @@ class UiMainWindow(QtGui.QMainWindow):
             self.error_msg.setText("Error generating removable package list. Please see details")
             self.error_msg.setDetailedText("Error: {}".format(e))
             self.error_msg.exec_()
-            self.exit(1)
 
     def showInstalled(self):
         self.getInstalledList()
@@ -497,11 +488,13 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.error("Error comparing files: ".format(e), exc_info=True)
 
     def customReset(self):
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         self.getMissingPackages()
         self.getLocalUserList()
         self.getOldKernels()
         custom_reset = AppWizard(self)
         custom_reset.show()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def center(self):
         frameGm = self.frameGeometry()
