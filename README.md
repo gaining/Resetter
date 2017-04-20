@@ -29,7 +29,7 @@ MPIA means missing pre-installed apps
 | Choose which apps to remove for reset  |             ✗             |            ✓           |
 | Remove old kernels                     |             ✗             |            ✓           |
 | Choose to only delete user             |             ✗             |            ✓           |
-| Delete both users and home directories |             ✓             |            ✓           |
+| Delete users and home directories      |             ✓             |            ✓           |
 | Choose which user to delete            |             ✗             |            ✓           |
 | Create default backup user             |             ✓             |            ✓           |
 | Create custom backup user              |             ✗             |            ✓           |
