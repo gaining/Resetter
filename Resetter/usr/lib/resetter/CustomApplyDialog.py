@@ -244,17 +244,19 @@ class Apply(QtGui.QDialog):
                 self.install.show()
                 self.install.exec_()
                 self.labels[(5, 1)].setPixmap(self.pixmap2)
-                self.progress.setValue(100)
+                self.progress.setValue(int(100))
                 self.unsetCursor()
                 self.lbl1.setText("Finished")
             except Exception as arg:
                 self.logger.error("Kernel removal failed [{}]".format(str(arg)))
                 print "Sorry, kernel removal failed [{}]".format(str(arg))
             self.removeUsers(response)
+            self.progress.setValue(int(100))
             self.showUserInfo()
         else:
             self.lbl1.setText("Finished")
             self.removeUsers(response)
+            self.progress.setValue(int(100))
             self.showUserInfo()
             self.logger.info("Old kernel removal option not chosen")
 
@@ -267,7 +269,6 @@ class Apply(QtGui.QDialog):
                 subprocess.Popen(['bash', 'custom-users-to-delete.sh'], stderr=subprocess.STDOUT,
                                  stdout=subprocess.PIPE)
                 self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
-                self.progress.setValue(100)
             except subprocess.CalledProcessError, e:
                 self.logger.error("unable removing user [{}]".format(e.output))
             self.movie.stop()
@@ -280,7 +281,6 @@ class Apply(QtGui.QDialog):
                 subprocess.Popen(['bash', 'custom-users-to-delete.sh'], stderr=subprocess.STDOUT,
                                  stdout=subprocess.PIPE)
                 self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
-                self.progress.setValue(100)
             except subprocess.CalledProcessError, e:
                 self.logger.error("unable removing user [{}]".format(e.output))
             self.movie.stop()

@@ -147,7 +147,6 @@ class Install(QtGui.QDialog):
             self.install_cache.commit(self.aprogress, self.iprogress)
             self.progress.setValue(100)
             self.labels[(2, 1)].setPixmap(self.pixmap2)
-            time.sleep(2)
             if len(self.installProgress.broken_list) > 0:
                 self.showMessage()
             self.close()

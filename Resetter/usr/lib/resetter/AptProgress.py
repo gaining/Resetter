@@ -2,12 +2,13 @@
 from PyQt4 import QtCore, QtGui
 from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
 from evdev import uinput, ecodes as e
-import aptsources.sourceslist as sl
+import fileinput
 
-sources = sl.SourcesList()
-sources.add('deb', 'mirror://mirrors.ubuntu.com/mirrors.txt', 'xenial', ['main'])
-sources.save()
-
+filename = '/etc/apt/sources.list'
+word = 'mirrors.txt'
+for line in fileinput.input(filename, inplace=True):
+    if word in line:
+        continue
 
 class UIOpProgress(OpProgress):
     def __init__(self, pbar):

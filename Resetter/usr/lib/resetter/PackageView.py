@@ -60,8 +60,8 @@ class AppView(QtGui.QDialog):
         if start:
             buttonBox.accepted.connect(lambda: self.startRemoval(file_in))
         else:
-            buttonBox.accepted.connect(self.close)
-        buttonBox.rejected.connect(self.close)
+            buttonBox.accepted.connect(self.closeview)
+        buttonBox.rejected.connect(self.closeview)
         model = QtGui.QStandardItemModel(list_view)
         self.searchEditText.textChanged.connect(lambda: self.searchItem(model, list_view))
         with open(file_in) as f:
@@ -78,6 +78,10 @@ class AppView(QtGui.QDialog):
                 model.appendRow(item)
         list_view.setModel(model)
         list_view.show()
+
+    def closeview(self):
+        self.cache.close()
+        self.close()
 
     def startRemoval(self, file_in):
         self.close()

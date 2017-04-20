@@ -121,6 +121,9 @@ class AppRemovalPage(QtGui.QWizardPage):
                 print('{}'.format(item.text()))
                 f_out.write(item.text())
 
+    def closeCache(self):
+        self.cache.close()
+
 
 class AppInstallPage(QtGui.QWizardPage):
     def __init__(self, parent=None):
@@ -200,6 +203,9 @@ class AppInstallPage(QtGui.QWizardPage):
             self.uninstall_view.scrollToTop()
         else:
             self.label.setText("Package doesn't exist")
+
+    def closeCache(self):
+        self.cache.close()
 
     def selectAll(self):
         model = self.model
@@ -298,7 +304,6 @@ class UserRemovalPage(QtGui.QWizardPage):
         mode = 'a' if self.isWrittenTo else 'w'
         user = self.table
         d = dict([(x, 0) for x in range(self.table.rowCount())])
-
         for item in self.choice:
             d[item.row()] += 2 ** (item.column() - 1)
 
@@ -321,6 +326,7 @@ class UserRemovalPage(QtGui.QWizardPage):
             f.write(text)
 
 
+
 class AppWizard(QtGui.QWizard):
     def __init__(self, parent=None):
         super(AppWizard, self).__init__(parent)
@@ -332,7 +338,9 @@ class AppWizard(QtGui.QWizard):
         self.userremoval = UserRemovalPage()
         self.addPage(self.userremoval)
         self.addPage(self.createConclusionPage())
+        self.button(QtGui.QWizard.CancelButton).clicked.connect(self.appremoval.closeCache)
         self.button(QtGui.QWizard.NextButton).clicked.connect(self.appremoval.selectedAppsRemoval)
+        self.button(QtGui.QWizard.CancelButton).clicked.connect(self.appinstall.closeCache)
         self.button(QtGui.QWizard.NextButton).clicked.connect(self.appinstall.selectedAppsInstall)
         self.button(QtGui.QWizard.NextButton).clicked.connect(self.userremoval.printChecked)
         self.button(QtGui.QWizard.FinishButton).clicked.connect(self.apply)
@@ -345,12 +353,9 @@ class AppWizard(QtGui.QWizard):
     def createConclusionPage(self):
         page = QtGui.QWizardPage()
         page.setTitle("Apply Changes")
-
         label = QtGui.QLabel("Press the Finish button to start")
         label.setWordWrap(True)
-
         layout = QtGui.QVBoxLayout()
         layout.addWidget(label)
         page.setLayout(layout)
-
         return page
