@@ -47,7 +47,7 @@ MPIA means missing pre-installed apps
 - Ubuntu 16.04
 - Ubuntu 14.04
 - Elementary OS 0.4 
-- Debian jessie ~ comming soon via resetter-cli
+- Debian jessie ~ coming soon via resetter-cli
 
 # Upcoming changes in the near future
 - command line options - in the works
