@@ -3,12 +3,20 @@ from PyQt4 import QtCore, QtGui
 from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
 from evdev import uinput, ecodes as e
 import fileinput
+import aptsources.sourceslist as sl
+
 
 filename = '/etc/apt/sources.list'
 word = 'mirrors.txt'
-for line in fileinput.input(filename, inplace=True):
+n = ""
+correction = fileinput.input(filename, inplace=1)
+for line in correction:
     if word in line:
-        continue
+       line = n
+    line.strip()
+    print line,
+correction.close()
+
 
 class UIOpProgress(OpProgress):
     def __init__(self, pbar):
