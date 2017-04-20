@@ -55,7 +55,7 @@ MPIA means missing pre-installed apps
 - pick from backup list to install or remove
 - option to install missing pre-installed packages
 
-# distant future plans
+# Distant future plans
 - translations - 
 - migrate to python3 and pyqt5
 - more reset options
