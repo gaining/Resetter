@@ -8,8 +8,8 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 - If you're on a version lower than beta-0.0.6, please remove resetter with `sudo apt remove resetter` before installing a newer version. 
 - current version is beta 0.1.3
 - Please check the changelog for more details.
-- if you find a bug, please create an issue 
-- if you do not have a github account please send your bug report at gaining7@outlook.com
+- If you find a bug, please create an issue. 
+- If you do not have a github account please send your bug report at gaining7@outlook.com.
 
 
 # How to install
@@ -62,6 +62,9 @@ MPIA means missing pre-installed apps
 - more reset options
 - support more debian based distro 
 - stabilize resetter
+
+# Contact
+- If you wish to contact me about anything else reach me via gaining7@outlook.com.
 
 # Donate
 
