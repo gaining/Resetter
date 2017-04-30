@@ -1,7 +1,5 @@
-add install option for reading packages from generated list (backup) #due for next release.
-upgrade  to python3 and pyqt5
-support more debian based linux distributions
 create better launcher icon
+upgrade  to python3 and pyqt5
 add command line options
 
 

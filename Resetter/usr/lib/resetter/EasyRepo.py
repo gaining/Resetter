@@ -178,9 +178,10 @@ class EasyPPAInstall(QtGui.QDialog):
             return False
 
     def codeName(self):
+        xenial_fam = (['serena', 'sarah', 'loki'])
         if self.os_info['CODENAME'] == 'rosa':
             return "trusty"
-        elif self.os_info['CODENAME'] == 'sarah' or 'loki' or 'serena':
+        elif self.os_info['CODENAME'] in xenial_fam:
             return "xenial"
         else:
             return self.os_info['CODENAME']
@@ -210,20 +211,21 @@ class EasyPPAInstall(QtGui.QDialog):
                 QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
                 x = str(ppa[index.row()])
                 y = str(x[7:]).split(' ', 1)[0]
-                repo = ('deb', y, self.codeName(), ['main'])
-                print repo, ppa[index.row()][2]
-
                 entry = self.sources.add('deb', y, self.codeName(), ['main'])
                 entry.set_enabled(True)
                 self.sources.save()
-                p = subprocess.Popen(['apt-key', 'adv', '--keyserver keyserver.ubuntu.com', '--recv-keys',
-                                      ppa[index.row()][2]], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                p.wait()
-
+                p = subprocess.check_output(['apt-key', 'adv', '--keyserver', 'keyserver.ubuntu.com', '--recv-keys',
+                                      ppa[index.row()][2]])
+                print p
                 QtGui.QApplication.restoreOverrideCursor()
             except Exception as e:
-                print "failed {}".format(e)
-            self.successMessage()
+                QtGui.QApplication.restoreOverrideCursor()
+                self.error_msg.setIcon(QtGui.QMessageBox.Critical)
+                self.error_msg.setText("Unable fetch PPA key")
+                self.error_msg.setDetailedText("Error: {}".format(e))
+                self.error_msg.exec_()
+            else:
+                self.successMessage()
         else:
             self.showMessage()
 

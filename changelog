@@ -1,3 +1,12 @@
+resetter (0.2.5-rc2) trusty; urgency=low
+  * Added dependency add-apt-key as it isn't included in some distros by default
+  * Fixed easy ppa for elementary os
+  * PPA manager improvements
+  * Easy PPA misc improvements
+
+ -- gaining <gaining7@outlook.com>  Sun, 30 Apr 2017 17:25:27 -0400
+
+
 resetter (0.2.4-rc1) trusty; urgency=medium
 
   * Release Candidate 1

@@ -68,17 +68,20 @@ class SourceEdit(QtGui.QDialog):
         self.btnEnable.setVisible(True)
 
         for dirpath, dirs, files in os.walk('/etc/apt/'):
+            word = 'deb'
             for filename in fnmatch.filter(files, "*.list"):
                 source_list = os.path.join(dirpath, filename)
                 self.sourceslists.append(source_list)
                 with open(source_list, "r") as sources:
                     for line in sources:
-                        if line.startswith('deb') or line.startswith('#'):
-                            self.item = QtGui.QStandardItem(line)
-                            self.item.setCheckable(True)
-                            self.item.setCheckState(QtCore.Qt.Unchecked)
-                            self.model.appendRow(self.item)
+                        if line.startswith(word) or line.startswith('#') \
+                                and line[2:].split(' ')[0][:3] == word:
+                                self.item = QtGui.QStandardItem(line)
+                                self.item.setCheckable(True)
+                                self.item.setCheckState(QtCore.Qt.Unchecked)
+                                self.model.appendRow(self.item)
                     self.list_view.setModel(self.model)
+
 
     def setItems(self, item):
         if item.checkState() == QtCore.Qt.Checked:

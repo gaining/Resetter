@@ -333,7 +333,7 @@ class UiMainWindow(QtGui.QMainWindow):
         time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
         name = "snapshot - {}".format(time)
         filename, extension = QtGui.QFileDialog.getSaveFileNameAndFilter(
-            self, 'Save Backup file', name, filter=self.tr(".rbf"))
+            self, 'Save Backup file', '/home/{}/{}'.format(self.user, name), filter=self.tr(".rbf"))
         try:
             with open("installed", 'r') as inst, open(filename + extension, "w") as backup:
                 for line in inst:

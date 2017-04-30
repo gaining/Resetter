@@ -7,7 +7,6 @@ import apt
 import textwrap
 from PyQt4 import QtCore, QtGui
 
-
 class EasyInstaller(QtGui.QDialog):
     def __init__(self):
         super(EasyInstaller, self).__init__()
@@ -117,7 +116,8 @@ class EasyInstaller(QtGui.QDialog):
 
     def openBackup(self):
         try:
-            backup = QtGui.QFileDialog.getOpenFileName(self, 'Choose Backup', 'Backup', "(*.rbf)")
+            dpath = os.path.abspath(os.path.join("Backup", "../../../"))
+            backup = QtGui.QFileDialog.getOpenFileName(self, 'Choose Backup', dpath, "(*.rbf)")
             if os.path.isfile(backup):
                 with open(backup, "r") as bk:
                     for line in bk:
@@ -162,6 +162,8 @@ class EasyInstaller(QtGui.QDialog):
         self.install = Install("install", "Installing packages", True)
         self.install.show()
         self.install.exec_()
+        self.removeItems()
+        print "Done"
 
     def closeview(self):
         self.cache.close()
@@ -187,7 +189,7 @@ class EasyInstaller(QtGui.QDialog):
         msg.setIcon(QtGui.QMessageBox.Information)
         msg.setText("The package that you've tried to add is not found in the cache")
         msg.setDetailedText("If you've recently added a ppa containing this package, "
-                            "please use <b>EasyPPA - refresh sources</b> feature, "
+                            "please use [EasyPPA - refresh sources] feature, "
                             "then try adding the package again.")
         msg.exec_()
 

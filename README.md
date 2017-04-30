@@ -1,20 +1,19 @@
-# Resetter 0.2.4-rc1
+# Resetter 0.2.5-rc2
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu or Linux-Mint system to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. It will detect packages that have been installed after the initial system install. 
 
 # Status
-- The first release candidate has been released! 
-- Release candidate 0.2.4 contains new looks, tons of new useful features, and more. 
+- Release candidate 0.2.5 contains new looks, tons of new useful features, and more. 
 - Feedback will be greatly appreciated.
-- current version is 0.2.4-rc1
+- current version is 0.2.5-rc2
 - Please check the changelog for more details.
 - If you find a bug, please create an issue on github. 
 - If you do not have a github account please send your bug report at gaining7@outlook.com.
 
 
 # How to install
-Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/v0.2.4-rc). PPA will be created soon.
+Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/v0.2.5-rc2). PPA will be created soon.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin users must first fetch the python-evdev module 
