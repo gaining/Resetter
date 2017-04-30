@@ -16,10 +16,16 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/v0.2.5-rc2). PPA will be created soon.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
-- Linux deepin users must first fetch the python-evdev module 
-`wget -c http://mirrors.kernel.org/ubuntu/pool/universe/p/python-evdev/python-evdev_0.4.1-0ubuntu3_amd64.deb`
-- Install it `sudo gdebi python-evdev_0.4.1-0ubuntu3_amd64.deb` then they'll be able to install resetter.
-
+- Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
+1. Fetch the python-evdev module
+..*`wget -c http://mirrors.kernel.org/ubuntu/pool/universe/p/python-evdev/python-evdev_0.4.1-0ubuntu3_amd64.deb`
+2.Then install it with: 
+..*`sudo gdebi python-evdev_0.4.1-0ubuntu3_amd64.deb` try i
+3. Fetch the add-apt-key package
+..* `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb`
+4. Install it with:
+..* `sudo gdebi add-apt-key_1.0-0.5_all.deb`
+- Then you're done
 
 # Options comparison
 
