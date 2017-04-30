@@ -1,3 +1,19 @@
+resetter (0.2.4-rc1) trusty; urgency=medium
+
+  * Release Candidate 1
+  * New API additions, bs4 and mechanize
+  * New Features - Easy Install
+  * New feature - PPA Manager
+  * New feature - install ppas directly from launchpad with python mechanize and bs4
+  * Performance improvements
+  * Now with Linux Deepin support
+  * New Logo
+  * fixed progress bar behaviour on cleaning up
+  * fixed libpng bug
+
+ -- gaining <gaining7@outlook.com>  Sun, 30 Apr 2017 03:53:15 -0400
+
+
 resetter (0.1.3-beta) trusty; urgency=low
 
   * fixed apt problems

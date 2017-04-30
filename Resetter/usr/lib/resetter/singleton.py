@@ -1,5 +1,7 @@
-#!/usr/bin/python
-#Single application instance uses a shared memory and key in order to allow only one instance of resetter to run.
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+# Single application instance uses a shared memory and key in order to allow only one instance of resetter to run.
+
 from PyQt4 import QtCore, QtGui
 
 

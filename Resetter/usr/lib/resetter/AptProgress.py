@@ -1,21 +1,9 @@
-#!/usr/bin/python
-from PyQt4 import QtCore, QtGui
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+from PyQt4 import QtGui
 from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
 from evdev import uinput, ecodes as e
-import fileinput
-import aptsources.sourceslist as sl
-
-
-filename = '/etc/apt/sources.list'
-word = 'mirrors.txt'
-n = ""
-correction = fileinput.input(filename, inplace=1)
-for line in correction:
-    if word in line:
-       line = n
-    line.strip()
-    print line,
-correction.close()
 
 
 class UIOpProgress(OpProgress):
@@ -33,22 +21,27 @@ class UIOpProgress(OpProgress):
 
 
 class UIAcquireProgress(AcquireProgress):
-    def __init__(self, pbar, status_label):
+    def __init__(self, pbar, status_label, other):
         AcquireProgress.__init__(self)
         self.pbar = pbar
         self.status_label = status_label
         self.percent = 0.0
+        self.other = other
 
     def pulse(self, owner):
         current_item = self.current_items + 1
         if current_item > self.total_items:
             current_item = self.total_items
-        text = "Downloading package {} of {} at {:.2f} MB/s".format(current_item, self.total_items,
-                                                                         (float(self.current_cps)/10**6))
-        self.status_label.setText(text)
-        percent = (((self.current_bytes + self.current_items) * 100.0) /
-                   float(self.total_bytes + self.total_items))
+        if self.other:
+            text = "Updating source {} of {}".format(current_item, self.total_items)
+            percent = (float(self.current_items) / self.total_items) * 100
+        else:
+            text = "Downloading package {} of {} at {:.2f} MB/s".format(current_item, self.total_items,
+                                                                        (float(self.current_cps) / 10 ** 6))
+            percent = (((self.current_bytes + self.current_items) * 100.0) /
+                       float(self.total_bytes + self.total_items))
         self.pbar.setValue(int(percent))
+        self.status_label.setText(text)
         QtGui.qApp.processEvents()
         return True
 

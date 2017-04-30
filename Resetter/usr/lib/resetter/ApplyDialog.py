@@ -125,7 +125,7 @@ class Apply(QtGui.QDialog):
         self.progressView = ProgressThread(self.file_in)
         self.connect(self.progressView, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
         self._cache = self.progressView._cache
-        self.aprogress = UIAcquireProgress(self.progress, self.lbl1)
+        self.aprogress = UIAcquireProgress(self.progress, self.lbl1, False)
         self.iprogress = UIInstallProgress(self.progress, self.lbl1)
         self.start()
 
@@ -177,7 +177,7 @@ class Apply(QtGui.QDialog):
             self._cache.commit(self.aprogress, self.iprogress)
             self.movie.stop()
             self.labels[(2, 1)].setPixmap(self.pixmap2)
-            self.progress.setValue(int(100))
+            self.progress.setValue(100)
             self.addUser()
             self.fixBroken()
         except Exception as arg:
@@ -206,6 +206,7 @@ class Apply(QtGui.QDialog):
             self.error_msg.exec_()
         else:
             self.progress.setRange(0, 1)
+            self.progress.setValue(1)
             self.logger.debug("Cleanup finished with exit code: {} and exit_status {}.".format(exit_code, exit_status))
             self.movie.stop()
             self.labels[(3, 1)].setPixmap(self.pixmap2)
@@ -237,7 +238,6 @@ class Apply(QtGui.QDialog):
         except subprocess.CalledProcessError as e:
             print "error: {}".format(e.output)
         self.movie.stop()
-        self.progress.setValue(int(100))
         self.labels[(5, 1)].setPixmap(self.pixmap2)
         self.lbl1.setText("Finished")
         self.showUserInfo()

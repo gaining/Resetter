@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 from PyQt4 import QtGui, QtCore
 from LicenceDialog import Licence
 
@@ -34,7 +36,7 @@ class About(QtGui.QDialog):
         cr_text = "Copyright (c) 2017 all rights reserved"
         desc_text = "Built With PyQt\n\n " \
                     "This is a great utility software that will help you reset your linux installation its stock state"
-        version_text = "Version: 0.1.3-beta"
+        version_text = "Version: 0.2.4-beta"
         donate_text = 'If you liked my project, please ' \
                       '<a href="https://github.com/gaining/Resetter/blob/master/DONATE.md">Donate </a>'
         more_text = 'To find out more about this project, please visit my github:' \
@@ -62,7 +64,6 @@ class About(QtGui.QDialog):
         self.verticalLayout.addWidget(cr_label)
         self.verticalLayout.addWidget(self.close_button, 0, QtCore.Qt.AlignRight)
         self.verticalLayout.addWidget(self.liscence_button, 0, QtCore.Qt.AlignRight)
-
 
     def showLicence(self):
         lic = Licence(self)

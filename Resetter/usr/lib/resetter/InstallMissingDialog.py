@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import apt
 import apt.package
 import logging
@@ -8,7 +10,6 @@ import sys
 import threading
 import time
 from PyQt4 import QtCore, QtGui
-
 import apt_pkg
 from AptProgress import UIAcquireProgress, UIInstallProgress
 
@@ -77,7 +78,6 @@ class Install(QtGui.QDialog):
         self.setMinimumSize(305, 100)
         self.file_in = file_in
         self.setWindowTitle("Working...")
-        QtGui.QApplication.setStyle("GTK")
         self.error_msg = QtGui.QMessageBox()
         self.error_msg.setIcon(QtGui.QMessageBox.Critical)
         self.error_msg.setWindowTitle("Error")
@@ -117,7 +117,7 @@ class Install(QtGui.QDialog):
         self.installProgress = ProgressThread(file_in, action_type)
         self.connect(self.installProgress, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
         self.install_cache = self.installProgress._cache
-        self.aprogress = UIAcquireProgress(self.progress, self.lbl1)
+        self.aprogress = UIAcquireProgress(self.progress, self.lbl1, False)
         self.iprogress = UIInstallProgress(self.progress, self.lbl1)
         self.start()
 
@@ -138,7 +138,6 @@ class Install(QtGui.QDialog):
         self.installProgress.terminate()
         self.close()
 
-    # experimental way of installing missing pre-installed packages n
     def installPackages(self):
         try:
             self.logger.info("treating Packages")

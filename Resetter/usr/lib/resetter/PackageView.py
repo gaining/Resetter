@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import apt
 import textwrap
 from PyQt4 import QtCore, QtGui
@@ -7,10 +9,9 @@ from ApplyDialog import Apply
 
 
 class AppView(QtGui.QDialog):
-
     def __init__(self, parent=None):
         super(AppView, self).__init__(parent)
-        self.resize(400, 400)
+        self.resize(600, 500)
         self.font = QtGui.QFont()
         self.font.setBold(True)
         self.font2 = QtGui.QFont()
@@ -21,7 +22,6 @@ class AppView(QtGui.QDialog):
         palette.setColor(QtGui.QPalette.Foreground, QtCore.Qt.red)
         self.label = QtGui.QLabel()
         self.label.setPalette(palette)
-        self.cache = apt.Cache()
 
     def searchItem(self, model, view):
         search_string = self.searchEditText.text()
@@ -32,9 +32,11 @@ class AppView(QtGui.QDialog):
                     item.setEnabled(True)
                     model.takeRow(item.row())
                     model.insertRow(0, item)
+
                     if item.text()[:3] == search_string:
                         item.setFont(self.font)
                         self.label.clear()
+
                     if len(search_string) == 0:
                         self.label.clear()
                         item.setFont(self.font2)
@@ -43,9 +45,15 @@ class AppView(QtGui.QDialog):
             self.label.setText("Package doesn't exist")
         view.show()
 
-    def showView(self, file_in, title, tip, start):
+    def closeview(self):
+        self.cache.close()
+        self.close()
+
+    def showView(self, data, title, tip, start):
         self.setWindowTitle(title)
         self.setToolTip(tip)
+        self.cache = apt.Cache()
+        self.resize(400, 400)
         buttonBox = QtGui.QDialogButtonBox(self)
         buttonBox.setOrientation(QtCore.Qt.Horizontal)
         buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok)
@@ -58,35 +66,53 @@ class AppView(QtGui.QDialog):
         horizontalLayout.addWidget(buttonBox)
         verticalLayout.addLayout(horizontalLayout)
         if start:
-            buttonBox.accepted.connect(lambda: self.startRemoval(file_in))
+            buttonBox.accepted.connect(self.startRemoval)
         else:
             buttonBox.accepted.connect(self.closeview)
         buttonBox.rejected.connect(self.closeview)
         model = QtGui.QStandardItemModel(list_view)
         self.searchEditText.textChanged.connect(lambda: self.searchItem(model, list_view))
-        with open(file_in) as f:
-            for line in f:
-                try:
-                    pkg = self.cache[line.strip()]
-                    text = pkg.versions[0].description
-                    item = QtGui.QStandardItem(line)
-                    item.setCheckState(QtCore.Qt.Checked)
-                    item.setToolTip((textwrap.fill(text, 70)))
-                except KeyError:
-                    continue
 
+        if type(data) is str:
+            with open(data) as f:
+                for line in f:
+                    try:
+                        pkg = self.cache[line.strip()]
+                        text = pkg.versions[0].description
+                        item = QtGui.QStandardItem(line)
+                        item.setCheckState(QtCore.Qt.Checked)
+                        item.setToolTip((textwrap.fill(text, 70)))
+                    except KeyError:
+                        continue
+                    model.appendRow(item)
+                list_view.setModel(model)
+                list_view.show()
+
+        elif type(data) is list:
+            for x in data:
+                x = (str(x))
+                item = QtGui.QStandardItem(x)
+                item.setCheckable(False)
+                item.setCheckState(QtCore.Qt.Unchecked)
                 model.appendRow(item)
-        list_view.setModel(model)
-        list_view.show()
+            list_view.setModel(model)
+            list_view.show()
 
-    def closeview(self):
-        self.cache.close()
-        self.close()
+        else:
+            for x in data:
+                m = (str(x))
+                if m.startswith('deb') or m.startswith('#'):
+                    item = QtGui.QStandardItem(m)
+                    item.setCheckable(False)
+                    item.setEditable(False)
+                    item.setCheckState(QtCore.Qt.PartiallyChecked)
+                    model.appendRow(item)
+            data.save()
+            list_view.setModel(model)
+            list_view.show()
 
-    def startRemoval(self, file_in):
+    def startRemoval(self):
         self.close()
-        self.apply = Apply(file_in)
+        self.apply = Apply(self.file_in)
         self.apply.show()
         self.apply.raise_()
-
-

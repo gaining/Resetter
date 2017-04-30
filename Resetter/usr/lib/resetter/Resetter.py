@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import errno
 import logging
 import lsb_release
@@ -10,11 +12,17 @@ import sys
 import textwrap
 from PyQt4 import QtCore, QtGui
 from time import gmtime, strftime
+from aptsources import sourceslist
+
 
 from AboutPage import About
 from CustomReset import AppWizard
 from PackageView import AppView
+from Sources import SourceEdit
 from singleton import SingleApplication
+from EasyRepo import EasyPPAInstall
+from EasyInstall import EasyInstaller
+
 
 class UiMainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -50,12 +58,13 @@ class UiMainWindow(QtGui.QMainWindow):
         os.chdir(self.directory)
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
         self.resize(850, 650)
-        self.setFixedSize(850, 650)
+        #self.setFixedSize(850, 650)
         palette = QtGui.QPalette()
 
         self.setPalette(palette)
         self.menubar = QtGui.QMenuBar(self)
         self.menuFile = QtGui.QMenu(self.menubar)
+        self.menuView = QtGui.QMenu(self.menubar)
         self.menuTools = QtGui.QMenu(self.menubar)
         self.menuHelp = QtGui.QMenu(self.menubar)
         self.setMenuBar(self.menubar)
@@ -63,43 +72,66 @@ class UiMainWindow(QtGui.QMainWindow):
         self.setStatusBar(self.statusbar)
         self.actionOpen = QtGui.QAction(self)
         self.actionSaveSnapshot = QtGui.QAction(self)
-        self.actionSaveSnapshot.setStatusTip('Save a snapshot of currently installed packages')
+        self.actionSaveSnapshot.setStatusTip('Save a snapshot of currently installed packages, '
+                                             'It is best to save this file in a removable drive for later use.')
         self.actionOpen.triggered.connect(self.openManifest)
         self.actionSaveSnapshot.triggered.connect(self.save)
+        self.actionSaveSnapshot.setShortcut('Ctrl+S')
+
         self.actionExit = QtGui.QAction(self)
         self.actionExit.setShortcut('Ctrl+Q')
         self.actionExit.setStatusTip('Exit application')
         self.actionExit.triggered.connect(QtGui.qApp.quit)
         self.actionAbout = QtGui.QAction(self)
         self.actionAbout.triggered.connect(self.about)
+        self.actionEasyPPA = QtGui.QAction(self)
+        self.actionEasyPPA.triggered.connect(self.searchLaunchpad)
+        self.actionEasyPPA.setStatusTip("The easiest way to get and install PPAs right from launchpad.net.")
         self.actionShow_Installed = QtGui.QAction(self)
         self.actionShow_Installed.setStatusTip('Show list of installed packages')
         self.actionShow_Installed.triggered.connect(self.showInstalled)
         self.actionShow_missing = QtGui.QAction(self)
         self.actionShow_missing.setStatusTip('Show removed packages from initial install')
         self.actionShow_missing.triggered.connect(self.showMissings)
+        self.actionShowSources = QtGui.QAction(self)
+        self.actionShowSources.setStatusTip('View your sources list')
+        self.actionShowSources.triggered.connect(self.showSourcesList)
+        self.actionEditSources = QtGui.QAction(self)
+        self.actionEditSources.setStatusTip('Edit your sources list')
+        self.actionEditSources.triggered.connect(self.editSourcesList)
+
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionSaveSnapshot)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
-        self.menuTools.addAction(self.actionShow_missing)
-        self.menuTools.addAction(self.actionShow_Installed)
+        self.menuView.addAction(self.actionShow_missing)
+        self.menuView.addAction(self.actionShowSources)
+        self.menuView.addAction(self.actionShow_Installed)
+        self.menuTools.addAction(self.actionEasyPPA)
+        self.menuTools.addAction(self.actionEditSources)
+
         self.menuHelp.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
+        self.menubar.addAction(self.menuView.menuAction())
         self.menubar.addAction(self.menuTools.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
         self.menuFile.setTitle("File")
+        self.menuView.setTitle("View")
         self.menuTools.setTitle("Tools")
         self.menuHelp.setTitle("Help")
         self.actionExit.setText("Exit")
         self.actionOpen.setText("Open manifest")
         self.actionSaveSnapshot.setText('Save')
         self.actionAbout.setText("About")
+        self.actionEasyPPA.setText("Easy PPA")
         self.actionCustom_Reset = QtGui.QAction(self)
-        self.menuTools.addAction(self.actionCustom_Reset)
+        self.menuView.addAction(self.actionCustom_Reset)
         self.actionCustom_Reset.setText("Custom Reset")
         self.actionCustom_Reset.setStatusTip('Custom Reset')
         self.actionShow_missing.setText("Show missing pre-installed packages")
+        self.actionEditSources.setText("Edit Sources")
+        self.actionShowSources.setText("View system repository list")
+
         self.actionCustom_Reset.triggered.connect(self.customReset)
         self.actionShow_Installed.setText("Show installed")
         font = QtGui.QFont()
@@ -130,7 +162,8 @@ class UiMainWindow(QtGui.QMainWindow):
                     """)
         self.btnReset = QtGui.QPushButton(self)
         self.btnReset.setText("Automatic Reset", )
-        self.btnReset.setFixedSize(614, 110)
+        self.btnReset.setFixedHeight(100)
+
         self.btnReset.setFont(font)
         self.btnReset.setStyleSheet(button_style)
         self.btnReset.setIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/auto-reset-icon.png'))
@@ -142,12 +175,25 @@ class UiMainWindow(QtGui.QMainWindow):
         self.btnReset.clicked.connect(self.warningPrompt)
         self.btnCustomReset = QtGui.QPushButton(self)
         self.btnCustomReset.setText("Custom Reset")
-        self.btnCustomReset.setFixedSize(614, 110)
+        #self.btnCustomReset.resize(614, 110)
+        self.btnCustomReset.setFixedHeight(100)
         self.btnCustomReset.setFont(font)
         self.btnCustomReset.setStyleSheet(button_style)
         self.btnCustomReset.clicked.connect(self.customReset)
         self.btnCustomReset.setIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/custom-reset-icon.png'))
         self.btnCustomReset.setIconSize(QtCore.QSize(80, 80))
+        custom_text = "Choose this option if you would like to control how your system gets reset"
+        self.btnCustomReset.setToolTip(textwrap.fill(custom_text, 70))
+
+        self.btnEasyInstall = QtGui.QPushButton(self)
+        self.btnEasyInstall.setText("Easy Install")
+        # self.btnCustomReset.resize(614, 110)
+        self.btnEasyInstall.setFixedHeight(100)
+        self.btnEasyInstall.setFont(font)
+        self.btnEasyInstall.setStyleSheet(button_style)
+        self.btnEasyInstall.clicked.connect(self.easyInstall)
+        self.btnEasyInstall.setIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/easy-install-icon.png'))
+        self.btnEasyInstall.setIconSize(QtCore.QSize(80, 80))
         custom_text = "Choose this option if you would like to control how your system gets reset"
         self.btnCustomReset.setToolTip(textwrap.fill(custom_text, 70))
         self.centralWidget = QtGui.QWidget()
@@ -168,8 +214,7 @@ class UiMainWindow(QtGui.QMainWindow):
             m = self.manifest.split('/')[-1]
             self.manifest_label.setText("Using: {}".format(m))
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/resetter-logo.png")
-
-        self.pixmap2 = self.pixmap.scaled(650, 226)
+        self.pixmap2 = self.pixmap.scaled(650, 200)
         self.image_label.setPixmap(self.pixmap2)
         self.verticalLayout = QtGui.QVBoxLayout()
         self.verticalLayout2 = QtGui.QVBoxLayout()
@@ -181,6 +226,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.verticalLayout.setAlignment(QtCore.Qt.AlignCenter)
         self.verticalLayout.addWidget(self.image_label)
         self.verticalLayout.addLayout(self.verticalLayout2)
+        self.verticalLayout.addWidget(self.btnEasyInstall)
         self.verticalLayout.addWidget(self.btnReset)
         self.verticalLayout.addWidget(self.btnCustomReset)
         self.centralWidget.setLayout(self.verticalLayout)
@@ -189,13 +235,13 @@ class UiMainWindow(QtGui.QMainWindow):
 
     #create working directory with local user permmissions
     def createDirs(self):
-        uidChange = pwd.getpwnam(self.user).pw_uid
-        gidChange = pwd.getpwnam(self.user).pw_gid
+        uid_change = pwd.getpwnam(self.user).pw_uid
+        gid_change = pwd.getpwnam(self.user).pw_gid
         pidx = os.fork()
         if pidx == 0:
             try:
-                os.setgid(gidChange)
-                os.setuid(uidChange)
+                os.setgid(gid_change)
+                os.setuid(uid_change)
                 if not os.path.exists(self.directory):
                     os.makedirs(self.directory)
                 os.chdir(self.directory)
@@ -223,6 +269,23 @@ class UiMainWindow(QtGui.QMainWindow):
                 self.manifest_label.setText('using: {}'.format(manifest))
         except IOError:
             pass
+
+    def searchLaunchpad(self):
+        easyppa = EasyPPAInstall(self)
+        easyppa.show()
+
+    def showSourcesList(self):
+        sources = sourceslist.SourcesList()
+        text = "This is your repository list"
+        sources_view = AppView(self)
+        sources_view.showView(sources, "Repository List", text, False)
+        sources_view.show()
+
+    def editSourcesList(self):
+        text = "Edit your repository list"
+        sources_edit = SourceEdit(self)
+        sources_edit.editSources("Repository List", text)
+        sources_edit.show()
 
     def copy(self, source, destination):
         try:
@@ -268,8 +331,15 @@ class UiMainWindow(QtGui.QMainWindow):
     def save(self):
         self.getInstalledList()
         time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-        file_name= "snapshot - {}".format(time)
-        self.copy("installed", file_name)
+        name = "snapshot - {}".format(time)
+        filename, extension = QtGui.QFileDialog.getSaveFileNameAndFilter(
+            self, 'Save Backup file', name, filter=self.tr(".rbf"))
+        try:
+            with open("installed", 'r') as inst, open(filename + extension, "w") as backup:
+                for line in inst:
+                    backup.writelines(line)
+        except IOError:
+            pass
 
     def detectOS(self):
         self.logger.info("OS is {}".format(self.os_info['DESCRIPTION']))
@@ -333,6 +403,14 @@ class UiMainWindow(QtGui.QMainWindow):
                     return manifest
                 else:
                     self.manifestNotFound()
+        elif self.os_info['ID'] == ('Deepin'):
+            if self.os_info['RELEASE'] == '15.4':
+                self.setWindowTitle(self.os_info['ID'] + " Resetter")
+                manifest = 'manifests/deepin-15.4.manifest'
+                if os.path.isfile(manifest):
+                    return manifest
+                else:
+                    self.manifestNotFound()
         else:
             self.error_msg.setText("Your distro isn't supported at the moment.")
             self.error_msg.setDetailedText(
@@ -388,6 +466,7 @@ class UiMainWindow(QtGui.QMainWindow):
                 self.error_msg.setIcon(QtGui.QMessageBox.Information)
                 self.error_msg.setText(
                     "All removable packages have already been removed, there are no more packages left")
+                QtGui.QApplication.restoreOverrideCursor()
                 self.error_msg.exec_()
         else:
             self.logger.info("auto reset cancelled")
@@ -448,7 +527,8 @@ class UiMainWindow(QtGui.QMainWindow):
         try:
             black_list = ['linux-image', 'linux-headers', 'ca-certificates', 'pyqt4-dev-tools',
                           'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
-                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'snap', 'gksu', 'resetter', 'python-evdev']
+                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'resetter',
+                          'python-evdev', 'python-bs4', 'python-mechanize']
             with open("apps-to-remove", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as pman:
                 diff = set(installed).difference(pman)
@@ -462,11 +542,14 @@ class UiMainWindow(QtGui.QMainWindow):
             self.error_msg.exec_()
 
     def showInstalled(self):
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         self.getInstalledList()
         viewInstalled = AppView(self)
         text = "These packages are currently installed on your system"
         viewInstalled.showView("installed", "Installed List", text, False)
         viewInstalled.show()
+        QtGui.QApplication.restoreOverrideCursor()
+
 
     def getLocalUserList(self):
         try:
@@ -493,6 +576,12 @@ class UiMainWindow(QtGui.QMainWindow):
         self.getOldKernels()
         custom_reset = AppWizard(self)
         custom_reset.show()
+        QtGui.QApplication.restoreOverrideCursor()
+
+    def easyInstall(self):
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+        self.easy = EasyInstaller()
+        self.easy.show()
         QtGui.QApplication.restoreOverrideCursor()
 
     def center(self):

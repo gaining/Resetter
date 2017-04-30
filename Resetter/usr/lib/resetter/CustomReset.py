@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import apt
 import apt.package
 import logging
@@ -260,8 +262,6 @@ class UserRemovalPage(QtGui.QWizardPage):
         self.table.itemChanged.connect(self.setChoice)
 
     def configureTable(self, table):
-        rowf = 0
-        rowx = 0
         table.setColumnCount(3)
         table.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Users"))
         table.setHorizontalHeaderItem(1, QtGui.QTableWidgetItem("Delete User"))
@@ -270,22 +270,17 @@ class UserRemovalPage(QtGui.QWizardPage):
         header.setResizeMode(0, QtGui.QHeaderView.ResizeToContents)
         header.setResizeMode(1, QtGui.QHeaderView.ResizeToContents)
         table.horizontalHeader().setStretchLastSection(True)
-        user_list = []
-        with open("users") as in_file:
-            for line in in_file:
-                user_list.append(line)
-                rowf += 1
 
-        table.setRowCount(rowf)
-
-        for linex in user_list:
+        users = open('users').read().splitlines()
+        table.setRowCount(len(users))
+        for i, line in enumerate(users):
             x = QtGui.QTableWidgetItem()
             x.setTextAlignment(QtCore.Qt.AlignCenter)
-            table.setItem(rowx, 0, x)
-            rowx += 1
-            x.setText(linex)
+            table.setItem(i, 0, x)
+            x.setText(line)
+
         for column in range(3):
-            for row in range(rowf):
+            for row in range(table.rowCount()):
                 if column % 3:
                     self.item = QtGui.QTableWidgetItem(column)
                     self.item.setFlags(QtCore.Qt.ItemIsUserCheckable |
@@ -324,7 +319,6 @@ class UserRemovalPage(QtGui.QWizardPage):
                 self.logger.debug(text)
         with open(path, mode) as f:
             f.write(text)
-
 
 
 class AppWizard(QtGui.QWizard):

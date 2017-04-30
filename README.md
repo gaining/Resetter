@@ -1,19 +1,20 @@
-# Resetter
+# Resetter 0.2.4-rc
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu or Linux-Mint system to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. It will detect packages that have been installed after the initial system install. 
 
 # Status
-- The software is currently in beta stage. Feedback will be greatly appreciated.
-- If you're on a version lower than beta-0.0.6, please remove resetter with `sudo apt remove resetter` before installing a newer version. 
-- current version is beta 0.1.3
+- The first release candidate has been released! 
+- Release candidate 0.2.4 contains new looks, tons of new useful features, and more. 
+- Feedback will be greatly appreciated.
+- current version is RC 0.2.4
 - Please check the changelog for more details.
-- If you find a bug, please create an issue. 
+- If you find a bug, please create an issue on github. 
 - If you do not have a github account please send your bug report at gaining7@outlook.com.
 
 
 # How to install
-Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/v0.1.3-beta). PPA will be created soon.
+Install via deb file found ![here](https://github.com/gaining/Resetter/releases/tag/v0.2.4-rc). PPA will be created soon.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 
@@ -48,20 +49,21 @@ MPIA means missing pre-installed apps
 - Ubuntu 16.04
 - Ubuntu 14.04
 - Elementary OS 0.4 
-- Debian jessie ~ coming soon via resetter-cli
+- Debian jessie ~ delayed but will come via resetter-cli
+- Linux Deepin 15.4 
 
 # Upcoming changes in the near future
-- command line options - in the works
-- different install options
-- pick from backup list to install or remove
-- option to install missing pre-installed packages
+- command line options - delayed but in the works
+- different install options - implemented
+- pick from backup list to install or remove - implemented
+- option to install missing pre-installed packages - implemented
 
 # Distant future plans
 - translations - 
-- migrate to python3 and pyqt5
+- migrate to python3 and pyqt5 
 - more reset options
-- support more debian based distro 
-- stabilize resetter
+- support more debian based distro - progressing well
+- stabilize resetter - very stable so far
 
 # Contact
 - If you wish to contact me about anything else reach me via gaining7@outlook.com.

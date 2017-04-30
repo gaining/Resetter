@@ -1,4 +1,6 @@
-#!/usr/bin/python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
 import apt
 import apt.package
 import logging
@@ -124,7 +126,7 @@ class Apply(QtGui.QDialog):
         self.account = AccountDialog()
         self.connect(self.progressView, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
         self._cache = self.progressView._cache
-        self.aprogress = UIAcquireProgress(self.progress, self.lbl1)
+        self.aprogress = UIAcquireProgress(self.progress, self.lbl1, False)
         self.iprogress = UIInstallProgress(self.progress, self.lbl1)
         self.addUser()
 
@@ -185,7 +187,7 @@ class Apply(QtGui.QDialog):
             self.logger.info("Broken Count after commit: {}".format(self._cache.broken_count))
             self.movie.stop()
             self.labels[(2, 1)].setPixmap(self.pixmap2)
-            self.progress.setValue(int(100))
+            self.progress.setValue(100)
             self.fixBroken()
         except Exception as arg:
             self.movie.stop()
@@ -195,16 +197,21 @@ class Apply(QtGui.QDialog):
             self.error_msg.exec_()
 
     def fixBroken(self):
-        self.lbl1.setText("Cleaning up...")
-        self.logger.info("Cleaning up...")
-        self.labels[(3, 1)].setMovie(self.movie)
-        self.progress.setRange(0, 0)
+        try:
+            self.lbl1.setText("Cleaning up...")
+            self.logger.info("Cleaning up...")
+            self.labels[(3, 1)].setMovie(self.movie)
+            self.progress.setRange(0, 0)
 
-        self.movie.start()
-        self.setCursor(QtCore.Qt.BusyCursor)
-        self.process = QtCore.QProcess()
-        self.process.finished.connect(self.onFinished)
-        self.process.start('bash', ['/usr/lib/resetter/data/scripts/fix-broken.sh'])
+            self.movie.start()
+            self.setCursor(QtCore.Qt.BusyCursor)
+            self.process = QtCore.QProcess()
+            self.process.finished.connect(self.onFinished)
+            self.process.start('bash', ['/usr/lib/resetter/data/scripts/fix-broken.sh'])
+        except Exception as e:
+            self.logger.error("error occured during fix-broken [{}]".format(str(e)))
+            self.error_msg.setText("Please make sure other package managers aren't running")
+            self.error_msg.exec_()
 
     def onFinished(self, exit_code, exit_status):
         if exit_code or exit_status != 0:
@@ -213,6 +220,7 @@ class Apply(QtGui.QDialog):
                               .format(exit_code, exit_status))
         else:
             self.progress.setRange(0, 1)
+            self.progress.setValue(1)
             self.logger.debug("Cleanup finished with exit code: {} and exit_status {}.".format(exit_code, exit_status))
             self.movie.stop()
             self.labels[(3, 1)].setPixmap(self.pixmap2)
@@ -244,19 +252,19 @@ class Apply(QtGui.QDialog):
                 self.install.show()
                 self.install.exec_()
                 self.labels[(5, 1)].setPixmap(self.pixmap2)
-                self.progress.setValue(int(100))
                 self.unsetCursor()
                 self.lbl1.setText("Finished")
             except Exception as arg:
                 self.logger.error("Kernel removal failed [{}]".format(str(arg)))
                 print "Sorry, kernel removal failed [{}]".format(str(arg))
             self.removeUsers(response)
-            self.progress.setValue(int(100))
             self.showUserInfo()
+            self.progress.setValue(1)
+
         else:
             self.lbl1.setText("Finished")
             self.removeUsers(response)
-            self.progress.setValue(int(100))
+            self.progress.setValue(1)
             self.showUserInfo()
             self.logger.info("Old kernel removal option not chosen")
 
