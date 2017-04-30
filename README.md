@@ -1,4 +1,4 @@
-# Resetter 0.2.4-rc
+# Resetter 0.2.4-rc1
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu or Linux-Mint system to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. It will detect packages that have been installed after the initial system install. 
@@ -7,7 +7,7 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 - The first release candidate has been released! 
 - Release candidate 0.2.4 contains new looks, tons of new useful features, and more. 
 - Feedback will be greatly appreciated.
-- current version is RC 0.2.4
+- current version is 0.2.4-rc1
 - Please check the changelog for more details.
 - If you find a bug, please create an issue on github. 
 - If you do not have a github account please send your bug report at gaining7@outlook.com.
