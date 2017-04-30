@@ -25,7 +25,7 @@ On the terminal, run `sudo apt install gdebi`.
 ..* `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb`
 4. Install it with:
 ..* `sudo gdebi add-apt-key_1.0-0.5_all.deb`
-- Then you're done
+- Then can begin installing resetter
 
 # Options comparison
 
