@@ -17,7 +17,7 @@ Install via deb file found ![here](https://github.com/gaining/Resetter/releases/
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
-**for deepin only**
+**For Linux Deepin only**
 1. Fetch the python-evdev module.
 ..`wget -c http://mirrors.kernel.org/ubuntu/pool/universe/p/python-evdev/python-evdev_0.4.1-0ubuntu3_amd64.deb`
 
@@ -58,7 +58,7 @@ MPIA means missing pre-installed apps
 
 - Easy PPA: With this feature, you can search launchpad.net for PPAs containing apps directly from resetter and install it into your system. It will also grab the ppa's key automatically. This eliminates the need of using a terminal to add ppas from launchpad making distros more user friendly.
 
--Source Editor: It is a normal editor that can disable, enable, or remove ppas from a user's system but what makes this different from other source editors is that you can search for the ppa that you want to edit.
+- Source Editor: It is a normal editor that can disable, enable, or remove ppas from a user's system but what makes this different from other source editors is that you can search for the ppa that you want to edit.
 
 # Officially supported distros [64-bit]
 - Linux Mint 18.1
