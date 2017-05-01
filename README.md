@@ -1,7 +1,7 @@
 # Resetter 0.2.5-rc2
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
-It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. For the list of supported distros, please see here [https://github.com/gaining/Resetter/blob/master/README.md#L62-L73]  Resetter feature working by using an updated manifest to detect packages that have been installed after the initial system install. If some packages are missing from the manifest, it will deem it as a missing pre-installed package and will be available to re-install.
+It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, as if it's been just installed without having to manually re-install by using a live cd/dvd image. For the list of supported distros, please see ![here](https://github.com/gaining/Resetter/blob/master/README.md#L62-L73  Resetter feature working by using an updated manifest to detect packages that have been installed after the initial system install. If some packages are missing from the manifest, it will deem it as a missing pre-installed package and will be available to re-install.
 
 # Status
 - Release candidate 0.2.5 contains new looks, tons of new useful features, and more. 
