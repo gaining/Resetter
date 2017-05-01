@@ -20,7 +20,7 @@ On the terminal, run `sudo apt install gdebi`.
 1. Fetch the python-evdev module.
 ..`wget -c http://mirrors.kernel.org/ubuntu/pool/universe/p/python-evdev/python-evdev_0.4.1-0ubuntu3_amd64.deb`
 
-2.Then install it with: 
+2. Then install it with: 
 ..`sudo gdebi python-evdev_0.4.1-0ubuntu3_amd64.deb` 
 
 3. Fetch the add-apt-key package
