@@ -20,7 +20,7 @@ Install via deb file found [here](https://github.com/gaining/Resetter/releases/t
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
-**For Linux Deepin only**
+**For Linux Deepin**
 1. Fetch the python-evdev module.
 ..`wget -c http://mirrors.kernel.org/ubuntu/pool/universe/p/python-evdev/python-evdev_0.4.1-0ubuntu3_amd64.deb`
 
@@ -90,8 +90,9 @@ MPIA means missing pre-installed apps
 
 # Donate
 2000+ downloads but not yet any donation amount by anyone :(
+
 Please show your support by donating a small amount if this app has helped you.
-If you're feeling generous though, I will greatly appreciate it. If you'd like your name to be on the donations list. I can arrange for that as well.
+If you're feeling generous though, I will greatly appreciate it. If you'd like your name to be on the donators list, I can arrange for that as well.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8FET8RGU2ZKQ8)
 
