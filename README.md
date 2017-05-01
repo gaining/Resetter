@@ -17,6 +17,7 @@ Install via deb file found ![here](https://github.com/gaining/Resetter/releases/
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
+**for deepin only**
 1. Fetch the python-evdev module.
 ..`wget -c http://mirrors.kernel.org/ubuntu/pool/universe/p/python-evdev/python-evdev_0.4.1-0ubuntu3_amd64.deb`
 
@@ -52,6 +53,13 @@ MPIA means missing pre-installed apps
 
 </center>
 
+# Other features:
+- Easy install: Basically, you will be able to build your own list of apps that you'd like to mass install after a reset or fresh install. It can also be used anytime to install a package. If you saved a backup file using the save feature prior to your reset or fresh install, you will be able to restore the apps from that list if they're available to install.
+
+- Easy PPA: With this feature, you can search launchpad.net for PPAs containing apps directly from resetter and install it into your system. It will also grab the ppa's key automatically. This eliminates the need of using a terminal to add ppas from launchpad making distros more user friendly.
+
+-Source Editor: It is a normal editor that can disable, enable, or remove ppas from a user's system but what makes this different from other source editors is that you can search for the ppa that you want to edit.
+
 # Officially supported distros [64-bit]
 - Linux Mint 18.1
 - Linux Mint 18
@@ -77,14 +85,12 @@ MPIA means missing pre-installed apps
 - support more debian based distro - progressing well
 - stabilize resetter - very stable so far
 
-# Contact
-- If you wish to contact me about anything else reach me via gaining7@outlook.com.
-
 # Donate
-
-If you like this project and are willing to make a monetary donation, here's my paypal link. Thanks in advance.
+2000+ downloads but not yet any donation amount by anyone :(
+Please show your support by donating a small amount if this app has helped you.
+If you're feeling generous though, I will greatly appreciate it. If you'd like your name to be on the donations list. I can arrange for that as well.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8FET8RGU2ZKQ8)
 
-
-
+# Contact
+- If you wish to contact me about anything else reach me via gaining7@outlook.com.
