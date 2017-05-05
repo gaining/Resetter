@@ -4,19 +4,18 @@
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section. 
 
 # How does it work?
-Resetter's *resetting* feature works by using an updated manifest of the system to compare it against the currently installed packages list. It will then find packages that have been installed after the initial system install. If some packages are missing from the manifest, it will deem it as a missing pre-installed package and will be available to re-install.
+Resetter's *resetting* feature works by using an updated manifest of the system to compare it against the currently installed packages list. It will then find packages that have been installed after the initial system install. If some packages are missing from the manifest, it will deem them as missing pre-installed packages and they will be available to re-install.
 
 # Status
-- Release candidate 0.2.5 contains new looks, tons of new useful features, and more. 
 - Feedback will be greatly appreciated.
-- current version is 0.2.5-rc2
+- current version is 0.2.6-rc3
 - Please check the changelog for more details.
 - If you find a bug, please create an issue on github. 
 - If you do not have a github account please send your bug report at gaining7@outlook.com.
 
 
 # How to install
-Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v0.2.5-rc2). PPA will be created soon.
+Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v0.2.6-rc3). PPA will be created soon.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
