@@ -13,9 +13,6 @@ class About(QtGui.QDialog):
         pixmap2 = pixmap.scaled(300, 91)
         about_font = QtGui.QFont()
         about_font.setBold(True)
-        title_font = QtGui.QFont()
-        title_font.setBold(True)
-        title_font.setPointSize(20)
         about_label = QtGui.QLabel(self)
         desc_label = QtGui.QLabel(self)
         desc_label.setAlignment(QtCore.Qt.AlignCenter)
@@ -35,13 +32,13 @@ class About(QtGui.QDialog):
         about_label.setAlignment(QtCore.Qt.AlignCenter)
         cr_text = "Copyright (c) 2017 all rights reserved"
         desc_text = "Built With PyQt\n\n " \
-                    "This is a great utility software that will help you reset your linux installation its stock state"
-        version_text = "Version: 0.2.5-rc2"
+                    "This is a great utility software that will help you reset your linux installation its stock state" \
+                    "among other things."
+        version_text = "Version: 0.2.6-rc3"
         donate_text = 'If you liked my project, please ' \
                       '<a href="https://github.com/gaining/Resetter/blob/master/DONATE.md">Donate </a>'
         more_text = 'To find out more about this project, please visit my github:' \
                     ' <a href="https://github.com/gaining/resetter"> Resetter</a>'
-
         about_label.setPixmap(pixmap2)
         desc_label.setText(desc_text)
         cr_label.setText(cr_text)

@@ -1,9 +1,16 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import os
+import apt_pkg
 from PyQt4 import QtGui
 from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
-from evdev import uinput, ecodes as e
+
+apt_pkg.init_config()
+apt_pkg.config.set("DPkg::Options::", "--force-confnew")
+apt_pkg.config.set('APT::Get::Assume-Yes', 'true')
+apt_pkg.config.set('APT::Get::force-yes', 'true')
+os.putenv("DEBIAN_FRONTEND", "gnome")
 
 
 class UIOpProgress(OpProgress):
@@ -71,6 +78,8 @@ class UIInstallProgress(InstallProgress):
         self.pbar = pbar
         self.status_label = status_label
         self.last = 0.0
+        os.putenv("DEBIAN_FRONTEND", "gnome")
+
 
     def status_change(self, pkg, percent, status):
         if self.last >= percent:
@@ -91,12 +100,7 @@ class UIInstallProgress(InstallProgress):
         print "starting {} stage for {}".format(stage, pkg)
 
     def conffile(self, current, new):
-        #keeps current conf file by pressing enter key
-        print "WARNING: conffile prompt: {} {}".format(current, new)
-        with uinput.UInput() as ui:
-            ui.write(e.EV_KEY, e.KEY_ENTER, 1)
-            ui.write(e.EV_KEY, e.KEY_ENTER, 0)
-            ui.syn()
+        print "new config file automatically accepted"
 
     def error(self, errorstr):
         print "ERROR: {}".format(errorstr)

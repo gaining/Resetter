@@ -137,29 +137,27 @@ class UiMainWindow(QtGui.QMainWindow):
         font = QtGui.QFont()
         font.setPointSize(25)
         button_style = ("""
-                    QPushButton {
-                    border: 2px solid #555;
-                    border-radius: 30px;
-                    padding: 5px;
-                    background: qradialgradient(cx: 0.5, cy: -0.6,
-                    fx: -0.5, fy: 0.6,
-                    radius: 1.35, stop: 0 #fff, stop: 1 #888);
-                    }
+        QPushButton {
+        border: 2px solid #555;
+        border-radius: 30px;
+        padding: 5px;
+        background: qradialgradient(cx: 0.5, cy: -0.6,
+        fx: -0.5, fy: 0.6,
+        radius: 1.35, stop: 0 #fff, stop: 1 #888);
+        }
 
-                    QPushButton:hover {
-                    background: qradialgradient(cx: 0.5, cy: 0.3,
-                    fx: 0.5, fy: 0.3,
-                    radius: 1.35, stop: 0 #fff, stop: 1 #888);
-                    min-width: 80px;
-                    }
+        QPushButton:hover {
+        background: qradialgradient(cx: 0.5, cy: 0.3,
+        fx: 0.5, fy: 0.3,
+        radius: 1.35, stop: 0 #fff, stop: 1 #888);
+        min-width: 80px;
+        }
 
-                    QPushButton:pressed {
-                    background: qradialgradient(cx: 0.7, cy: -0.7,
-                    fx: 0.7, fy: -0.7,
-                    radius: 1.35, stop: 0 #fff, stop: 1 #888);
-                    }
-
-                    """)
+        QPushButton:pressed {
+        background: qradialgradient(cx: 0.7, cy: -0.7,
+        fx: 0.7, fy: -0.7,
+        radius: 1.35, stop: 0 #fff, stop: 1 #888);
+        }""")
         self.btnReset = QtGui.QPushButton(self)
         self.btnReset.setText("Automatic Reset", )
         self.btnReset.setFixedHeight(100)
@@ -313,7 +311,7 @@ class UiMainWindow(QtGui.QMainWindow):
                 word = "vivid"
             else:
                 word = None
-            black_list = ['linux-image', 'linux-headers', "openjdk-7-jre"]
+            black_list = ['linux-image', 'linux-headers', 'openjdk-7-jre', 'grub']
             with open("apps-to-install", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as man:
                 diff = set(man).difference(installed)
@@ -343,6 +341,8 @@ class UiMainWindow(QtGui.QMainWindow):
 
     def detectOS(self):
         self.logger.info("OS is {}".format(self.os_info['DESCRIPTION']))
+        #compat_oses = (['LinuxMint', 'Ubuntu', 'elementary', 'Deepin'])
+        #compat_releases = (['17.3', '18.1', '18', '14.04','16.04', '16.10', '0.4','15.4'])
         if self.os_info['ID'] == ('LinuxMint'):
             if self.os_info['RELEASE'] == '17.3':
                 self.setWindowTitle(self.os_info['ID'] + " Resetter")
@@ -474,20 +474,15 @@ class UiMainWindow(QtGui.QMainWindow):
     def getInstalledList(self):
         try:
             self.logger.info("getting installed list...")
-            self.setCursor(QtCore.Qt.BusyCursor)
             p1 = subprocess.Popen(['dpkg', '--get-selections'], stdout=subprocess.PIPE, bufsize=1)
-            self.unsetCursor()
             result = p1.stdout
-            i = 0
             tab = '\t'
             with open("installed", "w") as output:
-                for line in result:
-                    i += 1
+                for i, line in enumerate(result):
                     line = line.split(tab, 1)[0]
                     output.write(line + '\n')
             self.logger.debug("installed list was generated with {} apps installed".format(i))
-        except (subprocess.CalledProcessError) as e:
-            self.unsetCursor()
+        except subprocess.CalledProcessError as e:
             self.logger.error("Error: {}".format(e.ouput), exc_info=True)
             self.error_msg.setText("Installed list failed to generate or may not be complete: {}".format(e))
             self.error_msg.exec_()
@@ -509,7 +504,6 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.info("manifest processing complete")
             self.compareFiles()
         except Exception as e:
-            self.unsetCursor()
             self.logger.error("Manifest processing failed [{}]".format(e))
             self.error_msg.setText("Manifest processing failed")
             self.error_msg.setDetailedText("{}".format(e))
@@ -525,10 +519,12 @@ class UiMainWindow(QtGui.QMainWindow):
 
     def compareFiles(self):
         try:
-            black_list = ['linux-image', 'linux-headers', 'ca-certificates', 'pyqt4-dev-tools',
+            black_list = (['linux-image', 'linux-headers', 'ca-certificates', 'pyqt4-dev-tools',
                           'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
                           'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'resetter',
-                          'python-evdev', 'python-bs4', 'python-mechanize']
+                          'python-evdev', 'python-bs4', 'python-mechanize', 'add-apt-key', 'python-html5lib',
+                          'python-pkg-resources', 'python-webencodings', 'python-chardet', 'python-lxml',
+                          'python-six', 'grub'])
             with open("apps-to-remove", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as pman:
                 diff = set(installed).difference(pman)
@@ -549,7 +545,6 @@ class UiMainWindow(QtGui.QMainWindow):
         viewInstalled.showView("installed", "Installed List", text, False)
         viewInstalled.show()
         QtGui.QApplication.restoreOverrideCursor()
-
 
     def getLocalUserList(self):
         try:
@@ -590,7 +585,6 @@ class UiMainWindow(QtGui.QMainWindow):
         centerPoint = QtGui.QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
-
 
 if __name__ == '__main__':
     key = 'Resetter'

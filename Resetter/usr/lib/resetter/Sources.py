@@ -30,9 +30,6 @@ class SourceEdit(QtGui.QDialog):
         self.btnRemove.setText("Remove entries")
         self.btDisable.setText("Disable entries")
         self.btnEnable.setText("Enable entries")
-        self.btDisable.setVisible(False)
-        self.btnRemove.setVisible(False)
-        self.btnEnable.setVisible(False)
         self.label.setPalette(palette)
         self.btnRemove.clicked.connect(self.removeSelectedSources)
         self.btDisable.clicked.connect(self.disableSelectedSources)
@@ -40,6 +37,7 @@ class SourceEdit(QtGui.QDialog):
         self.msg = QtGui.QMessageBox()
         self.msg.setIcon(QtGui.QMessageBox.Information)
         self.msg.setWindowTitle("Success")
+        self.msg.setText("Your changes have been successfully applied")
         self.btnClose.clicked.connect(self.close)
         self.s = sourceslist.SourcesList()
         self.sourceslists = []
@@ -63,9 +61,6 @@ class SourceEdit(QtGui.QDialog):
         horizontalLayout.addWidget(self.btnClose)
         verticalLayout.addLayout(horizontalLayout)
         self.searchEditText.textChanged.connect(lambda: self.searchItem(self.model, self.list_view))
-        self.btnRemove.setVisible(True)
-        self.btDisable.setVisible(True)
-        self.btnEnable.setVisible(True)
 
         for dirpath, dirs, files in os.walk('/etc/apt/'):
             word = 'deb'
@@ -81,7 +76,6 @@ class SourceEdit(QtGui.QDialog):
                                 self.item.setCheckState(QtCore.Qt.Unchecked)
                                 self.model.appendRow(self.item)
                     self.list_view.setModel(self.model)
-
 
     def setItems(self, item):
         if item.checkState() == QtCore.Qt.Checked:
@@ -101,8 +95,9 @@ class SourceEdit(QtGui.QDialog):
                 sys.stdout.write(line)
                 fileinput.close()
         self.close()
-        self.msg.setText("Your changes have been successfully applied")
         self.msg.exec_()
+
+
 
     def enableSelectedSources(self):
         for item in self.items:
@@ -113,9 +108,8 @@ class SourceEdit(QtGui.QDialog):
                     line = line.replace(item, enable)
                 sys.stdout.write(line)
                 fileinput.close()
-            self.close()
-            self.msg.setText("Your changes have been successfully applied")
-            self.msg.exec_()
+        self.close()
+        self.msg.exec_()
 
     def removeSelectedSources(self):
         for item in self.items:

@@ -99,15 +99,16 @@ class AppView(QtGui.QDialog):
             list_view.show()
 
         else:
+            word = 'deb'
             for x in data:
                 m = (str(x))
-                if m.startswith('deb') or m.startswith('#'):
+                if m.startswith(word) or m.startswith('#') \
+                        and m[2:].split(' ')[0][:3] == word:
                     item = QtGui.QStandardItem(m)
                     item.setCheckable(False)
                     item.setEditable(False)
-                    item.setCheckState(QtCore.Qt.PartiallyChecked)
+                    item.setCheckState(QtCore.Qt.Checked)
                     model.appendRow(item)
-            data.save()
             list_view.setModel(model)
             list_view.show()
 

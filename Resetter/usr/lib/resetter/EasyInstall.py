@@ -1,17 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from InstallMissingDialog import Install
-import os
-import sys
 import apt
+import os
 import textwrap
 from PyQt4 import QtCore, QtGui
 
+from InstallMissingDialog import Install
+
+
 class EasyInstaller(QtGui.QDialog):
-    def __init__(self):
-        super(EasyInstaller, self).__init__()
+    def __init__(self, parent=None):
+        super(EasyInstaller, self).__init__(parent)
         self.setWindowTitle("Easy install")
-        self.list_view = QtGui.QListView()
+        self.list_view = QtGui.QListView(self)
         self.list_view.setFixedWidth(380)
         self.EditText = QtGui.QLineEdit()
         self.EditText.setPlaceholderText("Search for applications")
@@ -64,7 +65,6 @@ class EasyInstaller(QtGui.QDialog):
         verticalLayout.addWidget(self.list_view)
         verticalLayout.addLayout(horizontalLayout2)
         self.cache = apt.Cache()
-        self.unavailable = []
         self.isWritten = False
 
 
@@ -137,15 +137,11 @@ class EasyInstaller(QtGui.QDialog):
                                 self.list_view.setModel(self.model)
                             self.EditText.clear()
                         except KeyError:
-                            self.unavailable.append(line)
                             continue
         except IOError:
             pass
 
     def installPackages(self):
-        if len(self.unavailable) > 0:
-            self.keptBack(self.unavailable)
-
         model = self.model
         for index in xrange(model.rowCount()):
             item = model.item(index)
@@ -163,7 +159,7 @@ class EasyInstaller(QtGui.QDialog):
         self.install.show()
         self.install.exec_()
         self.removeItems()
-        print "Done"
+        print "Finished installing"
 
     def closeview(self):
         self.cache.close()
@@ -179,9 +175,12 @@ class EasyInstaller(QtGui.QDialog):
     def showMessage(self, package):
         self.comboBox.clear()
         self.comboBox.addItem("Did you mean?")
+        i = 0
         for p in self.cache:
-            if p.shortname.startswith(package):
+            if p.shortname.startswith(package) and len(package) > 0 and i < 12:
+                i += 1
                 self.comboBox.addItem(p.shortname)
+
         if self.comboBox.count() > 1:
             self.comboBox.setVisible(True)
         msg = QtGui.QMessageBox(self)
@@ -191,14 +190,4 @@ class EasyInstaller(QtGui.QDialog):
         msg.setDetailedText("If you've recently added a ppa containing this package, "
                             "please use [EasyPPA - refresh sources] feature, "
                             "then try adding the package again.")
-        msg.exec_()
-
-    def keptBack(self, una):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("Packages kept back")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("These packages are not available in the cache so they won't be installed")
-        msg.setDetailedText("You may find them by using the Easy PPA function")
-        text = "\n".join(una)
-        msg.setInformativeText(text)
         msg.exec_()

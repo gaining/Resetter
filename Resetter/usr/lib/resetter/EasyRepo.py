@@ -63,8 +63,6 @@ class EasyPPAInstall(QtGui.QDialog):
         self.ppa = []
         self.table_data = []
 
-
-
     def configureTable(self, table):
         table.setColumnCount(4)
         table.setHorizontalHeaderItem(0, QtGui.QTableWidgetItem("Description"))
@@ -171,9 +169,8 @@ class EasyPPAInstall(QtGui.QDialog):
         except mechanize.URLError as e:
             print "There is no internet {}".format(e)
 
-            self.error_msg.setText("No internet")
-            self.error_msg.setDetailedText("If this keeps happening, it means easy repo stumbled upon a "
-                                           "forbidden link. You might need to change your search string")
+            self.error_msg.setText("You are not connected to the internet")
+            self.error_msg.setDetailedText("This feature will not work without an internet connection. ")
             self.error_msg.exec_()
             return False
 
@@ -241,6 +238,7 @@ class EasyPPAInstall(QtGui.QDialog):
         self.table_data.append(pasta)
 
     def showPackages(self, sauce):
+        QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         button = QtGui.qApp.focusWidget()
         index = self.table.indexAt(button.pos())
         if index.isValid():
@@ -249,6 +247,7 @@ class EasyPPAInstall(QtGui.QDialog):
             if len(sauce) >= index.row():
                 available.showView(sauce[index.row()], "PPA Packages", text, False)
                 available.show()
+        QtGui.QApplication.restoreOverrideCursor()
 
     def showMessage(self):
         msg = QtGui.QMessageBox(self)

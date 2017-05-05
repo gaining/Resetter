@@ -1,3 +1,12 @@
+resetter (0.2.6-rc3) trusty; urgency=low
+
+  * Misc improvements
+  * Able to deal with package maintainer scripts now.
+  * Removed the python-evdev module from dependencies as it is no longer needed.
+
+ -- gaining <gaining7@outlook.com>  Fri, 05 May 2017 04:09:59 -0400
+
+
 resetter (0.2.5-rc2) trusty; urgency=low
   * Added dependency add-apt-key as it isn't included in some distros by default
   * Fixed easy ppa for elementary os
