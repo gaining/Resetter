@@ -9,7 +9,7 @@ Resetter's *resetting* feature works by using an updated manifest of the system 
 # Status
 - Feedback will be greatly appreciated.
 - current version is 0.2.6-rc3
-- Please check the changelog for more details.
+- Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 - If you find a bug, please create an issue on github. 
 - If you do not have a github account please send your bug report at gaining7@outlook.com.
 
