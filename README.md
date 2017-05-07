@@ -22,14 +22,10 @@ It is easier to install any deb files via gdebi, especially on elementary os wit
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
 **For Linux Deepin**
-
-1. Then install it with: 
-..`sudo gdebi python-evdev_0.4.1-0ubuntu3_amd64.deb` 
-
-2. Fetch the add-apt-key package
+ 
+Fetch the add-apt-key package
 .. `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb`
-
-3. Install it with:
+ Install it with:
 .. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 
 Then you can begin installing resetter
