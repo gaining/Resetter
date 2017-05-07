@@ -21,14 +21,9 @@ Install via deb file found [here](https://github.com/gaining/Resetter/releases/t
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
-**For Linux Deepin**
+**For Linux Deepin Users**
  
-Fetch the add-apt-key package
-.. `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb`
- Install it with:
-.. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
-
-Then you can begin installing resetter
+Before installing Resetter, fetch the add-apt-key package using `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb` and install it with `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 
 # Options comparison
 
