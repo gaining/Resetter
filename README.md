@@ -7,10 +7,8 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 Resetter's *resetting* feature works by using an updated manifest of the system to compare it against the currently installed packages list. It will then find packages that have been installed after the initial system install. If some packages are missing from the manifest, it will deem them as missing pre-installed packages and they will be available to re-install.
 
 # Status
-- The software is almost stable.
-- New features will still be added.
-- Feedback will be greatly appreciated.
-- current version is 0.3.7-rc4 features huge performance improvements and other improvements over previous versions
+- The software is almost stable. Feedback will be greatly appreciated.
+- Current version is 0.3.7-rc4 features huge performance improvements and other improvements over previous versions
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 - If you find a bug or problem please create an issue on github. 
 - If you do not have a github account do not hesitate to contact me and send your bug report at gaining7@outlook.com.
