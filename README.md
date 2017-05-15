@@ -17,7 +17,7 @@ Resetter's *resetting* feature works by using an updated manifest of the system 
 
 
 # How to install
-Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v0.3.4-rc4). 
+Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v0.3.7-rc4). 
 
 PPA will be created this friday or weekend.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
