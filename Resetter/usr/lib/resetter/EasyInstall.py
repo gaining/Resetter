@@ -109,17 +109,17 @@ class EasyInstaller(QtGui.QDialog):
             item = model.item(index)
             if item.isCheckable() and item.checkState() == QtCore.Qt.Unchecked:
                 item.setCheckState(QtCore.Qt.Checked)
-                self.btnadd.setText("Deselect all")
+                self.btnselect.setText("Deselect all")
             else:
                 item.setCheckState(QtCore.Qt.Unchecked)
-                self.btnadd.setText("Select all")
+                self.btnselect.setText("Select all")
 
     def openBackup(self):
         try:
             dpath = os.path.abspath(os.path.join("Backup", "../../../"))
             backup = QtGui.QFileDialog.getOpenFileName(self, 'Choose Backup', dpath, "(*.rbf)")
             if os.path.isfile(backup):
-                with open(backup, "r") as bk:
+                with open(backup, 'r') as bk:
                     for line in bk:
                         try:
                             pkg = self.cache[line.strip()]
@@ -159,7 +159,6 @@ class EasyInstaller(QtGui.QDialog):
         self.install.show()
         self.install.exec_()
         self.removeItems()
-        print "Finished installing"
 
     def closeview(self):
         self.cache.close()

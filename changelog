@@ -1,3 +1,13 @@
+resetter (0.3.7-rc4) trusty; urgency=high
+  
+  * Huge performance improvements
+  * Better multithreading support
+  * Remove old kernels feature improved
+  * misc improvements
+
+ -- gaining <gaining7@outlook.com>  Tue, 09 May 2017 22:19:05 -0400
+
+
 resetter (0.2.6-rc3) trusty; urgency=low
 
   * Misc improvements

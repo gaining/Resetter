@@ -120,7 +120,7 @@ class AppRemovalPage(QtGui.QWizardPage):
         mode = 'a' if self.isWritten else 'w'
         with open(path, mode) as f_out:
             for item in self.items:
-                print('{}'.format(item.text()))
+                #print('{}'.format(item.text()))
                 f_out.write(item.text())
 
     def closeCache(self):
@@ -231,7 +231,7 @@ class AppInstallPage(QtGui.QWizardPage):
         mode = 'a' if self.isWritten else 'w'
         with open(path, mode) as f_out:
             for item in self.items:
-                print('{}'.format(item.text()))
+                #print('{}'.format(item.text()))
                 f_out.write(item.text())
 
 
@@ -307,15 +307,15 @@ class UserRemovalPage(QtGui.QWizardPage):
             if value == 3:  # They are both checked
                 print'{} is marked for {}'.format(user.item(row, 0).text(), user.horizontalHeaderItem(2).text())
                 user.item(row, 1).setCheckState(QtCore.Qt.Unchecked)
-                text += 'userdel -r -f {}'.format(user.item(row, 0).text())
+                text += 'userdel -r -f {}\n'.format(user.item(row, 0).text())
                 self.logger.debug(text)
             elif value == 2:  # only second is checked
                 print'{} is marked for {}'.format(user.item(row, 0).text(), user.horizontalHeaderItem(2).text())
-                text += 'userdel -r -f {}'.format(user.item(row, 0).text())
+                text += 'userdel -r -f {}\n'.format(user.item(row, 0).text())
                 self.logger.debug(text)
             elif value == 1:  # only first is checked
                 print'{} is makred for {}'.format(user.item(row, 0).text(), user.horizontalHeaderItem(1).text())
-                text += 'userdel -f {}'.format(user.item(row, 0).text())
+                text += 'userdel -f {}\n'.format(user.item(row, 0).text())
                 self.logger.debug(text)
         with open(path, mode) as f:
             f.write(text)

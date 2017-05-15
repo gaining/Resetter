@@ -311,7 +311,7 @@ class UiMainWindow(QtGui.QMainWindow):
                 word = "vivid"
             else:
                 word = None
-            black_list = ['linux-image', 'linux-headers', 'openjdk-7-jre', 'grub']
+            black_list = ['linux-image', 'linux-headers', 'linux-generic', 'openjdk-7-jre', 'grub']
             with open("apps-to-install", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as man:
                 diff = set(man).difference(installed)
@@ -328,7 +328,7 @@ class UiMainWindow(QtGui.QMainWindow):
 
     def save(self):
         self.getInstalledList()
-        time = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+        time = strftime("%Y%m%d %H:%M:%S", gmtime())
         name = "snapshot - {}".format(time)
         filename, extension = QtGui.QFileDialog.getSaveFileNameAndFilter(
             self, 'Save Backup file', '/home/{}/{}'.format(self.user, name), filter=self.tr(".rbf"))
@@ -519,7 +519,7 @@ class UiMainWindow(QtGui.QMainWindow):
 
     def compareFiles(self):
         try:
-            black_list = (['linux-image', 'linux-headers', 'ca-certificates', 'pyqt4-dev-tools',
+            black_list = (['linux-image', 'linux-headers', 'linux-generic', 'ca-certificates', 'pyqt4-dev-tools',
                           'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
                           'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'resetter',
                           'python-evdev', 'python-bs4', 'python-mechanize', 'add-apt-key', 'python-html5lib',
@@ -556,6 +556,36 @@ class UiMainWindow(QtGui.QMainWindow):
             black_list = ['root']
             with open("users", "w") as output:
                 for line in result:
+                    if not any(s in line for s in black_list):
+                        output.writelines(line)
+            self.logger.info("getLocalUserList() completed")
+
+        except (subprocess.CalledProcessError, Exception) as e:
+            print "an error has occured while getting users, please check the log file"
+            self.logger.error("Error comparing files: ".format(e), exc_info=True)
+
+    def getAllUsers(self):
+        try:
+            self.logger.info("getting local users...")
+            cmd = subprocess.check_output(['bash', '-c', 'compgen -u'])
+            black_list = ['root']
+            with open("non-default-users", "w") as output:
+                for line in cmd:
+                    if not any(s in line for s in black_list):
+                        output.writelines(line)
+            self.logger.info("getLocalUserList() completed")
+
+        except (subprocess.CalledProcessError, Exception) as e:
+            print "an error has occured while getting users, please check the log file"
+            self.logger.error("Error comparing files: ".format(e), exc_info=True)
+
+    def getAllGroups(self):
+        try:
+            self.logger.info("getting local users...")
+            cmd = subprocess.check_output(['bash', '-c', 'compgen -g'])
+            black_list = ['root']
+            with open("non-default-users", "w") as output:
+                for line in cmd:
                     if not any(s in line for s in black_list):
                         output.writelines(line)
             self.logger.info("getLocalUserList() completed")

@@ -1,6 +1,5 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
 import apt
 import lsb_release
 import mechanize
@@ -23,6 +22,9 @@ class EasyPPAInstall(QtGui.QDialog):
         self.searchEditText.setPlaceholderText("Search for applications")
         self.searchEditText.setMaximumWidth(200)
         self.searchbutton = QtGui.QPushButton()
+        self.error_msg = QtGui.QMessageBox()
+        self.error_msg.setIcon(QtGui.QMessageBox.Critical)
+        self.error_msg.setWindowTitle("Error")
         self.closebutton = QtGui.QPushButton()
         self.closebutton = QtGui.QPushButton()
         self.closebutton.setText('Close')
@@ -56,12 +58,24 @@ class EasyPPAInstall(QtGui.QDialog):
         self.verticalLayout.addLayout(self.horizontalLayout2)
         self.os_info = lsb_release.get_lsb_information()
         self.sources = sourceslist.SourcesList()
-        self.aprogress = UIAcquireProgress(self.progressbar, self.lbl1, True)
-        self.error_msg = QtGui.QMessageBox()
-        self.error_msg.setIcon(QtGui.QMessageBox.Critical)
-        self.error_msg.setWindowTitle("Error")
+
+        self.aprogress = UIAcquireProgress(True)
+        self.thread1 = QtCore.QThread()
+        self.aprogress.moveToThread(self.thread1)
+        self.thread1.started.connect(lambda: self.aprogress.play(0.0, False, ""))
+        self.aprogress.finished.connect(self.thread1.quit)
+        self.connect(self.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
+
         self.ppa = []
         self.table_data = []
+
+    def updateProgressBar2(self, percent, isdone, status):
+        self.lbl1.setText(status)
+        self.progressbar.setValue(percent)
+        if isdone:
+            self.installProgress.end_of_threads.connect(self.finished)
+            self.labels[(2, 1)].setPixmap(self.pixmap2)
+            self.close()
 
     def configureTable(self, table):
         table.setColumnCount(4)

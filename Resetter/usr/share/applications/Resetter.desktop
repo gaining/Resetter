@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Resetter
 Version=1.0
-Exec=pkexec /usr/lib/resetter/Resetter.py
+Exec=/usr/bin/resetter
 Comment=reset your system to stock
 Icon=/usr/lib/resetter/data/icons/resetter.png
 Type=Application

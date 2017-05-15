@@ -7,17 +7,19 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 Resetter's *resetting* feature works by using an updated manifest of the system to compare it against the currently installed packages list. It will then find packages that have been installed after the initial system install. If some packages are missing from the manifest, it will deem them as missing pre-installed packages and they will be available to re-install.
 
 # Status
-- The software is currently in release candidate stage.
+- The software is almost stale.
 - New features will still be added.
 - Feedback will be greatly appreciated.
-- current version is 0.2.6-rc3
+- current version is 0.3.7-rc4 features huge performance improvements and other improvements over previous versions
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 - If you find a bug or problem please create an issue on github. 
 - If you do not have a github account do not hesitate to contact me and send your bug report at gaining7@outlook.com.
 
 
 # How to install
-Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v0.2.6-rc3). PPA will be created soon.
+Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v0.3.4-rc4). 
+
+PPA will be created this friday or weekend.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
@@ -76,13 +78,13 @@ MPIA means missing pre-installed apps
 - migrate to python3 and pyqt5 
 - more reset options
 - support more debian based distro - progressing well
-- stabilize resetter - very stable so far
+- stabilize resetter
 
 # Donate
 2000+ downloads but not yet any donation amount by anyone :(
 
-Please show your support by donating a small amount if this app has helped you.
-If you're feeling generous though, I will greatly appreciate it. If you'd like your name to be on the donators list, I can arrange for that as well.
+Please show your support by donating Resetter has helped you.
+If you'd like your name to be on the donors list, I can arrange for that as well.
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8FET8RGU2ZKQ8)
 

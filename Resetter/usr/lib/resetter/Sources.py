@@ -45,13 +45,13 @@ class SourceEdit(QtGui.QDialog):
 
     def editSources(self, title, tip):
         self.setWindowTitle(title)
-        self.list_view = QtGui.QListView(self)
-        self.model = QtGui.QStandardItemModel(self.list_view)
+        list_view = QtGui.QListView(self)
+        self.model = QtGui.QStandardItemModel(list_view)
         self.model.itemChanged.connect(self.setItems)
         self.setToolTip(tip)
         verticalLayout = QtGui.QVBoxLayout(self)
         verticalLayout.addWidget(self.searchEditText)
-        verticalLayout.addWidget(self.list_view)
+        verticalLayout.addWidget(list_view)
         horizontalLayout = QtGui.QHBoxLayout()
         horizontalLayout.setAlignment(QtCore.Qt.AlignRight)
         horizontalLayout.addWidget(self.label)
@@ -60,7 +60,7 @@ class SourceEdit(QtGui.QDialog):
         horizontalLayout.addWidget(self.btnRemove)
         horizontalLayout.addWidget(self.btnClose)
         verticalLayout.addLayout(horizontalLayout)
-        self.searchEditText.textChanged.connect(lambda: self.searchItem(self.model, self.list_view))
+        self.searchEditText.textChanged.connect(lambda: self.searchItem(self.model, list_view))
 
         for dirpath, dirs, files in os.walk('/etc/apt/'):
             word = 'deb'
@@ -71,11 +71,11 @@ class SourceEdit(QtGui.QDialog):
                     for line in sources:
                         if line.startswith(word) or line.startswith('#') \
                                 and line[2:].split(' ')[0][:3] == word:
-                                self.item = QtGui.QStandardItem(line)
-                                self.item.setCheckable(True)
-                                self.item.setCheckState(QtCore.Qt.Unchecked)
-                                self.model.appendRow(self.item)
-                    self.list_view.setModel(self.model)
+                                item = QtGui.QStandardItem(line)
+                                item.setCheckable(True)
+                                item.setCheckState(QtCore.Qt.Unchecked)
+                                self.model.appendRow(item)
+                    list_view.setModel(self.model)
 
     def setItems(self, item):
         if item.checkState() == QtCore.Qt.Checked:
@@ -97,8 +97,6 @@ class SourceEdit(QtGui.QDialog):
         self.close()
         self.msg.exec_()
 
-
-
     def enableSelectedSources(self):
         for item in self.items:
             item = str(item)
@@ -117,13 +115,11 @@ class SourceEdit(QtGui.QDialog):
             self.s.remove(x)
             self.s.save()
         self.close()
-        self.msg.setText("Your changes have been successfully applied")
         self.msg.exec_()
 
     def searchItem(self, model, view):
         search_string = self.searchEditText.text()
-        items = model.findItems(search_string, QtCore.Qt.MatchContains
-                                or QtCore.Qt.MatchStartsWith)
+        items = model.findItems(search_string, QtCore.Qt.MatchContains or QtCore.Qt.MatchStartsWith)
         if len(items) > 0:
             for item in items:
                 if item.row() == 0:
@@ -139,5 +135,5 @@ class SourceEdit(QtGui.QDialog):
                         item.setFont(self.font2)
             view.scrollToTop()
         else:
-            self.label.setText("source doesn't exist")
+            self.label.setText("Repository doesn't exist")
         view.show()

@@ -1,11 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
 
-#!/usr/bin/python
 from PyQt4 import QtGui, QtCore
 import sys
 import subprocess
-import fileinput
-import os
-import CustomReset
 import crypt
 import random
 import logging

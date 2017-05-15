@@ -1,7 +1,10 @@
 #!/bin/bash
 LANG=en_US.UTF-8
 
-python /usr/lib/resetter/Resetter.py
-
+if [[ $EUID -ne 0 ]]; then
+   pkexec /usr/lib/resetter/Resetter.py
+else
+     /usr/lib/resetter/Resetter.py
+fi
 
 

@@ -7,19 +7,18 @@ import logging
 import os
 import subprocess
 import sys
-import threading
-import time
 from PyQt4 import QtCore, QtGui
-import apt_pkg
 from AptProgress import UIAcquireProgress, UIInstallProgress
 
 
 class ProgressThread(QtCore.QThread):
+
+    end_of_threads = QtCore.pyqtSignal()
+
     def __init__(self, file_in, install):
         QtCore.QThread.__init__(self)
-        self.op_progress = None
-        self._cache = apt.Cache(self.op_progress)
-        self._cache.open()
+        self.cache = apt.Cache(None)
+        self.cache.open()
         self.file_in = file_in
         self.install = install
         self.isDone = False
@@ -30,9 +29,22 @@ class ProgressThread(QtCore.QThread):
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(funcName)s - %(levelname)s - %(message)s')
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
-        QtGui.qApp.processEvents()
-        self.resolver = apt.cache.ProblemResolver(self._cache)
-        apt_pkg.init()
+        self.resolver = apt.cache.ProblemResolver(self.cache)
+        self.aprogress = UIAcquireProgress(False)
+        self.thread1 = QtCore.QThread()
+        self.aprogress.moveToThread(self.thread1)
+        self.thread1.started.connect(lambda: self.aprogress.play(0.0, False, ""))
+        self.aprogress.finished.connect(self.thread1.quit)
+
+        self.error_msg = QtGui.QMessageBox()
+        self.error_msg.setIcon(QtGui.QMessageBox.Critical)
+        self.error_msg.setWindowTitle("Error")
+
+        self.thread2 = QtCore.QThread()
+        self.iprogress = UIInstallProgress()
+        self.iprogress.moveToThread(self.thread2)
+        self.thread2.started.connect(lambda: self.iprogress.play(0.0, ""))
+        self.iprogress.finished.connect(self.thread2.quit)
         self.broken_list = []
 
     def lineCount(self):
@@ -52,7 +64,7 @@ class ProgressThread(QtCore.QThread):
                 for pkg_name in packages:
                     try:
                         loading += x
-                        self.pkg = self._cache[pkg_name.strip()]
+                        self.pkg = self.cache[pkg_name.strip()]
                         if not self.install:
                             self.pkg.mark_delete(True, True)
                             print "{} will be removed".format(self.pkg)
@@ -64,18 +76,38 @@ class ProgressThread(QtCore.QThread):
                         # if resolver cannot find a way to cleanly install packages, move it to the broken list
                         if self.pkg.is_inst_broken:
                             self.broken_list.append(self.pkg.fullname)
-                        self.logger.critical("{}".format(error))
+                        self.logger.critical("{}".format(error), exc_info=True)
                         continue
-                self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, True)
+                self.thread1.start()
+                self.thread2.start()
+                self.installPackages()
+                self.end_of_threads.emit()
         else:
             print "All removable packages are already removed"
             self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, True)
+
+    def installPackages(self):
+        try:
+            self.logger.info("treating Packages")
+            self.cache.commit(self.aprogress, self.iprogress)
+        except (apt.cache.FetchFailedException, apt.cache.LockFailedException) as e:
+            print "failed locking {}".format(e)
+            self.logger.error("Action on package failed. Error: [{}]".format(str(e)), exc_info=True)
+            if self.install:
+                print "Sorry, package install failed [{}]".format(str(e))
+                self.error_msg.setText("Sorry, package install failed.")
+                self.error_msg.setDetailedText(" Error {}".format(e))
+                self.error_msg.exec_()
+            else:
+                self.error_msg.setText("Sorry, kernel removal failed.")
+                self.error_msg.setDetailedText("Please make sure to close all other package managers.")
+                self.error_msg.exec_()
 
 
 class Install(QtGui.QDialog):
     def __init__(self, file_in, action, action_type, parent=None):
         super(Install, self).__init__(parent)
-        self.setMinimumSize(305, 100)
+        self.setMinimumSize(400, 100)
         self.file_in = file_in
         self.setWindowTitle("Working...")
         self.error_msg = QtGui.QMessageBox()
@@ -84,7 +116,9 @@ class Install(QtGui.QDialog):
         self.buttonCancel = QtGui.QPushButton()
         self.buttonCancel.setText("Cancel")
         self.buttonCancel.clicked.connect(self.cancel)
-        self.progress = QtGui.QProgressBar(self)
+        self.progress = QtGui.QProgressBar()
+        self.progress2 = QtGui.QProgressBar()
+        self.progress2.setVisible(False)
         self.lbl1 = QtGui.QLabel()
         gif = os.path.abspath("/usr/lib/resetter/data/icons/chassingarrows.gif")
         self.movie = QtGui.QMovie(gif)
@@ -94,6 +128,7 @@ class Install(QtGui.QDialog):
         verticalLayout = QtGui.QVBoxLayout(self)
         verticalLayout.addWidget(self.lbl1)
         verticalLayout.addWidget(self.progress)
+        verticalLayout.addWidget(self.progress2)
         gridLayout = QtGui.QGridLayout()
         self.labels = {}
         for i in range(1, 3):
@@ -116,10 +151,12 @@ class Install(QtGui.QDialog):
         self.logger.addHandler(handler)
         self.installProgress = ProgressThread(file_in, action_type)
         self.connect(self.installProgress, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
-        self.install_cache = self.installProgress._cache
-        self.aprogress = UIAcquireProgress(self.progress, self.lbl1, False)
-        self.iprogress = UIInstallProgress(self.progress, self.lbl1)
+        self.connect(self.installProgress.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
+        self.connect(self.installProgress.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
         self.start()
+        if not self.installProgress.lineCount() > 0:
+           print "Threads exited as there's nothing to do."
+           self.cancel()
 
     def updateProgressBar(self, percent, isdone):
         self.lbl1.setText("Loading Package List")
@@ -127,32 +164,39 @@ class Install(QtGui.QDialog):
         self.labels[(1, 1)].setMovie(self.movie)
         self.movie.start()
         if isdone:
-            self.labels[(1, 1)].setPixmap(self.pixmap2)
             self.movie.stop()
-            self.labels[(2, 1)].setMovie(self.movie)
-            self.movie.start()
-            self.installPackages()
+
+    def updateProgressBar2(self, percent, isdone, status):
+        self.progress.setVisible(False)
+        self.progress2.setVisible(True)
+        self.labels[(1, 1)].setPixmap(self.pixmap2)
+        self.lbl1.setText(status)
+        self.labels[(2, 1)].setMovie(self.movie)
+        self.movie.start()
+        self.progress2.setValue(percent)
+        if isdone:
+            self.installProgress.end_of_threads.connect(self.finished)
+            self.labels[(2, 1)].setPixmap(self.pixmap2)
+            self.close()
 
     def cancel(self):
         self.logger.warning("Progress thread was cancelled")
-        self.installProgress.terminate()
+        self.installProgress.thread1.finished.connect(self.installProgress.thread1.exit)
+        self.installProgress.thread2.finished.connect(self.installProgress.thread2.exit)
+        self.installProgress.end_of_threads.connect(self.installProgress.exit)
         self.close()
 
-    def installPackages(self):
-        try:
-            self.logger.info("treating Packages")
-            self.movie.start()
-            self.setCursor(QtCore.Qt.BusyCursor)
-            self.install_cache.commit(self.aprogress, self.iprogress)
-            self.progress.setValue(100)
-            self.labels[(2, 1)].setPixmap(self.pixmap2)
-            if len(self.installProgress.broken_list) > 0:
-                self.showMessage()
-            self.close()
-            self.unsetCursor()
-        except Exception as arg:
-            self.logger.error("package install failed [{}]".format(str(arg)))
-            print "Sorry, package install failed [{}]".format(str(arg))
+    @QtCore.pyqtSlot()
+    def finished(self):
+        self.movie.stop()
+        self.installProgress.thread1.finished.connect(self.installProgress.thread1.exit)
+        self.installProgress.thread2.finished.connect(self.installProgress.thread2.exit)
+        self.installProgress.end_of_threads.connect(self.installProgress.exit)
+        self.installProgress.thread1 = None
+        self.installProgress.thread2 = None
+        self.installProgress = None
+        self.close()
+
 
     def start(self):
         self.installProgress.start()
@@ -172,3 +216,4 @@ if __name__ == '__main__':
     install = Install(file, True)
     install.show()
     sys.exit(app.exec_())
+

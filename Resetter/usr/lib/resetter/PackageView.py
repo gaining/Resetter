@@ -72,6 +72,7 @@ class AppView(QtGui.QDialog):
         buttonBox.rejected.connect(self.closeview)
         model = QtGui.QStandardItemModel(list_view)
         self.searchEditText.textChanged.connect(lambda: self.searchItem(model, list_view))
+        self.file_in = data
 
         if type(data) is str:
             with open(data) as f:

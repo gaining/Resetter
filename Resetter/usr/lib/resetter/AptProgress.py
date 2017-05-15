@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from PyQt4 import QtGui, QtCore
+from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
 import os
 import apt_pkg
-from PyQt4 import QtGui
-from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
 
 apt_pkg.init_config()
 apt_pkg.config.set("DPkg::Options::", "--force-confnew")
@@ -12,89 +12,78 @@ apt_pkg.config.set('APT::Get::Assume-Yes', 'true')
 apt_pkg.config.set('APT::Get::force-yes', 'true')
 os.putenv("DEBIAN_FRONTEND", "gnome")
 
+class UIAcquireProgress(AcquireProgress, QtCore.QObject):
+    finished = QtCore.pyqtSignal()
 
-class UIOpProgress(OpProgress):
-    def __init__(self, pbar):
-        OpProgress.__init__(self)
-        self.pbar = pbar
-
-    def update(self, percent):
-        self.pbar.setValue(int(percent))
-        QtGui.qApp.processEvents()
-        OpProgress.update(self, percent)
-
-    def done(self):
-        OpProgress.done(self)
-
-
-class UIAcquireProgress(AcquireProgress):
-    def __init__(self, pbar, status_label, other):
+    def __init__(self, other):
         AcquireProgress.__init__(self)
-        self.pbar = pbar
-        self.status_label = status_label
-        self.percent = 0.0
+        QtCore.QObject.__init__(self)
         self.other = other
 
     def pulse(self, owner):
+        done = False
         current_item = self.current_items + 1
         if current_item > self.total_items:
             current_item = self.total_items
         if self.other:
-            text = "Updating source {} of {}".format(current_item, self.total_items)
+            status = "Updating source {} of {}".format(current_item, self.total_items)
             percent = (float(self.current_items) / self.total_items) * 100
+
         else:
-            text = "Downloading package {} of {} at {:.2f} MB/s".format(current_item, self.total_items,
+            status = "Downloading package {} of {} at {:.2f} MB/s".format(current_item, self.total_items,
                                                                         (float(self.current_cps) / 10 ** 6))
             percent = (((self.current_bytes + self.current_items) * 100.0) /
                        float(self.total_bytes + self.total_items))
-        self.pbar.setValue(int(percent))
-        self.status_label.setText(text)
-        QtGui.qApp.processEvents()
+        self.play(percent, done, status)
         return True
 
-    def start(self):
-        QtGui.qApp.processEvents()
+    def play(self, percent, done, status):
+        self.emit(QtCore.SIGNAL('updateProgressBar2(int, bool, QString)'), percent, done, status)
 
     def stop(self):
-        self.status_label.setText("Finished")
-        QtGui.qApp.processEvents()
+        self.finished.emit()
 
     def done(self, item):
         print "{} [Downloaded]".format(item.shortdesc)
-        QtGui.qApp.processEvents()
 
     def fail(self, item):
         print "{} Failed".format(item.shortdesc)
 
     def ims_hit(self, item):
         print "{} [Hit]".format(item.shortdesc)
-        self.status_label.setText("{} [Hit]".format(item.shortdesc))
-        QtGui.qApp.processEvents()
 
 
-class UIInstallProgress(InstallProgress):
-    def __init__(self, pbar, status_label):
+class UIInstallProgress(InstallProgress, QtCore.QObject):
+    finished = QtCore.pyqtSignal()
+
+    def __init__(self):
         InstallProgress.__init__(self)
-        self.pbar = pbar
-        self.status_label = status_label
+        QtCore.QObject.__init__(self)
         self.last = 0.0
-        os.putenv("DEBIAN_FRONTEND", "gnome")
+        self.done = False
 
+        self.message = QtGui.QMessageBox()
+        self.message.setIcon(QtGui.QMessageBox.Information)
+        self.message.setWindowTitle("Message")
 
     def status_change(self, pkg, percent, status):
         if self.last >= percent:
             return
-        self.status_label.setText((status))
-        self.pbar.setValue(int(percent))
         self.last = percent
-        QtGui.qApp.processEvents()
+        self.play(percent, status)
+
+    def play(self, percent, status):
+        self.emit(QtCore.SIGNAL('updateProgressBar2(int, bool, QString)'), percent, self.done, status)
 
     def pulse(self):
-        QtGui.qApp.processEvents()
         return InstallProgress.pulse(self)
 
     def finish_update(self):
-        pass
+        self.done = True
+        self.finished.emit()
+        self.emit(QtCore.SIGNAL('updateProgressBar2(int, bool, QString)'), 100, self.done, "Finished")
+
+        print "Finished"
 
     def processing(self, pkg, stage):
         print "starting {} stage for {}".format(stage, pkg)
