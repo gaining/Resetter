@@ -79,8 +79,6 @@ MPIA means missing pre-installed apps
 - stabilize resetter
 
 # Donate
-2000+ downloads but not yet any donation amount by anyone :(
-
 Please show your support by donating Resetter has helped you.
 If you'd like your name to be on the donors list, I can arrange for that as well.
 
@@ -88,3 +86,6 @@ If you'd like your name to be on the donors list, I can arrange for that as well
 
 # Contact
 - If you wish to contact me about anything else reach me via gaining7@outlook.com.
+
+# Donors List - Thank you so much for your support and contribution
+- Mez Pahlan - $10
