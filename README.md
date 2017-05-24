@@ -52,6 +52,10 @@ MPIA means missing pre-installed apps
 | Create custom backup user              |             ✗             |            ✓           |
 | Auto install MPIAs                     |             ✓             |            ✓           |
 | Choose which MPIAs to install          |             ✗             |            ✓           |
+| remove non-default users               |             ✓             |            ✓           |
+| dependent package view                 |             ✗             |            ✓           |
+| remove snap packages                   |             ✓             |            ✓           |
+
 
 </center>
 
