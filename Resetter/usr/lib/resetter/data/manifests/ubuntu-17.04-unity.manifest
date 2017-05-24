@@ -1608,7 +1608,6 @@ pulseaudio-utils
 python
 python-apt
 python-apt-common
-python-evdev
 python-minimal
 python-qt4
 python-sip
@@ -1790,7 +1789,6 @@ signon-ui-service
 signon-ui-x11
 signond
 simple-scan
-snapd
 snapd-login-service
 sni-qt:amd64
 software-properties-common

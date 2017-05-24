@@ -75,6 +75,7 @@ class EasyPPAInstall(QtGui.QDialog):
         if isdone:
             self.installProgress.end_of_threads.connect(self.finished)
             self.labels[(2, 1)].setPixmap(self.pixmap2)
+            #time.sleep(2)
             self.close()
 
     def configureTable(self, table):
@@ -215,18 +216,17 @@ class EasyPPAInstall(QtGui.QDialog):
     def addPPA(self, ppa):
         button = QtGui.qApp.focusWidget()
         index = self.table.indexAt(button.pos())
-        # row = index.row()
         if index.isValid() and ppa[index.row()][1]:
             try:
-                # ppa = self.table.item(row, 1).text()
                 QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
                 x = str(ppa[index.row()])
                 y = str(x[7:]).split(' ', 1)[0]
-                entry = self.sources.add('deb', y, self.codeName(), ['main'])
-                entry.set_enabled(True)
+                entry = ('deb', y, self.codeName(), ['main'])
+                self.sources.add(*entry)
                 self.sources.save()
-                p = subprocess.check_output(['apt-key', 'adv', '--keyserver', 'keyserver.ubuntu.com', '--recv-keys',
-                                      ppa[index.row()][2]])
+                p = subprocess.check_output(
+                    ['apt-key', 'adv', '--keyserver', 'keyserver.ubuntu.com', '--recv-keys', ppa[index.row()][2]]
+                )
                 print p
                 QtGui.QApplication.restoreOverrideCursor()
             except Exception as e:

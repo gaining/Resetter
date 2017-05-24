@@ -71,7 +71,7 @@ class SourceEdit(QtGui.QDialog):
                     for line in sources:
                         if line.startswith(word) or line.startswith('#') \
                                 and line[2:].split(' ')[0][:3] == word:
-                                item = QtGui.QStandardItem(line)
+                                item = QtGui.QStandardItem(line.strip())
                                 item.setCheckable(True)
                                 item.setCheckState(QtCore.Qt.Unchecked)
                                 self.model.appendRow(item)

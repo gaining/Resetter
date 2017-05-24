@@ -57,7 +57,7 @@ class ProgressThread(QtCore.QThread):
             pass
 
     def run(self):
-        if self.lineCount() != 0:
+        if self.lineCount() > 0:
             loading = 0
             x = float(100) / self.lineCount()
             with open(self.file_in) as packages:
@@ -71,7 +71,7 @@ class ProgressThread(QtCore.QThread):
                         else:
                             self.pkg.mark_install()
                             print "{} will be installed ".format(self.pkg.shortname)
-                            self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
+                        self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
                     except (KeyError, SystemError) as error:
                         # if resolver cannot find a way to cleanly install packages, move it to the broken list
                         if self.pkg.is_inst_broken:
@@ -90,18 +90,16 @@ class ProgressThread(QtCore.QThread):
         try:
             self.logger.info("treating Packages")
             self.cache.commit(self.aprogress, self.iprogress)
-        except (apt.cache.FetchFailedException, apt.cache.LockFailedException) as e:
-            print "failed locking {}".format(e)
-            self.logger.error("Action on package failed. Error: [{}]".format(str(e)), exc_info=True)
+        except Exception as e:
+            self.logger.error("Action on package failed. Error: [{}]".format(e, exc_info=True))
+            error = e.message
             if self.install:
-                print "Sorry, package install failed [{}]".format(str(e))
-                self.error_msg.setText("Sorry, package install failed.")
-                self.error_msg.setDetailedText(" Error {}".format(e))
-                self.error_msg.exec_()
+                text = "Package install failed"
+                self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
             else:
-                self.error_msg.setText("Sorry, kernel removal failed.")
-                self.error_msg.setDetailedText("Please make sure to close all other package managers.")
-                self.error_msg.exec_()
+                text = "Package removal failed"
+                self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
+
 
 
 class Install(QtGui.QDialog):
@@ -153,6 +151,8 @@ class Install(QtGui.QDialog):
         self.connect(self.installProgress, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
         self.connect(self.installProgress.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
         self.connect(self.installProgress.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
+        self.connect(self.installProgress, QtCore.SIGNAL("showError(QString, QString)"), self.showError)
+
         self.start()
         if not self.installProgress.lineCount() > 0:
            print "Threads exited as there's nothing to do."
@@ -179,6 +179,15 @@ class Install(QtGui.QDialog):
             self.labels[(2, 1)].setPixmap(self.pixmap2)
             self.close()
 
+    def showError(self, error, m_type):
+        msg = QtGui.QMessageBox(self)
+        msg.setWindowTitle(m_type)
+        msg.setIcon(QtGui.QMessageBox.Critical)
+        text = "If you're running another package manager such as synaptic or USC please close them and try again."
+        msg.setText(text)
+        msg.setDetailedText(error)
+        msg.exec_()
+
     def cancel(self):
         self.logger.warning("Progress thread was cancelled")
         self.installProgress.thread1.finished.connect(self.installProgress.thread1.exit)
@@ -196,7 +205,6 @@ class Install(QtGui.QDialog):
         self.installProgress.thread2 = None
         self.installProgress = None
         self.close()
-
 
     def start(self):
         self.installProgress.start()

@@ -1638,7 +1638,6 @@ signon-ui-x11
 signond
 simple-scan
 snap-confine
-snapd
 snapd-login-service
 sni-qt:amd64
 software-properties-common

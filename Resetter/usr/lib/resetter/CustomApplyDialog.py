@@ -66,11 +66,11 @@ class ProgressThread(QtCore.QThread):
             self.logger.info("Broken Count before commit: {}".format(self.cache.broken_count))
             self.cache.commit(self.aprogress, self.iprogress)
             self.logger.info("Broken Count after commit: {}".format(self.cache.broken_count))
-        except Exception as arg:
-            self.logger.error("Sorry, package removal failed [{}]".format(str(arg)))
-            self.error_msg.setText("Something went wrong... please check details")
-            self.error_msg.setDetailedText("Package removal failed [{}]".format(str(arg)))
-            self.error_msg.exec_()
+        except Exception as e:
+            self.logger.error("Error: [{}]".format(e, exc_info=True))
+            error = e.message
+            text = "Package removal failed"
+            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
 
     def run(self):
         if self.lineCount(self.file_in) != 0:
@@ -93,24 +93,26 @@ class ProgressThread(QtCore.QThread):
                 self.thread2.start()
                 self.removePackages()
                 self.conclude_op.emit()
+
         else:
             print "All removable packages are already removed"
             self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, True)
 
 
 class Apply(QtGui.QDialog):
-    def __init__(self, file_in, response, parent=None):
+    def __init__(self, file_in, response, rsu, parent=None):
         super(Apply, self).__init__(parent)
         self.setMinimumSize(400, 250)
         self.file_in = file_in
         self.response = response
+        self.rsu = rsu
         self.setWindowTitle("Applying")
         self.error_msg = QtGui.QMessageBox()
         self.error_msg.setIcon(QtGui.QMessageBox.Critical)
         self.error_msg.setWindowTitle("Error")
         self.buttonCancel = QtGui.QPushButton()
         self.buttonCancel.setText("Cancel")
-        self.buttonCancel.clicked.connect(self.cancel)
+        self.buttonCancel.clicked.connect(self.finished)
         self.progress = QtGui.QProgressBar()
         self.progress2 = QtGui.QProgressBar()
         self.progress2.setVisible(False)
@@ -155,10 +157,9 @@ class Apply(QtGui.QDialog):
         self.progressView = ProgressThread(self.file_in, False)
         self.account = AccountDialog()
         self.connect(self.progressView, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
-        self.connect(self.progressView.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"),
-                     self.updateProgressBar2)
-        self.connect(self.progressView.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"),
-                     self.updateProgressBar2)
+        self.connect(self.progressView.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
+        self.connect(self.progressView.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
+        self.connect(self.progressView, QtCore.SIGNAL("showError(QString, QString)"), self.showError)
         self.addUser()
 
     def updateProgressBar(self, percent, isdone):
@@ -182,7 +183,6 @@ class Apply(QtGui.QDialog):
             self.labels[(2, 1)].setPixmap(self.pixmap2)
             self.movie.stop()
             self.fixBroken()
-
 
     def fixBroken(self):
         self.labels[(3, 1)].setMovie(self.movie)
@@ -268,25 +268,19 @@ class Apply(QtGui.QDialog):
             self.logger.info("Old kernel removal option not chosen")
 
     def installPackages(self):
-            self.logger.info("Starting installations...")
-            self.labels[(4, 1)].setMovie(self.movie)
-            if self.progressView.lineCount('custom-install') > 0:
-                self.install = Install("custom-install", "Installing packages", True)
-                self.install.show()
-                self.install.exec_()
-                self.labels[(4, 1)].setPixmap(self.pixmap2)
-            else:
-                self.labels[(4, 1)].setPixmap(self.pixmap2)
+        self.logger.info("Starting installations...")
+        self.labels[(4, 1)].setMovie(self.movie)
+        if self.progressView.lineCount('custom-install') > 0:
+            self.install = Install("custom-install", "Installing packages", True)
+            self.install.show()
+            self.install.exec_()
+            self.labels[(4, 1)].setPixmap(self.pixmap2)
+        else:
+            self.labels[(4, 1)].setPixmap(self.pixmap2)
+
 
     def start(self):
         self.progressView.start()
-
-    def cancel(self):
-        self.logger.warning("Progress thread was cancelled")
-        self.progressView.thread1.finished.connect(self.progressView.thread1.exit)
-        self.progressView.thread2.finished.connect(self.progressView.thread2.exit)
-        self.progressView.conclude_op.connect(self.progressView.exit)
-        self.close()
 
     @QtCore.pyqtSlot()
     def finished(self):
@@ -294,12 +288,20 @@ class Apply(QtGui.QDialog):
         self.progressView.thread1.finished.connect(self.progressView.thread1.exit)
         self.progressView.thread2.finished.connect(self.progressView.thread2.exit)
         self.progressView.conclude_op.connect(self.progressView.exit)
-        self.progressView.thread1 = None
-        self.progressView.thread2 = None
-        self.progressView = None
         self.close()
 
+    def removeSystemUsers(self, rsu):
+        if rsu:
+            self.logger.info("Starting user removal")
+            with open("non-default-users") as f_in, open('custom-users-to-delete.sh', 'a') as output:
+                for line in f_in:
+                    line = ("userdel -rf ", line)
+                    output.writelines(line)
+        else:
+            pass
+
     def removeUsers(self, response):
+        self.removeSystemUsers(self.rsu)
         if response:
             self.logger.info("Starting user removal")
             self.labels[(6, 1)].setMovie(self.movie)
@@ -309,7 +311,8 @@ class Apply(QtGui.QDialog):
                 self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
             except subprocess.CalledProcessError, e:
                 self.logger.error("unable removing user [{}]".format(e.output))
-            self.labels[(6, 1)].setPixmap(self.pixmap2)
+            else:
+                self.labels[(6, 1)].setPixmap(self.pixmap2)
         else:
             self.logger.info("Starting user removal")
             self.labels[(5, 1)].setMovie(self.movie)
@@ -319,7 +322,8 @@ class Apply(QtGui.QDialog):
                 self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
             except subprocess.CalledProcessError, e:
                 self.logger.error("unable removing user [{}]".format(e.output))
-            self.labels[(5, 1)].setPixmap(self.pixmap2)
+            else:
+                self.labels[(5, 1)].setPixmap(self.pixmap2)
 
     def getDependencies(self):
         try:
@@ -353,6 +357,15 @@ class Apply(QtGui.QDialog):
             os.system('reboot')
         else:
             self.logger.info("reboot was delayed.")
+
+    def showError(self, error, m_type):
+        msg = QtGui.QMessageBox(self)
+        msg.setWindowTitle(m_type)
+        msg.setIcon(QtGui.QMessageBox.Critical)
+        text = "If you're running another package manager such as synaptic or USC please close them and try again."
+        msg.setText(text)
+        msg.setDetailedText(error)
+        msg.exec_()
 
     def showMessage(self):
         msg = QtGui.QMessageBox(self)

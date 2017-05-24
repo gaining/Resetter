@@ -34,7 +34,7 @@ class About(QtGui.QDialog):
         desc_text = "Built With PyQt\n\n " \
                     "This is a great utility software that will help you reset your linux installation its stock state" \
                     "among other things."
-        version_text = "Version: 0.3.7-rc4"
+        version_text = "Version: 1.0.0-stable"
         donate_text = 'If you liked my project, please ' \
                       '<a href="https://github.com/gaining/Resetter/blob/master/DONATE.md">Donate </a>'
         more_text = 'To find out more about this project, please visit my github:' \

@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4 import QtGui, QtCore
-from apt.progress.base import InstallProgress, OpProgress, AcquireProgress
+from apt.progress.base import InstallProgress, AcquireProgress
 import os
 import apt_pkg
 
@@ -11,6 +11,7 @@ apt_pkg.config.set("DPkg::Options::", "--force-confnew")
 apt_pkg.config.set('APT::Get::Assume-Yes', 'true')
 apt_pkg.config.set('APT::Get::force-yes', 'true')
 os.putenv("DEBIAN_FRONTEND", "gnome")
+
 
 class UIAcquireProgress(AcquireProgress, QtCore.QObject):
     finished = QtCore.pyqtSignal()
@@ -30,7 +31,10 @@ class UIAcquireProgress(AcquireProgress, QtCore.QObject):
             percent = (float(self.current_items) / self.total_items) * 100
 
         else:
-            status = "Downloading package {} of {} at {:.2f} MB/s".format(current_item, self.total_items,
+            if self.current_cps == 0:
+                status = "Downloading package {} of {} at - MB/s".format(current_item, self.total_items)
+            else:
+                status = "Downloading package {} of {} at {:.2f} MB/s".format(current_item, self.total_items,
                                                                         (float(self.current_cps) / 10 ** 6))
             percent = (((self.current_bytes + self.current_items) * 100.0) /
                        float(self.total_bytes + self.total_items))
@@ -61,7 +65,6 @@ class UIInstallProgress(InstallProgress, QtCore.QObject):
         QtCore.QObject.__init__(self)
         self.last = 0.0
         self.done = False
-
         self.message = QtGui.QMessageBox()
         self.message.setIcon(QtGui.QMessageBox.Information)
         self.message.setWindowTitle("Message")
@@ -82,7 +85,6 @@ class UIInstallProgress(InstallProgress, QtCore.QObject):
         self.done = True
         self.finished.emit()
         self.emit(QtCore.SIGNAL('updateProgressBar2(int, bool, QString)'), 100, self.done, "Finished")
-
         print "Finished"
 
     def processing(self, pkg, stage):

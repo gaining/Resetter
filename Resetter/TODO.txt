@@ -1,5 +1,0 @@
-create better launcher icon
-upgrade  to python3 and pyqt5
-add command line options
-
-

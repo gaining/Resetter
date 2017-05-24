@@ -67,7 +67,6 @@ class EasyInstaller(QtGui.QDialog):
         self.cache = apt.Cache()
         self.isWritten = False
 
-
     def addItems(self):
         package = str(self.EditText.text())
         try:
@@ -142,22 +141,24 @@ class EasyInstaller(QtGui.QDialog):
             pass
 
     def installPackages(self):
+        self.btnInstall.setEnabled(False)
         model = self.model
         for index in xrange(model.rowCount()):
             item = model.item(index)
             if self.isWritten:
-                mode = "a"
+                mode = 'a'
             else:
-                mode = "w"
+                mode = 'w'
                 self.isWritten = True
             if item.isCheckable() and item.checkState() == QtCore.Qt.Checked:
-                with open("install", mode) as f_out:
+                with open('install', mode) as f_out:
                     to_install = str(item.text()).split(':')[0]
-                    f_out.write("{}\n".format(to_install))
+                    f_out.write('{}\n'.format(to_install))
 
-        self.install = Install("install", "Installing packages", True)
+        self.install = Install('install', 'Installing packages', True)
         self.install.show()
         self.install.exec_()
+        self.btnInstall.setEnabled(True)
         self.removeItems()
 
     def closeview(self):
@@ -179,7 +180,6 @@ class EasyInstaller(QtGui.QDialog):
             if p.shortname.startswith(package) and len(package) > 0 and i < 12:
                 i += 1
                 self.comboBox.addItem(p.shortname)
-
         if self.comboBox.count() > 1:
             self.comboBox.setVisible(True)
         msg = QtGui.QMessageBox(self)

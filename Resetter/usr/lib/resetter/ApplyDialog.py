@@ -17,8 +17,7 @@ class ProgressThread(QtCore.QThread):
 
     def __init__(self, file_in, install):
         QtCore.QThread.__init__(self)
-        self.op_progress = None
-        self.cache = apt.Cache(self.op_progress)
+        self.cache = apt.Cache(None)
         self.cache.open()
         self.file_in = file_in
         self.isDone = False
@@ -60,16 +59,18 @@ class ProgressThread(QtCore.QThread):
     def removePackages(self):
         self.logger.info("Removing Programs")
         try:
+            package = self.cache['snapd']
+            package.mark_delete(True, True)
             self.logger.info("Keep Count before commit: {}".format(self.cache.keep_count))
             self.logger.info("Delete Count before commit: {}".format(self.cache.delete_count))
             self.logger.info("Broken Count before commit: {}".format(self.cache.broken_count))
             self.cache.commit(self.aprogress, self.iprogress)
             self.logger.info("Broken Count after commit: {}".format(self.cache.broken_count))
-        except Exception as arg:
-            self.logger.error("Sorry, package removal failed [{}]".format(str(arg)))
-            self.error_msg.setText("Something went wrong... please check details")
-            self.error_msg.setDetailedText("Package removal failed [{}]".format(str(arg)))
-            self.error_msg.exec_()
+        except Exception as e:
+            self.logger.error("Error: [{}]".format(e, exc_info=True))
+            error = e.message
+            text = "Package removal failed"
+            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
 
     def run(self):
         if self.lineCount(self.file_in) != 0:
@@ -108,7 +109,7 @@ class Apply(QtGui.QDialog):
         self.error_msg.setWindowTitle("Error")
         self.buttonCancel = QtGui.QPushButton()
         self.buttonCancel.setText("Cancel")
-        self.buttonCancel.clicked.connect(self.cancel)
+        self.buttonCancel.clicked.connect(self.finished)
         self.progress = QtGui.QProgressBar()
         self.progress2 = QtGui.QProgressBar()
         self.progress2.setVisible(False)
@@ -148,11 +149,20 @@ class Apply(QtGui.QDialog):
         self.logger.addHandler(handler)
         self.progressView = ProgressThread(self.file_in, False)
         self.connect(self.progressView, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
-        self.connect(self.progressView.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"),
-                     self.updateProgressBar2)
-        self.connect(self.progressView.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"),
-                     self.updateProgressBar2)
+        self.connect(self.progressView.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
+        self.connect(self.progressView.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
+        self.connect(self.progressView, QtCore.SIGNAL("showError(QString, QString)"), self.showError)
+        self.addUser()
         self.start()
+
+    def addUser(self):
+        try:
+            self.logger.info("Adding default user...")
+            p = subprocess.check_output(['bash', '/usr/lib/resetter/data/scripts/new-user.sh'])
+            print p
+            self.logger.info("Default user added")
+        except subprocess.CalledProcessError as e:
+            self.logger.error("unable to add user Error: {}".format(e.output))
 
     def updateProgressBar(self, percent, isdone):
         self.lbl1.setText("Loading Package List")
@@ -175,7 +185,6 @@ class Apply(QtGui.QDialog):
             self.labels[(2, 1)].setPixmap(self.pixmap2)
             self.movie.stop()
             self.fixBroken()
-
 
     def fixBroken(self):
         self.labels[(3, 1)].setMovie(self.movie)
@@ -219,31 +228,24 @@ class Apply(QtGui.QDialog):
     def start(self):
         self.progressView.start()
 
-    def cancel(self):
-        self.logger.warning("Progress thread was cancelled")
-        self.progressView.thread1.finished.connect(self.progressView.thread1.exit)
-        self.progressView.thread2.finished.connect(self.progressView.thread2.exit)
-        self.progressView.conclude_op.connect(self.progressView.exit)
-        self.close()
-
     @QtCore.pyqtSlot()
     def finished(self):
         self.logger.warning("finished apt operation")
         self.progressView.thread1.finished.connect(self.progressView.thread1.exit)
         self.progressView.thread2.finished.connect(self.progressView.thread2.exit)
-        self.progressView.end_of_threads.connect(self.progressView.exit)
-        self.progressView.thread1 = None
-        self.progressView.thread2 = None
-        self.progressView = None
+        self.progressView.conclude_op.connect(self.progressView.exit)
         self.close()
 
     def removeUsers(self):
         self.logger.info("Starting user removal")
         self.labels[(5, 1)].setMovie(self.movie)
-        with open("users") as f_in, open("users-to-delete.sh", "w") as output:
+        with open('users') as f_in, open('non-default-users', 'r') as ndu, open("users-to-delete.sh", "w") as output:
             for line in f_in:
-                line = ("userdel -rf ", line)
+                line = ('userdel -rf ', line)
                 output.writelines(line)
+            for s_user in ndu:
+                s_user = ('userdel -rf ', s_user)
+                output.writelines(s_user)
         try:
             subprocess.Popen(['bash', 'users-to-delete.sh'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
         except subprocess.CalledProcessError as e:
@@ -294,6 +296,15 @@ class Apply(QtGui.QDialog):
         msg.setText("These packages could cause problems if removed so they've been kept back.")
         text = "\n".join(self.progressView.broken_list)
         msg.setInformativeText(text)
+        msg.exec_()
+
+    def showError(self, error, m_type):
+        msg = QtGui.QMessageBox(self)
+        msg.setWindowTitle(m_type)
+        msg.setIcon(QtGui.QMessageBox.Critical)
+        text = "If you're running another package manager such as synaptic or USC please close them and try again."
+        msg.setText(text)
+        msg.setDetailedText(error)
         msg.exec_()
 
     def showUserInfo(self):

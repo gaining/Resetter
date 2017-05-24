@@ -1,3 +1,17 @@
+resetter (1.0.0-stable) trusty; urgency=high
+
+   * better system type detection
+   * bug fix: re-enabled automatic reset default user addition
+   * New feature: remove all non-default users
+   * New feature: dependency view in custom reset
+   * New feature: Able to remove all snap packages on reset
+   * a bit of code refactoring and cleanup
+   * updated manifest for ubuntu distros mainly 14.04
+   * misc improvements
+
+ -- gaining <gaining7@outlook.com>  Wed, 24 May 2017 00:34:34 -0400
+
+
 resetter (0.3.7-rc4) trusty; urgency=high
   
   * Huge performance improvements

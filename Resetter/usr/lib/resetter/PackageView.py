@@ -49,7 +49,7 @@ class AppView(QtGui.QDialog):
         self.cache.close()
         self.close()
 
-    def showView(self, data, title, tip, start):
+    def showView(self, data, title, tip, start, width=None, height=None, check_state=None):
         self.setWindowTitle(title)
         self.setToolTip(tip)
         self.cache = apt.Cache()
@@ -80,7 +80,7 @@ class AppView(QtGui.QDialog):
                     try:
                         pkg = self.cache[line.strip()]
                         text = pkg.versions[0].description
-                        item = QtGui.QStandardItem(line)
+                        item = QtGui.QStandardItem(line.strip())
                         item.setCheckState(QtCore.Qt.Checked)
                         item.setToolTip((textwrap.fill(text, 70)))
                     except KeyError:
@@ -90,11 +90,16 @@ class AppView(QtGui.QDialog):
                 list_view.show()
 
         elif type(data) is list:
+            if width and height is not None:
+                self.resize(width, height)
             for x in data:
                 x = (str(x))
                 item = QtGui.QStandardItem(x)
                 item.setCheckable(False)
-                item.setCheckState(QtCore.Qt.Unchecked)
+                if check_state:
+                    item.setCheckState(QtCore.Qt.Checked)
+                else:
+                    item.setCheckState(QtCore.Qt.Unchecked)
                 model.appendRow(item)
             list_view.setModel(model)
             list_view.show()

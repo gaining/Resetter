@@ -1,4 +1,4 @@
-# Resetter
+# Resetter v1.0.0-stable
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section. 
@@ -7,20 +7,29 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 Resetter's *resetting* feature works by using an updated manifest of the system to compare it against the currently installed packages list. It will then find packages that have been installed after the initial system install. If some packages are missing from the manifest, it will deem them as missing pre-installed packages and they will be available to re-install.
 
 # Status
-- The software is almost stable. Feedback will be greatly appreciated.
-- Current version is 0.3.7-rc4 features huge performance improvements and other improvements over previous versions
+- The software is stable. Feedback will be greatly appreciated.
+- Current version is 1.0.0-stable some major bug fixes and new features + improvements.
+- Now that the stable version is out of the way, I will focuse my time on building a cli version which should take long. It will be written in python 3 this time.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
+
+# To Do 
+- Debian Jessie support (Top Priority)
+- Make Resetter multilingual. (I will be needing the help of volunteer translators.) I already have a volunteer Spanish translator on standby)
+- Make an appimage as there are many reasons why Resetter needs to be portable.
+
+# Bug reports | informe de error | rapport d'erreur | relatório de erro| 錯誤報告 | отчет об ошибке
+- It's possible that you want to report a bug but don't speak or write in English? Don't worry! Send the bug report in your native language (to my email) and I will use a translator to decipher what you mean. 
 - If you find a bug or problem please create an issue on github. 
 - If you do not have a github account do not hesitate to contact me and send your bug report at gaining7@outlook.com.
 
 
 # How to install
-Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v0.3.7-rc4). 
+Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.0.0-stable). 
 
-PPA will be created this friday or weekend.
+PPA will be created when I figure out how.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
-- Linux deepin isn't based on ubuntu but on debian so some modules aren't available in their repos by default.
+- Linux deepin isn't based on Ubuntu but on Debian so some modules are not available in their repos by default.
 **For Linux Deepin Users**
  
 Before installing Resetter, fetch the add-apt-key package using `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb` and install it with `sudo gdebi add-apt-key_1.0-0.5_all.deb`
@@ -64,19 +73,6 @@ MPIA means missing pre-installed apps
 - Elementary OS 0.4 
 - Debian jessie ~ delayed but will come via resetter-cli
 - Linux Deepin 15.4 
-
-# Upcoming changes in the near future
-- command line options - delayed but in the works
-- different install options - implemented
-- pick from backup list to install or remove - implemented
-- option to install missing pre-installed packages - implemented
-
-# Distant future plans
-- translations - 
-- migrate to python3 and pyqt5 
-- more reset options
-- support more debian based distro - progressing well
-- stabilize resetter
 
 # Donate
 Please show your support by donating Resetter has helped you.
