@@ -14,7 +14,7 @@ Resetter's *resetting* feature works by using an updated manifest of the system 
 
 # To Do 
 - Debian Jessie support (Top Priority)
-- Make Resetter multilingual. (I will be needing the help of volunteer translators.) I already have a volunteer Spanish translator on standby)
+- Make Resetter multilingual. (I will be needing the help of volunteer translators.) I already have a volunteer Spanish translator on standby.)
 - Make an appimage as there are many reasons why Resetter needs to be portable.
 
 # Bug reports | informe de error | rapport d'erreur | relatório de erro| 錯誤報告 | отчет об ошибке
