@@ -4,10 +4,10 @@
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section. 
 
 # How does it work?
-- Typical case of auto apps reset
-- installed programs list - updated manifest = non-default programs
-- updated manifest - installed programs list = MPIAs
-- reset = (Installed programs list - non-default programs) + MPIAs
+- Typical case of auto apps reset <br/>
+installed programs list - updated manifest = non-default programs <br/>
+updated manifest - installed programs list = MPIAs <br/>
+reset = (Installed programs list - non-default programs) + MPIAs <br/>
 There are other reset features, see features list.
 
 
