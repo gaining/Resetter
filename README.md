@@ -11,7 +11,7 @@ reset = (Installed programs list - non-default programs) + MPIAs <br/>
 There are other reset features, see features list.
 
 
-# Status - Stable
+# Status - stable
 - The software is stable. Feedback will be greatly appreciated.
 - Current version is 1.0.0-stable some major bug fixes and new features + improvements.
 - Now that the stable version is out of the way, I will focus my time on building a CLI version which shouldn't take long. It will be written in python 3 this time.
