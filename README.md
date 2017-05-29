@@ -4,7 +4,7 @@
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section. 
 
 # How does it work?
-Resetter's *resetting* feature works by using an updated manifest of the system to compare it against the currently installed packages list. It will then find packages that have been installed after the initial system install. If some packages are missing from the manifest, it will deem them as missing pre-installed packages and they will be available to re-install.
+Installed programs list - updated manifest = non-default apps
 
 # Status - Stable
 - The software is stable. Feedback will be greatly appreciated.
