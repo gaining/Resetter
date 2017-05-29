@@ -5,9 +5,10 @@ It is an application built with python and pyqt that will help to reset an Ubunt
 
 # How does it work?
 - Typical case of auto apps reset
-    installed programs list - updated manifest = non-default programs_
-    updated manifest - installed programs list = MPIAs_
-    reset = (Installed programs list - non-default programs) + MPIAs_
+- installed programs list - updated manifest = non-default programs
+- updated manifest - installed programs list = MPIAs
+- reset = (Installed programs list - non-default programs) + MPIAs
+There are other reset features, see features list.
 
 
 # Status - Stable
