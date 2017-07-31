@@ -18,7 +18,7 @@ from CustomReset import AppWizard
 from PackageView import AppView
 from Sources import SourceEdit
 from SetEnvironment import Settings
-from singleton import SingleApplication
+from Singleton import SingleApplication
 from EasyRepo import EasyPPAInstall
 from EasyInstall import EasyInstaller
 
@@ -327,7 +327,6 @@ class UiMainWindow(QtGui.QMainWindow):
             self.error_msg.exec_()
             print e.output
 
-
     def warningPrompt(self):
         choice = QtGui.QMessageBox.warning \
             (self, 'RESET EVERYTHING?',
@@ -342,7 +341,7 @@ class UiMainWindow(QtGui.QMainWindow):
             self.getMissingPackages()
             if self.lineCount("apps-to-remove") != 0:
                 self.getLocalUserList()
-                self.findNoneDefaultUsers()
+                self.findNonDefaultUsers()
                 view = AppView(self)
                 tip = "These packages will be removed"
                 view.showView("apps-to-remove", "Packages To Remove", tip, True)
@@ -409,14 +408,12 @@ class UiMainWindow(QtGui.QMainWindow):
         try:
             black_list = (['linux-image', 'linux-headers', 'linux-generic', 'ca-certificates', 'pyqt4-dev-tools',
                           'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
-                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'resetter', 'python-bs4',
-                          'python-mechanize', 'add-apt-key', 'python-html5lib', 'python-pkg-resources',
-                          'python-webencodings', 'python-chardet', 'python-lxml', 'python-six', 'grub'])
+                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'grub'])
             with open("apps-to-remove", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as pman:
                 diff = set(installed).difference(pman)
                 for line in diff:
-                    if not any(s in line for s in black_list):
+                    #if not any(s in line for s in black_list):
                         output.writelines(line)
         except Exception as e:
             self.logger.error("Error comparing files [{}]".format(e), exc_info=True)
@@ -436,16 +433,17 @@ class UiMainWindow(QtGui.QMainWindow):
     def showNonDefaultUsers(self):
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         self.getLocalUserList()
-        self.findNoneDefaultUsers()
+        self.findNonDefaultUsers()
         if len(self.non_defaults) > 0:
             ndu = AppView(self)
             text = "These are non default users"
-            ndu.showView(self.non_defaults, 'Non default users and groups list', text, False)
+            ndu.showView(self.non_defaults, 'Non-default users and groups list', text, False)
             ndu.show()
             QtGui.QApplication.restoreOverrideCursor()
         else:
             QtGui.QApplication.restoreOverrideCursor()
             self.error_msg.setIcon(QtGui.QMessageBox.Information)
+            self.error_msg.setWindowTitle("No non-default users or groups on your system found")
             self.error_msg.setText("Nothing to show :-)")
             self.error_msg.exec_()
 
@@ -467,7 +465,7 @@ class UiMainWindow(QtGui.QMainWindow):
             print "an error has occured while getting users, please check the log file"
             self.logger.error("Error comparing files: ".format(e), exc_info=True)
 
-    def findNoneDefaultUsers(self):
+    def findNonDefaultUsers(self):
         try:
             self.logger.info("getting local users...")
             cmd = subprocess.check_output(['bash', '-c', 'compgen -u'])
@@ -494,7 +492,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.getMissingPackages()
         self.getLocalUserList()
         self.getOldKernels()
-        self.findNoneDefaultUsers()
+        self.findNonDefaultUsers()
         custom_reset = AppWizard(self)
         custom_reset.show()
         QtGui.QApplication.restoreOverrideCursor()

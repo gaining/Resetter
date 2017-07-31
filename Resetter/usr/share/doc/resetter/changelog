@@ -1,5 +1,6 @@
 resetter (1.0.1-stable) trusty; urgency=medium
 
+  * updated all existing manifest
   * new manifests for Linux Mint 18.2, Deepin 15.4.1 and others.
   * misc changes
 

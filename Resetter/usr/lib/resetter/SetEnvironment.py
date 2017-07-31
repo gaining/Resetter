@@ -11,6 +11,7 @@ import shutil
 import sys
 import sqlite3
 from PyQt4 import QtGui
+import subprocess
 
 
 class Settings(object):
@@ -88,9 +89,10 @@ class Settings(object):
 
     def detectOS(self):
         compat_os = (['LinuxMint', 'Ubuntu', 'elementary', 'Deepin'])
-        compat_releases = (['17.3', '17.04', '18.1', '18', '14.04','16.04', '16.10', '0.4', '15.4'])
+        compat_releases = (['17.3', '17.04', '18.1', '18', '14.04','16.04',
+                            '16.10', '0.4', '15.4', '15.4.1', '18.2','0.4.1'])
         if self.os_info['ID'] in compat_os and self.os_info['RELEASE'] in compat_releases:
-            if self.os_info['ID'] == ('LinuxMint'):
+            if self.os_info['ID'] == 'LinuxMint':
                 if self.os_info['RELEASE'] == '17.3':
                     windowTitle = self.os_info['ID'] + " Resetter"
                     manifest = "manifests/mint-17.3-cinnamon.manifest"
@@ -108,6 +110,13 @@ class Settings(object):
                     manifest = 'manifests/mint-18.1-cinnamon.manifest'
                     userlist = 'userlists/mint-18.1-default-userlist'
                     return manifest, userlist, windowTitle
+
+                elif self.os_info['RELEASE'] == '18.2':
+                    windowTitle = self.os_info['ID'] + " Resetter"
+                    manifest = 'manifests/mint-18.2-cinnamon.manifest'
+                    userlist = 'userlists/mint-18.2-default-userlist'
+                    return manifest, userlist, windowTitle
+
 
             elif self.os_info['ID'] == 'Ubuntu':
                 if self.os_info['RELEASE'] == '14.04':
@@ -141,11 +150,23 @@ class Settings(object):
                     userlist = 'userlists/eos-0.4-default-userlist'
                     return manifest, userlist, windowTitle
 
+                elif self.os_info['RELEASE'] == '0.4.1':
+                    windowTitle = self.os_info['ID'] + " Resetter"
+                    manifest = 'manifests/eos-0.4.1.manifest'
+                    userlist = 'userlists/eos-0.4-default-userlist'
+                    return manifest, userlist, windowTitle
+
             elif self.os_info['ID'] == 'Deepin':
                 if self.os_info['RELEASE'] == '15.4':
                     windowTitle = self.os_info['ID'] + " Resetter"
                     manifest = 'manifests/deepin-15.4.manifest'
                     userlist = 'userlists/deepin-15.4-default-userlist'
+                    return manifest, userlist, windowTitle
+
+                elif self.os_info['RELEASE'] == '15.4.1':
+                    windowTitle = self.os_info['ID'] + " Resetter"
+                    manifest = 'manifests/deepin-15.4.1.manifest'
+                    userlist = 'userlists/deepin-15.4.1-default-userlist'
                     return manifest, userlist, windowTitle
         else:
             self.error_msg.setText("Your distro ({}) isn't supported at the moment.".format(self.os_info['DESCRIPTION']))
@@ -156,19 +177,15 @@ class Settings(object):
 
     def filesExist(self, manifest, userlist):
         if not os.path.isfile(manifest):
+            self.manifest = None
             self.error_msg.setText(
                 "Manifest could not be found, please choose a manifest for your system if you have one")
             self.error_msg.setDetailedText("without a system manifest, this program won't function")
             self.error_msg.exec_()
             self.error_msg.close()
         if not os.path.isfile(userlist):
+            self.userlist = None
             self.error_msg.setText(
                 "userlist could not be found, features requiring this file will not work.")
             self.error_msg.setDetailedText("This is not a big issue")
             self.error_msg.exec_()
-
-
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    about = Settings()
-    sys.exit(app.exec_())

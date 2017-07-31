@@ -87,8 +87,14 @@ class ProgressThread(QtCore.QThread):
                         self.logger.error("{}".format(error))
                         if self.pkg.is_inst_broken or self.pkg.is_now_broken:
                             self.broken_list.append(self.pkg.fullname)
-                        self.logger.critical("{}".format(error))
-                        continue
+                            self.logger.critical("{}".format(error))
+                            continue
+                        else:
+                            self.logger.critical("{}".format(error, exc_info=True))
+                            error = error.message
+                            text = "Package removal failed"
+                            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
+                            break
                 self.thread1.start()
                 self.thread2.start()
                 self.removePackages()

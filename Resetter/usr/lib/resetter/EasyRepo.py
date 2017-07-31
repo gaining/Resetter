@@ -91,7 +91,6 @@ class EasyPPAInstall(QtGui.QDialog):
         header.setResizeMode(2, QtGui.QHeaderView.ResizeToContents)
         table.horizontalHeader().setStretchLastSection(True)
 
-
     def searchForPPA(self, table):
         if self.isThereInternet() is False:
             self.close()
@@ -100,6 +99,7 @@ class EasyPPAInstall(QtGui.QDialog):
             del self.ppa[:]
             del self.table_data[:]
             browser = mechanize.Browser()
+            browser.set_handle_robots(False)
             browser.open('https://launchpad.net/')
             browser.addheaders = [("User-agent", "Mozilla/5.0")]
             browser.select_form(nr=0)
@@ -109,14 +109,16 @@ class EasyPPAInstall(QtGui.QDialog):
             browser.submit()
             match = "+archive"
             exclude = ["+packages", "+build", "+sourcepub"]
+
             for link in browser.links():
                 if not any(s in link.url for s in exclude) and match in link.url:
                     found_links.append(link)
                     QtGui.qApp.processEvents()
-                if len(found_links) == 0:
-                    self.lbl1.setText("No results found")
-                else:
-                    self.lbl1.clear()
+            if len(found_links) == 0:
+                self.lbl1.setText("No results found")
+            else:
+                self.lbl1.clear()
+
             table.setRowCount(len(found_links))
             self.displayLinks(found_links, table, browser)
             QtGui.QApplication.restoreOverrideCursor()
@@ -126,8 +128,11 @@ class EasyPPAInstall(QtGui.QDialog):
         cache = apt.Cache()
         cache.update(self.aprogress)
         self.buttonRefresh.setEnabled(True)
+        self.lbl1.setText("Update Complete!")
 
     def displayLinks(self, found_links, table, browser):
+        loading = 0
+        x = float(100) / len(found_links)
         try:
             for i, link in enumerate(found_links):
                 desc = QtGui.QTableWidgetItem()
@@ -143,7 +148,7 @@ class EasyPPAInstall(QtGui.QDialog):
                 soup = BeautifulSoup(htmltext, 'html.parser')
                 ppaTag = soup.find('strong', attrs={'class': 'ppa-reference'})
                 if ppaTag is not None:
-                    ppa_name = ppaTag.text.strip()  # strip() is used to remove starting and trailing
+                    ppa_name = ppaTag.text.strip()
                     ppa.setText(ppa_name)
                 b = QtCore.QByteArray.fromPercentEncoding(link.text)
                 text = b.data().decode("utf8")
@@ -168,8 +173,8 @@ class EasyPPAInstall(QtGui.QDialog):
                 sauce = soup.find('table', attrs={'class': 'listing sortable'})
                 if sauce is not None:
                     self.getTableData(sauce)
-                 # strip() is used to remove starting and trailing
-                print link.text, link.url
+                loading += x
+                self.progressbar.setValue(int(loading))
                 QtGui.qApp.processEvents()
         except Exception as e:
             self.error_msg.setText("Error, please try again.")
@@ -179,7 +184,7 @@ class EasyPPAInstall(QtGui.QDialog):
 
     def isThereInternet(self):
         try:
-            mechanize.urlopen('http://github.com', timeout=1)
+            mechanize.urlopen('http://google.com', timeout=1)
             return True
         except mechanize.URLError as e:
             print "There is no internet {}".format(e)
@@ -190,7 +195,7 @@ class EasyPPAInstall(QtGui.QDialog):
             return False
 
     def codeName(self):
-        xenial_fam = (['serena', 'sarah', 'loki'])
+        xenial_fam = (['serena', 'sarah', 'loki', 'sonya'])
         if self.os_info['CODENAME'] == 'rosa':
             return "trusty"
         elif self.os_info['CODENAME'] in xenial_fam:
