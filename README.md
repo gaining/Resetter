@@ -13,14 +13,12 @@ There are other reset features, see features list.
 
 # Status - stable
 - The software is stable. Feedback will be greatly appreciated.
-- Current version is 1.0.0-stable some major bug fixes and new features + improvements.
+- Current version is 1.0.1-stable some major bug fixes and new features + improvements.
 - Now that the stable version is out of the way, I will focus my time on building a CLI version which shouldn't take long. It will be written in python 3 this time.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
 # How to install
 Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.0.1-stable). 
-
-PPA will be created when I figure out how.
 It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on Ubuntu but on Debian so some modules are not available in their repos by default.
