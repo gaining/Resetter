@@ -14,7 +14,7 @@ There are other reset features, see features list.
 # Status - stable
 - The software is stable. Feedback will be greatly appreciated.
 - Current version is 1.0.1-stable some major bug fixes and new features + improvements.
-- Now that the stable version is out of the way, I will focus my time on building a CLI version which shouldn't take long. It will be written in python 3 this time.
+- Future Project: Resetter-cli, a version of resetter that runs terminally.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
 # How to install
