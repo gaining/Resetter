@@ -71,15 +71,11 @@ MPIA means missing pre-installed apps
 - Source Editor: It is a normal editor that can disable, enable, or remove ppas from a user's system but what makes this different from other source editors is that you can search for the ppa that you want to edit.
 
 # Officially supported distros [64-bit]
-- Linux Mint 18.1
-- Linux Mint 18
-- Linux Mint 17.3
-- Ubuntu 17.04
-- Ubuntu 16.10 
-- Ubuntu 16.04
-- Ubuntu 14.04
-- Elementary OS 0.4 
-- Linux Deepin 15.4 
+
+- Linux Mint 17.3+
+- Ubuntu 14.04+
+- Elementary OS 0.4+ 
+- Linux Deepin 15.4+ 
 
 # Donate
 Please show your support by donating Resetter has helped you.
