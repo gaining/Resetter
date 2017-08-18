@@ -408,12 +408,12 @@ class UiMainWindow(QtGui.QMainWindow):
         try:
             black_list = (['linux-image', 'linux-headers', 'linux-generic', 'ca-certificates', 'pyqt4-dev-tools',
                           'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
-                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'grub'])
+                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'grub', 'python-mechanize', 'python-bs4'])
             with open("apps-to-remove", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as pman:
                 diff = set(installed).difference(pman)
                 for line in diff:
-                    #if not any(s in line for s in black_list):
+                    if not any(s in line for s in black_list):
                         output.writelines(line)
         except Exception as e:
             self.logger.error("Error comparing files [{}]".format(e), exc_info=True)
