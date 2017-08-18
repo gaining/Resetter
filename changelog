@@ -1,5 +1,14 @@
+resetter (1.0.2-stable) trusty; urgency=low
+
+  * fixed filename error for mint 17.3 userlist
+  * fixed zero division error in easyppa
+
+ -- gaining <gaining7@outlook.com>  Fri, 18 Aug 2017 18:29:00 -0400
+
+
 resetter (1.0.1-stable) trusty; urgency=medium
 
+  * updated all existing manifest
   * new manifests for Linux Mint 18.2, Deepin 15.4.1 and others.
   * misc changes
 

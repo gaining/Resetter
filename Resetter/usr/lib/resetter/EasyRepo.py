@@ -132,7 +132,8 @@ class EasyPPAInstall(QtGui.QDialog):
 
     def displayLinks(self, found_links, table, browser):
         loading = 0
-        x = float(100) / len(found_links)
+        x = float(100) / len(found_links) if len(found_links) != 0 else 0
+
         try:
             for i, link in enumerate(found_links):
                 desc = QtGui.QTableWidgetItem()

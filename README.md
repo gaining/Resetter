@@ -1,4 +1,4 @@
-# Resetter v1.0.1-stable
+# Resetter v1.0.2-stable
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section. 
@@ -13,13 +13,13 @@ There are other reset features, see features list.
 
 # Status - stable
 - The software is stable. Feedback will be greatly appreciated.
-- Current version is 1.0.1-stable some major bug fixes and new features + improvements.
+- Current version is 1.0.2-stable some major bug fixes and new features + improvements.
 - Future Project: Resetter-cli, a version of resetter that runs terminally.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
 # How to install
-Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.0.1-stable). 
-It is easier to install any deb files via gdebi, especially on elementary os with no graphical way of installing a deb file. 
+Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.0.2-stable). 
+It is easier to install any deb files with gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on Ubuntu but on Debian so some modules are not available in their repos by default.
 
@@ -27,14 +27,14 @@ On the terminal, run `sudo apt install gdebi`.
 Before installing Resetter, fetch the add-apt-key package using `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb` and install it with `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 
 # To Do 
-- Official video tutorial on youtube
+- Official video tutorial on YouTube
 - Debian Jessie support
 - Make Resetter multilingual. (Will need help of volunteer translators) 
-- Make an appimage as there are many reasons why Resetter needs to be portable.
+- Make an app-image as there are many reasons why Resetter needs to be portable.
 
 # Bug reports
 - If you find a bug or problem please create an issue on github. 
-- If you do not have a github account do not hesitate to contact me and send your bug report at gaining7@outlook.com.
+- If you do not have a github account do not hesitate to contact me and send your bug report to gaining7@outlook.com.
 
 # Options comparison
 

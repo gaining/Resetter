@@ -1,4 +1,4 @@
-8f4155930d9c861d8876b2a86af7b79d  usr/share/doc/resetter/changelog.gz
+dd8c8e242554e95e082c6afb1239e40c  usr/share/doc/resetter/changelog.gz
 ff8b2c5b3b785bdccba43c0d5c4d7ad4  usr/share/doc/resetter/copyright
 343ad895e19fc427e6838d58c0929e49  usr/share/applications/Resetter.desktop
 2d4e80f6eff50c865f45d5f0fa9a73fd  usr/share/icons/hicolor/48x48/apps/resetter.png
@@ -7,13 +7,13 @@ ff8b2c5b3b785bdccba43c0d5c4d7ad4  usr/share/doc/resetter/copyright
 1c10d1af87689b242e07da65d715cfdf  usr/bin/resetter
 e83fd74e1b7821a26e06c78b99167be8  usr/lib/resetter/Resetter.py
 ffd9c856c303a28c27eef2250977f8fb  usr/lib/resetter/InstallMissingDialog.py
-7062a93b40a4a36b7c1c86950b5ce366  usr/lib/resetter/EasyRepo.py
+263b0524682c2a357b4c674159591ead  usr/lib/resetter/EasyRepo.py
 af74f0fada73e8f76808d693e41eb2ce  usr/lib/resetter/AptProgress.py
 5f990028e27851e32ea78471f0b7b823  usr/lib/resetter/EasyInstall.py
 74745ad1f2abc29f37e482e5dab8a0f1  usr/lib/resetter/LicenceDialog.py
-a6cc229d5833096f9b0e1de0163fe547  usr/lib/resetter/SetEnvironment.py
+c95625a9a64c772465d860705813e33c  usr/lib/resetter/SetEnvironment.py
 c63abd6b7e36cb91da1ed2d8178f106c  usr/lib/resetter/PackageView.py
-b7ae6e46beaa9f1b07edfb5687cc39b7  usr/lib/resetter/AboutPage.py
+efc731be332148925e47f8a0269ed6df  usr/lib/resetter/AboutPage.py
 aeddcec6822875c5b10a8941cd8c2a9e  usr/lib/resetter/Singleton.py
 eba4da098591a9be264f49d8e3a83944  usr/lib/resetter/CustomApplyDialog.py
 0f83890b80505908327160bdfa79c088  usr/lib/resetter/ApplyDialog.py

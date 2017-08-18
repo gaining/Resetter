@@ -96,7 +96,7 @@ class Settings(object):
                 if self.os_info['RELEASE'] == '17.3':
                     windowTitle = self.os_info['ID'] + " Resetter"
                     manifest = "manifests/mint-17.3-cinnamon.manifest"
-                    userlist = "userlists/mint-17.3-defaultuserlist"
+                    userlist = "userlists/mint-17.3-default-userlist"
                     return manifest, userlist, windowTitle
 
                 elif self.os_info['RELEASE'] == '18':
@@ -182,7 +182,6 @@ class Settings(object):
                 "Manifest could not be found, please choose a manifest for your system if you have one")
             self.error_msg.setDetailedText("without a system manifest, this program won't function")
             self.error_msg.exec_()
-            self.error_msg.close()
         if not os.path.isfile(userlist):
             self.userlist = None
             self.error_msg.setText(

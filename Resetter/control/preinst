@@ -7,11 +7,12 @@ LOGF="/var/log/resetter"
 RHOME="$USER_HOME/.resetter"
 
 if [ -d $LOGF ]; then
+     echo "Removing old log files"
      rm -rf $LOGF
 fi
 
 if [ -d $RHOME ]; then
-     echo "cleaning up."
+     echo "removing old data files"
      rm -rf $RHOME
 fi
 
