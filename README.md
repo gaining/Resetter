@@ -1,4 +1,4 @@
-# Resetter v1.0.2-stable
+# Resetter v1.0.3-stable
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section. 
@@ -13,12 +13,12 @@ There are other reset features, see features list.
 
 # Status - stable
 - The software is stable. Feedback will be greatly appreciated.
-- Current version is 1.0.2-stable some major bug fixes and new features + improvements.
+- Current version is 1.0.3-stable some major bug fixes and new features + improvements.
 - Future Project: Resetter-cli, a version of resetter that runs terminally.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
 # How to install
-Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.0.2-stable). 
+Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.0.3-stable). 
 It is easier to install any deb files with gdebi, especially on elementary os with no graphical way of installing a deb file. 
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on Ubuntu but on Debian so some modules are not available in their repos by default.

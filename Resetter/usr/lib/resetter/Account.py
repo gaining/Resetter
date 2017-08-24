@@ -75,24 +75,52 @@ class AccountDialog(QtGui.QDialog):
         self.user = self.textEditUser.text()
         self.password = self.textEditPassword.text()
         hashed_pw = crypt.crypt(str(self.password), "$6$"+self.salt())
+        if self.complexityChecker():
+            new_user = "/usr/lib/resetter/data/scripts/new-user.sh"
+            with open(new_user, "r") as f,  open("custom-user.sh", "w") as out:
+                for line in f:
+                    if line.startswith("PASSWORD"):
+                        #line = ("PASSWORD=""\'{}\'\n".format(hashed_pw))
+                        line = ("PASSWORD=""\'{}\'\n".format(self.password))
+                    if line.startswith("USERNAME"):
+                        line = ("USERNAME=""\'{}\'\n".format(self.user))
+                    out.write(line)
+            self.close()
+            try:
+                subprocess.Popen(['bash', 'custom-user.sh'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
+            except subprocess.CalledProcessError as e:
+                self.logger.error("unable to add custom user [{}]".format(e.output))
+                print "error: {}".format(e.output)
+            else:
+                self.logger.info("Custom user creation complete")
 
-        new_user = "/usr/lib/resetter/data/scripts/new-user.sh"
-        with open(new_user, "r") as f,  open("custom-user.sh", "w") as out:
-            for line in f:
-                if line.startswith("PASSWORD"):
-                    #line = ("PASSWORD=""\'{}\'\n".format(hashed_pw))
-                    line = ("PASSWORD=""\'{}\'\n".format(self.password))
-                if line.startswith("USERNAME"):
-                    line = ("USERNAME=""\"{}\"\n".format(self.user))
-                out.write(line)
-        self.close()
+    def complexityChecker(self):
+        password = str(self.password)
+        upper_count = 0
+        num_count = 0
+        good_length = False
+        for s in password:
+            if any(s.isupper() for x in self.password):
+                upper_count += 1
+            if any(s.isdigit() for x in self.password):
+                num_count += 1
+            if len(password) >= 8:
+                good_length = True
+        if upper_count < 1 or num_count < 1 or good_length is False:
+            self.showMessage()
+            return False
+        else:
+            return True
 
-        try:
-            subprocess.Popen(['bash', 'custom-user.sh'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
-            self.logger.info("Custom user creation complete")
-        except subprocess.CalledProcessError, e:
-            self.logger.error("unable to add custom user [{}]".format(e.output))
-            print "error: {}".format(e.output)
+    def showMessage(self):
+        msg = QtGui.QMessageBox(self)
+        msg.setWindowTitle('Password did not meet complexity requirements')
+        msg.setIcon(QtGui.QMessageBox.Warning)
+        msg.setText("Make sure that your password contains:\n"
+                    "At least 8 characters\n"
+                    "At least one number\n"
+                    "At least one uppercase letter")
+        msg.exec_()
 
     def getUser(self):
         return self.user
@@ -100,9 +128,3 @@ class AccountDialog(QtGui.QDialog):
     def getPassword(self):
         return self.password
 
-
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    auth = AccountDialog()
-    auth.show()
-    sys.exit(app.exec_())

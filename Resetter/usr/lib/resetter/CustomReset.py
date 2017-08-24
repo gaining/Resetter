@@ -62,16 +62,15 @@ class AppRemovalPage(QtGui.QWizardPage):
         self.count = 0
         self.items = []
         self.cache = apt.Cache()
-        remove_list = "apps-to-remove"
         self.model = QtGui.QStandardItemModel(self.uninstall_view)
         self.model.itemChanged.connect(self.setItems)
 
-        with open(remove_list) as f_in:
+        with open('apps-to-remove') as f_in:
             for line in f_in:
                 try:
                     pkg = self.cache[line.strip()]
                     text = pkg.versions[0].description
-                    self.item = QtGui.QStandardItem(line)
+                    self.item = QtGui.QStandardItem(line.strip())
                     self.item.setCheckable(True)
                     self.item.setCheckState(QtCore.Qt.Unchecked)
                     self.model.appendRow(self.item)
@@ -90,7 +89,7 @@ class AppRemovalPage(QtGui.QWizardPage):
     def toggleSwitch(self):
         if self.switch is False:
             self.switch = True
-            if self.count == 0: # show warning message only once
+            if self.count == 0:  # show warning message only once
                 msg = QtGui.QMessageBox(self)
                 msg.setWindowTitle("Warning")
                 msg.setIcon(QtGui.QMessageBox.Warning)
@@ -149,7 +148,11 @@ class AppRemovalPage(QtGui.QWizardPage):
         if len(self.cache.get_changes()) > 1:
             dep_view = AppView(self)
             text = "These packages depend on {} and they will also be REMOVED.".format(str(item))
-            dep_view.showView(self.cache.get_changes(), 'Dependent packages',
+            changes = []
+            for package in self.cache.get_changes():
+                if package.marked_delete:
+                    changes.append(package)
+            dep_view.showView(changes, 'Dependent packages',
                          text, False, width=370, height=200, check_state=1)
             dep_view.show()
         self.cache.clear()
@@ -160,7 +163,7 @@ class AppRemovalPage(QtGui.QWizardPage):
         mode = 'a' if self.isWritten else 'w'
         with open(path, mode) as f_out:
             for item in self.items:
-                f_out.write(item)
+                f_out.write(item + '\n')
 
     def closeCache(self):
         self.cache.close()
@@ -347,7 +350,6 @@ class UserRemovalPage(QtGui.QWizardPage):
         d = dict([(x, 0) for x in range(self.table.rowCount())])
         for item in self.choice:
             d[item.row()] += 2 ** (item.column() - 1)
-
         text = ""
         for row, value in d.iteritems():
             if value == 3:  # They are both checked
@@ -365,8 +367,6 @@ class UserRemovalPage(QtGui.QWizardPage):
                 self.logger.debug(text)
         with open(path, mode) as f:
             f.write(text)
-
-
 
 class AppWizard(QtGui.QWizard):
     def __init__(self, parent=None):

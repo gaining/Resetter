@@ -49,28 +49,10 @@ class ProgressThread(QtCore.QThread):
 
         self.broken_list = []
 
-    def lineCount(self, appfile):
-        try:
-            p = subprocess.Popen(['wc', '-l', appfile], stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE)
-            result, err = p.communicate()
-            return int(result.strip().split()[0])
-        except subprocess.CalledProcessError:
-            pass
-
-    def removePackages(self):
-        self.logger.info("Removing Programs")
-        try:
-            self.logger.info("Keep Count before commit: {}".format(self.cache.keep_count))
-            self.logger.info("Delete Count before commit: {}".format(self.cache.delete_count))
-            self.logger.info("Broken Count before commit: {}".format(self.cache.broken_count))
-            self.cache.commit(self.aprogress, self.iprogress)
-            self.logger.info("Broken Count after commit: {}".format(self.cache.broken_count))
-        except Exception as e:
-            self.logger.error("Error: [{}]".format(e, exc_info=True))
-            error = e.message
-            text = "Package removal failed"
-            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
+    def lineCount(self, file_path):
+        x = open(file_path).readlines()
+        line_count = len(x)
+        return line_count
 
     def run(self):
         if self.lineCount(self.file_in) != 0:
@@ -90,19 +72,34 @@ class ProgressThread(QtCore.QThread):
                             self.logger.critical("{}".format(error))
                             continue
                         else:
-                            self.logger.critical("{}".format(error, exc_info=True))
-                            error = error.message
-                            text = "Package removal failed"
-                            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
+                            text = "Error loading apps"
+                            error2 = "Problems trying to remove: {}\n{}".format(self.pkg.fullname, error.message)
+                            self.logger.critical("{} {}".format(error, error2, exc_info=True))
+                            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error2, text)
                             break
                 self.thread1.start()
                 self.thread2.start()
                 self.removePackages()
                 self.conclude_op.emit()
-
         else:
             print "All removable packages are already removed"
             self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, True)
+
+    def removePackages(self):
+        self.logger.info("Removing Programs")
+        try:
+            package = self.cache['snapd']
+            package.mark_delete(True, True)
+            self.logger.info("Keep Count before commit: {}".format(self.cache.keep_count))
+            self.logger.info("Delete Count before commit: {}".format(self.cache.delete_count))
+            self.logger.info("Broken Count before commit: {}".format(self.cache.broken_count))
+            self.cache.commit(self.aprogress, self.iprogress)
+            self.logger.info("Broken Count after commit: {}".format(self.cache.broken_count))
+        except Exception as e:
+            self.logger.error("Error: [{}]".format(e, exc_info=True))
+            error = "Problems trying to remove: {}\n{}".format(self.pkg.fullname, e.message)
+            text = "Package removal failed"
+            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
 
 
 class Apply(QtGui.QDialog):
@@ -284,7 +281,6 @@ class Apply(QtGui.QDialog):
         else:
             self.labels[(4, 1)].setPixmap(self.pixmap2)
 
-
     def start(self):
         self.progressView.start()
 
@@ -365,11 +361,11 @@ class Apply(QtGui.QDialog):
             self.logger.info("reboot was delayed.")
 
     def showError(self, error, m_type):
+        self.movie.stop()
         msg = QtGui.QMessageBox(self)
         msg.setWindowTitle(m_type)
         msg.setIcon(QtGui.QMessageBox.Critical)
-        text = "If you're running another package manager such as synaptic or USC please close them and try again."
-        msg.setText(text)
+        msg.setText("Something went wrong, please check details.")
         msg.setDetailedText(error)
         msg.exec_()
 

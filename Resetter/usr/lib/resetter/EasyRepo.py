@@ -129,11 +129,11 @@ class EasyPPAInstall(QtGui.QDialog):
         cache.update(self.aprogress)
         self.buttonRefresh.setEnabled(True)
         self.lbl1.setText("Update Complete!")
+        cache.close()
 
     def displayLinks(self, found_links, table, browser):
         loading = 0
         x = float(100) / len(found_links) if len(found_links) != 0 else 0
-
         try:
             for i, link in enumerate(found_links):
                 desc = QtGui.QTableWidgetItem()

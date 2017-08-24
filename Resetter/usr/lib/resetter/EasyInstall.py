@@ -158,6 +158,7 @@ class EasyInstaller(QtGui.QDialog):
         self.install = Install('install', 'Installing packages', True)
         self.install.show()
         self.install.exec_()
+        self.cache.update()
         self.btnInstall.setEnabled(True)
         self.removeItems()
 
