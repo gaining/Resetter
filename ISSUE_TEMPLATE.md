@@ -1,9 +1,9 @@
-*Issue title
+#Issue title
 
-*Linux Distro and version
+#Linux Distro and version
 
-*Version of Resetter
+#Version of Resetter
 
-*Description of Issue
+#Description of Issue
 
-*content of Log file located in /var/log/resetter/resetter.log
+#content of Log file located in /var/log/resetter/resetter.log
