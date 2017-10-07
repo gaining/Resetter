@@ -9,23 +9,27 @@ import os
 import pwd
 import shutil
 import sys
-import sqlite3
 from PyQt4 import QtGui
-import subprocess
+import urllib2
+from bs4 import BeautifulSoup
+from distutils.version import StrictVersion
+from AboutPage import About
 
 
 class Settings(object):
 
     def __init__(self):
         super(Settings, self).__init__()
-        self.directory = ".resetter/data"
+        self.directory = '.resetter/data'
         self.os_info = lsb_release.get_lsb_information()
         self.euid = os.geteuid()
         self.error_msg = QtGui.QMessageBox()
         self.error_msg.setIcon(QtGui.QMessageBox.Critical)
         self.error_msg.setWindowTitle("Error")
+        self.version = About().getVersion()
+        self.checkForUpdate()
         self.detectRoot()
-        logdir = "/var/log/resetter"
+        logdir = '/var/log/resetter'
         if not os.path.exists(logdir):
             os.makedirs(logdir)
         self.logger = logging.getLogger(__name__)
@@ -38,11 +42,11 @@ class Settings(object):
         self.manifests = '/usr/lib/resetter/data/manifests'
         self.userlists = '/usr/lib/resetter/data/userlists'
         if 'PKEXEC_UID' in os.environ:
-            self.user = pwd.getpwuid(int(os.environ["PKEXEC_UID"])).pw_name
+            self.user = pwd.getpwuid(int(os.environ['PKEXEC_UID'])).pw_name
             working_dir = '/home/{}'.format(self.user)
             os.chdir(working_dir)
         elif self.euid == 0 and 'PKEXEC_UID' not in os.environ:
-            self.user = os.environ["SUDO_USER"]
+            self.user = os.environ['SUDO_USER']
         self.createDirs()
         os.chdir(self.directory)
 
@@ -174,6 +178,24 @@ class Settings(object):
                 "If your distro is debian based, please send an email to gaining7@outlook.com for further support")
             self.error_msg.exec_()
             sys.exit(1)
+
+    def checkForUpdate(self):
+        page = urllib2.urlopen('https://github.com/gaining/Resetter/tags')
+        #data = page.text
+        soup = BeautifulSoup(page, 'html.parser')
+        versions = soup.find('span', attrs={'class': 'tag-name'})
+        versions_tag = str(versions).strip()
+        site_version = versions_tag[24:].split('-', 1)[0]
+        current_version = StrictVersion(self.version)
+        if site_version > current_version:
+            self.error_msg.setIcon(QtGui.QMessageBox.Information)
+            self.error_msg.setWindowTitle("Update Available")
+            self.error_msg.setText("There's a new version of Resetter available.\n\n"
+                                   "Grab Resetter v{} at "
+                                   "https://github.com/gaining/Resetter/releases".format(site_version))
+            self.error_msg.exec_()
+        else:
+            print("Running most recent version of Resetter")
 
     def filesExist(self, manifest, userlist):
         if not os.path.isfile(manifest):

@@ -48,13 +48,9 @@ class ProgressThread(QtCore.QThread):
         self.broken_list = []
 
     def lineCount(self):
-        try:
-            p = subprocess.Popen(['wc', '-l', self.file_in], stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE)
-            result, err = p.communicate()
-            return int(result.strip().split()[0])
-        except subprocess.CalledProcessError:
-            pass
+        x = open(self.file_in).readlines()
+        line_count = len(x)
+        return line_count
 
     def run(self):
         if self.lineCount() > 0:
@@ -76,8 +72,14 @@ class ProgressThread(QtCore.QThread):
                         # if resolver cannot find a way to cleanly install packages, move it to the broken list
                         if self.pkg.is_inst_broken:
                             self.broken_list.append(self.pkg.fullname)
-                        self.logger.critical("{}".format(error), exc_info=True)
-                        continue
+                            self.logger.critical("{}".format(error), exc_info=True)
+                            continue
+                        else:
+                            text = "Error loading apps"
+                            error2 = "Problems trying to install: {}\n{}".format(self.pkg.fullname, error.message)
+                            self.logger.critical("{} {}".format(error, error2, exc_info=True))
+                            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error2, text)
+                            break
                 self.thread1.start()
                 self.thread2.start()
                 self.installPackages()
@@ -180,11 +182,11 @@ class Install(QtGui.QDialog):
             self.close()
 
     def showError(self, error, m_type):
+        self.movie.stop()
         msg = QtGui.QMessageBox(self)
         msg.setWindowTitle(m_type)
         msg.setIcon(QtGui.QMessageBox.Critical)
-        text = "If you're running another package manager such as synaptic or USC please close them and try again."
-        msg.setText(text)
+        msg.setText("Something went wrong, please check details.")
         msg.setDetailedText(error)
         msg.exec_()
 

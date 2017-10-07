@@ -75,7 +75,6 @@ class EasyPPAInstall(QtGui.QDialog):
         if isdone:
             self.installProgress.end_of_threads.connect(self.finished)
             self.labels[(2, 1)].setPixmap(self.pixmap2)
-            #time.sleep(2)
             self.close()
 
     def configureTable(self, table):
@@ -96,6 +95,7 @@ class EasyPPAInstall(QtGui.QDialog):
             self.close()
         else:
             QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+            self.searchbutton.setEnabled(False)
             del self.ppa[:]
             del self.table_data[:]
             browser = mechanize.Browser()
@@ -108,20 +108,22 @@ class EasyPPAInstall(QtGui.QDialog):
             browser['field.text'] = search_string  # use the proper input type=text name
             browser.submit()
             match = "+archive"
-            exclude = ["+packages", "+build", "+sourcepub"]
+            exclude = (["+packages", "+build", "+sourcepub"])
 
             for link in browser.links():
                 if not any(s in link.url for s in exclude) and match in link.url:
                     found_links.append(link)
                     QtGui.qApp.processEvents()
-            if len(found_links) == 0:
+            r = len(found_links)
+            if r == 0:
                 self.lbl1.setText("No results found")
             else:
-                self.lbl1.clear()
+                self.lbl1.setText("Found {} results".format(r))
 
-            table.setRowCount(len(found_links))
+            table.setRowCount(r)
             self.displayLinks(found_links, table, browser)
             QtGui.QApplication.restoreOverrideCursor()
+            self.searchbutton.setEnabled(True)
 
     def updateSources(self):
         self.buttonRefresh.setEnabled(False)
@@ -152,7 +154,7 @@ class EasyPPAInstall(QtGui.QDialog):
                     ppa_name = ppaTag.text.strip()
                     ppa.setText(ppa_name)
                 b = QtCore.QByteArray.fromPercentEncoding(link.text)
-                text = b.data().decode("utf8")
+                text = b.data().decode('utf8')
                 desc.setText(textwrap.fill(text, 20))
                 table.setItem(i, 0, desc)
                 QtGui.qApp.processEvents()
@@ -178,29 +180,30 @@ class EasyPPAInstall(QtGui.QDialog):
                 self.progressbar.setValue(int(loading))
                 QtGui.qApp.processEvents()
         except Exception as e:
+            QtGui.QApplication.restoreOverrideCursor()
             self.error_msg.setText("Error, please try again.")
-            self.error_msg.setDetailedText("If this keeps happening, it means easy repo stumbled upon a "
+            self.error_msg.setDetailedText("If this keeps happening, it means easy repo stumbled upon an empty or "
                                            "forbidden link. You might need to change your search string")
             self.error_msg.exec_()
 
     def isThereInternet(self):
         try:
             mechanize.urlopen('http://google.com', timeout=1)
-            return True
         except mechanize.URLError as e:
-            print "There is no internet {}".format(e)
-
+            print "There is no internet: {}".format(e)
             self.error_msg.setText("You are not connected to the internet")
             self.error_msg.setDetailedText("This feature will not work without an internet connection. ")
             self.error_msg.exec_()
             return False
+        else:
+            return True
 
     def codeName(self):
         xenial_fam = (['serena', 'sarah', 'loki', 'sonya'])
         if self.os_info['CODENAME'] == 'rosa':
-            return "trusty"
+            return 'trusty'
         elif self.os_info['CODENAME'] in xenial_fam:
-            return "xenial"
+            return 'xenial'
         else:
             return self.os_info['CODENAME']
 

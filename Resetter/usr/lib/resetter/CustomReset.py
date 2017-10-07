@@ -208,17 +208,16 @@ class AppInstallPage(QtGui.QWizardPage):
         self.oldKernelRemoval = False
         self.isWritten = False
         self.items = []
-        install_list = "apps-to-install"
         self.model = QtGui.QStandardItemModel(self.uninstall_view)
         self.model.itemChanged.connect(self.setItems)
         self.cache = apt.Cache()
 
-        with open(install_list) as f_in:
+        with open('apps-to-install') as f_in:
             for line in f_in:
                 try:
                     pkg = self.cache[line.strip()]
                     text = (pkg.versions[0].description)
-                    self.item = QtGui.QStandardItem(line)
+                    self.item = QtGui.QStandardItem(line.strip())
                     self.item.setCheckable(True)
                     self.item.setCheckState(QtCore.Qt.Unchecked)
                     self.model.appendRow(self.item)
@@ -272,7 +271,7 @@ class AppInstallPage(QtGui.QWizardPage):
         mode = 'a' if self.isWritten else 'w'
         with open(path, mode) as f_out:
             for item in self.items:
-                f_out.write(item.text())
+                f_out.write(item.text() + '\n')
 
 
 class UserRemovalPage(QtGui.QWizardPage):

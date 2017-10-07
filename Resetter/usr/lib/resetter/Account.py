@@ -2,11 +2,10 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4 import QtGui, QtCore
-import sys
-import subprocess
 import crypt
 import random
 import logging
+
 
 class AccountDialog(QtGui.QDialog):
     def __init__(self, parent=None):
@@ -74,25 +73,19 @@ class AccountDialog(QtGui.QDialog):
     def custom_user(self):
         self.user = self.textEditUser.text()
         self.password = self.textEditPassword.text()
-        hashed_pw = crypt.crypt(str(self.password), "$6$"+self.salt())
+        hashed_pw = crypt.crypt(str(self.password), "$6$" + self.salt())
         if self.complexityChecker():
-            new_user = "/usr/lib/resetter/data/scripts/new-user.sh"
-            with open(new_user, "r") as f,  open("custom-user.sh", "w") as out:
+            new_user = '/usr/lib/resetter/data/scripts/new-user.sh'
+            custom_user = '/usr/lib/resetter/data/scripts/custom_user.sh'
+            with open(new_user, "r") as f, open(custom_user, 'w') as out:
                 for line in f:
-                    if line.startswith("PASSWORD"):
-                        #line = ("PASSWORD=""\'{}\'\n".format(hashed_pw))
+                    if line.startswith('PASSWORD'):
+                        # line = ("PASSWORD=""\'{}\'\n".format(hashed_pw))
                         line = ("PASSWORD=""\'{}\'\n".format(self.password))
-                    if line.startswith("USERNAME"):
+                    if line.startswith('USERNAME'):
                         line = ("USERNAME=""\'{}\'\n".format(self.user))
                     out.write(line)
             self.close()
-            try:
-                subprocess.Popen(['bash', 'custom-user.sh'], stderr=subprocess.STDOUT, stdout=subprocess.PIPE)
-            except subprocess.CalledProcessError as e:
-                self.logger.error("unable to add custom user [{}]".format(e.output))
-                print "error: {}".format(e.output)
-            else:
-                self.logger.info("Custom user creation complete")
 
     def complexityChecker(self):
         password = str(self.password)
@@ -127,4 +120,3 @@ class AccountDialog(QtGui.QDialog):
 
     def getPassword(self):
         return self.password
-

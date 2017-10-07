@@ -236,7 +236,6 @@ class Apply(QtGui.QDialog):
         self.progressView.thread1.finished.connect(self.progressView.thread1.exit)
         self.progressView.thread2.finished.connect(self.progressView.thread2.exit)
         self.progressView.conclude_op.connect(self.progressView.exit)
-        self.close()
 
     def removeUsers(self):
         self.logger.info("Starting user removal")
@@ -257,28 +256,6 @@ class Apply(QtGui.QDialog):
             self.labels[(5, 1)].setPixmap(self.pixmap2)
             self.lbl1.setText("Finished")
             self.showUserInfo()
-
-    def getDependencies(self):
-        try:
-            self.setCursor(QtCore.Qt.WaitCursor)
-            sq = '\''
-            col = ':'
-            with open("deplist2", "w") as dl:
-                for pkg in self._cache.get_changes():
-                    dependencies = pkg.versions[0].dependencies
-                    for dependency in dependencies:
-                        dependency = str(dependency).split(sq, 1)[1].split(sq, 1)[0]
-                        if col in dependency:
-                            dependency = dependency.split(col, 1)[0]
-                        dl.write('{}\n'.format(dependency))
-            with open("keep", "w") as output, open("deplist2", "r") as dl, open(self.file_in, "r") as apps:
-                diff = set(dl).difference(apps)
-                for line in diff:
-                    output.writelines(line)
-            self.unsetCursor()
-        except Exception as e:
-            self.unsetCursor()
-            self.logger.error("getting Dependencies failed: {}".format(e))
 
     def rebootMessage(self):
         choice = QtGui.QMessageBox.information \
@@ -319,4 +296,3 @@ class Apply(QtGui.QDialog):
         msg.exec_()
         self.logger.info("Credential message info shown")
         self.rebootMessage()
-

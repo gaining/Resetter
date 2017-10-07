@@ -13,7 +13,6 @@ from InstallMissingDialog import Install
 
 
 class ProgressThread(QtCore.QThread):
-
     conclude_op = QtCore.pyqtSignal()
 
     def __init__(self, file_in, install):
@@ -109,6 +108,9 @@ class Apply(QtGui.QDialog):
         self.file_in = file_in
         self.response = response
         self.rsu = rsu
+        self.custom_user = bool
+        self.remaining = 0
+        self.no_show = False
         self.setWindowTitle("Applying")
         self.error_msg = QtGui.QMessageBox()
         self.error_msg.setIcon(QtGui.QMessageBox.Critical)
@@ -160,10 +162,12 @@ class Apply(QtGui.QDialog):
         self.progressView = ProgressThread(self.file_in, False)
         self.account = AccountDialog()
         self.connect(self.progressView, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
-        self.connect(self.progressView.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
-        self.connect(self.progressView.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
+        self.connect(self.progressView.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"),
+                     self.updateProgressBar2)
+        self.connect(self.progressView.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"),
+                     self.updateProgressBar2)
         self.connect(self.progressView, QtCore.SIGNAL("showError(QString, QString)"), self.showError)
-        self.addUser()
+        self.addUser1()
 
     def updateProgressBar(self, percent, isdone):
         self.lbl1.setText("Loading Package List")
@@ -213,29 +217,45 @@ class Apply(QtGui.QDialog):
             self.installPackages()
             self.removeOldKernels(self.response)
 
-    def addUser(self):
+    def addUser1(self):
         choice = QtGui.QMessageBox.question \
             (self, 'Would you like set your new account?',
-             "Set your own account? Click 'No' so that I can create a default account for you instead",
+             "Set your own account?",
              QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if choice == QtGui.QMessageBox.Yes:
+            self.custom_user = True
             self.show()
             self.account.exec_()
             self.start()
             self.showMinimized()
-            print "Adding custom user"
+        elif choice == QtGui.QMessageBox.No:
+            self.custom_user = False
+            self.no_show = True
+            with open('users') as u, open('custom-users-to-delete.sh') as du:
+                converted_du = []
+                i = 0
+                for line in du:
+                    line = line.split(' ')[-1]
+                    converted_du.append(line)
+                if len(converted_du) > 0:
+                    diff = set(u).difference(converted_du)
+                    for x in diff:
+                        i += 1
+                else:
+                    i = len(u.read().strip().splitlines())
+                self.remaining = i
+            self.start()
 
-        if choice == QtGui.QMessageBox.No:
-            print "Adding default user"
-            try:
-                p = subprocess.Popen(['bash', '/usr/lib/resetter/data/scripts/new-user.sh'], stderr=subprocess.STDOUT,
-                                     stdout=subprocess.PIPE)
-                self.logger.info("Default user added")
-                p.wait()
-                self.start()
-            except subprocess.CalledProcessError as e:
-                self.logger.error("unable to add default user [{}]".format(e.output), exc_info=True)
-                print e.output
+    def addUser2(self):  # determine to add a backup user if all normal users are marked for deletion.
+        if self.custom_user:
+            custom_user = '/usr/lib/resetter/data/scripts/custom_user.sh'
+            p = subprocess.check_output(['bash', custom_user])
+            print p
+        else:
+            if self.remaining == 0:
+                self.no_show = False
+                p = subprocess.check_output(['bash', '/usr/lib/resetter/data/scripts/new-user.sh'])
+                print p
 
     def removeOldKernels(self, response):
         if response:
@@ -256,16 +276,19 @@ class Apply(QtGui.QDialog):
                     self.logger.error("Kernel removal failed [{}]".format(str(arg)))
                     print "Sorry, kernel removal failed [{}]".format(str(arg))
                 self.removeUsers(response)
+                self.addUser2()
                 self.showUserInfo()
                 self.progress.setValue(1)
             else:
                 self.labels[(5, 1)].setPixmap(self.pixmap2)
                 self.removeUsers(response)
+                self.addUser2()
                 self.showUserInfo()
                 self.progress.setValue(1)
         else:
             self.lbl1.setText("Finished")
             self.removeUsers(response)
+            self.addUser2()
             self.progress.setValue(1)
             self.showUserInfo()
             self.logger.info("Old kernel removal option not chosen")
@@ -290,7 +313,6 @@ class Apply(QtGui.QDialog):
         self.progressView.thread1.finished.connect(self.progressView.thread1.exit)
         self.progressView.thread2.finished.connect(self.progressView.thread2.exit)
         self.progressView.conclude_op.connect(self.progressView.exit)
-        self.close()
 
     def removeSystemUsers(self, rsu):
         if rsu:
@@ -308,46 +330,24 @@ class Apply(QtGui.QDialog):
             self.logger.info("Starting user removal")
             self.labels[(6, 1)].setMovie(self.movie)
             try:
-                subprocess.Popen(['bash', 'custom-users-to-delete.sh'], stderr=subprocess.STDOUT,
-                                 stdout=subprocess.PIPE)
-                self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
+                p = subprocess.check_output(['bash', 'custom-users-to-delete.sh'])
+                print p
             except subprocess.CalledProcessError, e:
                 self.logger.error("unable removing user [{}]".format(e.output))
             else:
+                self.logger.debug("user removal completed successfully")
                 self.labels[(6, 1)].setPixmap(self.pixmap2)
         else:
             self.logger.info("Starting user removal")
             self.labels[(5, 1)].setMovie(self.movie)
             try:
-                subprocess.Popen(['bash', 'custom-users-to-delete.sh'], stderr=subprocess.STDOUT,
-                                 stdout=subprocess.PIPE)
-                self.logger.debug("user removal completed successfully: [{}]".format(subprocess.STDOUT))
+                p = subprocess.check_output(['bash', 'custom-users-to-delete.sh'])
+                print p
             except subprocess.CalledProcessError, e:
                 self.logger.error("unable removing user [{}]".format(e.output))
             else:
+                self.logger.debug("user removal completed successfully")
                 self.labels[(5, 1)].setPixmap(self.pixmap2)
-
-    def getDependencies(self):
-        try:
-            self.setCursor(QtCore.Qt.WaitCursor)
-            sq = '\''
-            col = ':'
-            with open("deplist2", "w") as dl:
-                for pkg in self._cache.get_changes():
-                    dependencies = pkg.versions[0].dependencies
-                    for dependency in dependencies:
-                        dependency = str(dependency).split(sq, 1)[1].split(sq, 1)[0]
-                        if col in dependency:
-                            dependency = dependency.split(col, 1)[0]
-                        dl.write('{}\n'.format(dependency))
-            with open("keep", "w") as output, open("deplist2", "r") as dl, open(self.file_in, "r") as apps:
-                diff = set(dl).difference(apps)
-                for line in diff:
-                    output.writelines(line)
-            self.unsetCursor()
-        except Exception as e:
-            self.unsetCursor()
-            self.logger.error("getting Dependencies failed: {}".format(e))
 
     def rebootMessage(self):
         choice = QtGui.QMessageBox.information \
@@ -379,14 +379,18 @@ class Apply(QtGui.QDialog):
         msg.exec_()
 
     def showUserInfo(self):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("User Credentials")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("Please use these credentials the next time you log-in")
-        msg.setInformativeText(
-            "USERNAME: <b>{}</b><br/> PASSWORD: <b>{}</b>".format(self.account.getUser(), self.account.getPassword()))
-        msg.setDetailedText("If you deleted your old user account, "
-                            "this account will be the only local user on your system")
-        msg.exec_()
-        self.logger.info("Credential message info shown")
-        self.rebootMessage()
+        if not self.no_show:
+            msg = QtGui.QMessageBox(self)
+            msg.setWindowTitle("User Credentials")
+            msg.setIcon(QtGui.QMessageBox.Information)
+            msg.setText("Please use these credentials the next time you log-in")
+            msg.setInformativeText(
+                "USERNAME: <b>{}</b><br/> PASSWORD: <b>{}</b>".format(self.account.getUser(), self.account.getPassword()))
+            msg.setDetailedText("If you deleted your old user account, "
+                                "this account will be the only local user on your system")
+            msg.exec_()
+            self.logger.info("Credential message info shown")
+            self.rebootMessage()
+        else:
+            self.rebootMessage()
+

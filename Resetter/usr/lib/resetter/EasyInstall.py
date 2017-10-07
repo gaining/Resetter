@@ -115,8 +115,8 @@ class EasyInstaller(QtGui.QDialog):
 
     def openBackup(self):
         try:
-            dpath = os.path.abspath(os.path.join("Backup", "../../../"))
-            backup = QtGui.QFileDialog.getOpenFileName(self, 'Choose Backup', dpath, "(*.rbf)")
+            dpath = os.path.abspath(os.path.join('Backup', '../../../'))
+            backup = QtGui.QFileDialog.getOpenFileName(self, 'Choose Backup', dpath, '(*.rbf)')
             if os.path.isfile(backup):
                 with open(backup, 'r') as bk:
                     for line in bk:
@@ -158,7 +158,7 @@ class EasyInstaller(QtGui.QDialog):
         self.install = Install('install', 'Installing packages', True)
         self.install.show()
         self.install.exec_()
-        self.cache.update()
+        self.cache.close()
         self.btnInstall.setEnabled(True)
         self.removeItems()
 

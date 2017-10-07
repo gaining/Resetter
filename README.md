@@ -1,7 +1,21 @@
-# Resetter v1.0.3-stable
+# Resetter v1.1.0-stable
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section. 
+
+# How to install
+Download the deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.1.0-stable) then on the terminal, run the following commands:
+
+1. `sudo apt install gdebi`
+2. `sudo gdebi resetter_1.1.0-stable_all.deb`
+It is easier to install any deb files with gdebi, especially on elementary os with no graphical way of installing a deb file. 
+On the terminal, run `sudo apt install gdebi`.
+- Linux deepin isn't based on Ubuntu but on Debian so some modules are not available in their repos by default.
+**For Debian and Linux Deepin Users** 
+Before installing Resetter, fetch the add-apt-key package using 
+    `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb` 
+and install it with 
+    `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 
 # How does it work?
 - Typical case of auto apps reset <br/>
@@ -10,21 +24,11 @@ updated manifest - installed programs list = MPIAs <br/>
 reset = (Installed programs list - non-default programs) + MPIAs <br/>
 There are other reset features, see features list.
 
-
-# Status - stable
+# Status
 - The software is stable. Feedback will be greatly appreciated.
-- Current version is 1.0.3-stable some major bug fixes and new features + improvements.
+- Current version is 1.1.0-stable has some huge improvements and is more intelligent overall.
 - Future Project: Resetter-cli, a version of resetter that runs terminally.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
-
-# How to install
-Install via deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.0.3-stable). 
-It is easier to install any deb files with gdebi, especially on elementary os with no graphical way of installing a deb file. 
-On the terminal, run `sudo apt install gdebi`.
-- Linux deepin isn't based on Ubuntu but on Debian so some modules are not available in their repos by default.
-
-**For Linux Deepin Users** 
-Before installing Resetter, fetch the add-apt-key package using `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb` and install it with `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 
 # To Do 
 - Official video tutorial on YouTube
@@ -75,15 +79,14 @@ MPIA means missing pre-installed apps
 - Elementary OS 0.4+ 
 - Linux Deepin 15.4+ 
 
-# Donate
-Please show your support by donating Resetter has helped you.
-If you'd like your name to be on the donors list, I can arrange for that as well.
-
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8FET8RGU2ZKQ8)
 
 # Contact
 - If you wish to contact me about anything else reach me via gaining7@outlook.com.
 
-# Donors List - Thank you so much for your support and contribution
-It would be nice if others donated beside the sole person on the donor's list. Believe me when I say it would motivate me to get new features implemented faster in the projects.
+# Donate
+Please show your support by donating Resetter has helped you.
+If you'd like your name to be on the donors list, I can arrange for that as well.
+
+# Donors List
 - Mez Pahlan - $10

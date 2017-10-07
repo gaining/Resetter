@@ -1,3 +1,13 @@
+resetter (1.1.0-stable) trusty; urgency=low
+
+  * misc changes
+  * stability upgrade
+  * intelligence improvements
+  * fixed #31, #32, #34
+
+ -- gaining <gaining7@outlook.com>  Fri, 06 Oct 2017 13:51:55 -0400
+
+
 resetter (1.0.3-stable) trusty; urgency=medium
 
   * New Password complexity checker

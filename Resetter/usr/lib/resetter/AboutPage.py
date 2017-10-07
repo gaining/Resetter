@@ -30,11 +30,12 @@ class About(QtGui.QDialog):
         version_label = QtGui.QLabel(self)
         version_label.setAlignment(QtCore.Qt.AlignCenter)
         about_label.setAlignment(QtCore.Qt.AlignCenter)
-        cr_text = "Copyright (c) 2017 all rights reserved"
+        cr_text = "(c) 2017 all rights reserved"
         desc_text = "Built With PyQt\n\n " \
                     "This is a great utility software that will help you reset your linux installation its stock state" \
                     "among other things."
-        version_text = "Version: 1.0.3-stable"
+        self.version = '1.1.0'
+        version_text = "Version: {}-stable".format(self.version)
         donate_text = 'If you liked my project, please ' \
                       '<a href="https://github.com/gaining/Resetter/blob/master/DONATE.md">Donate </a>'
         more_text = 'To find out more about this project, please visit my github:' \
@@ -61,6 +62,9 @@ class About(QtGui.QDialog):
         self.verticalLayout.addWidget(cr_label)
         self.verticalLayout.addWidget(self.close_button, 0, QtCore.Qt.AlignRight)
         self.verticalLayout.addWidget(self.liscence_button, 0, QtCore.Qt.AlignRight)
+
+    def getVersion(self):
+        return self.version
 
     def showLicence(self):
         lic = Licence(self)

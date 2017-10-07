@@ -10,7 +10,7 @@ import sys
 import textwrap
 import shutil
 from PyQt4 import QtCore, QtGui
-from time import gmtime, strftime
+import datetime
 from aptsources import sourceslist
 
 from AboutPage import About
@@ -42,7 +42,6 @@ class UiMainWindow(QtGui.QMainWindow):
         self.setAttribute(QtCore.Qt.WA_DeleteOnClose, True)
         self.resize(850, 650)
         palette = QtGui.QPalette()
-
         self.setPalette(palette)
         self.menubar = QtGui.QMenuBar(self)
         self.menuFile = QtGui.QMenu(self.menubar)
@@ -281,8 +280,8 @@ class UiMainWindow(QtGui.QMainWindow):
                 word = "vivid"
             else:
                 word = None
-            black_list = ['linux-image', 'linux-headers', 'linux-generic', 'linux-kernel-generic',
-                          'openjdk-7-jre', 'grub']
+            black_list = (['linux-image', 'linux-headers', 'linux-generic', 'linux-kernel-generic',
+                          'openjdk-7-jre', 'grub'])
             with open("apps-to-install", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as man:
                 diff = set(man).difference(installed)
@@ -299,12 +298,13 @@ class UiMainWindow(QtGui.QMainWindow):
 
     def save(self):
         self.getInstalledList()
-        time = strftime("%Y%m%d %H:%M:%S", gmtime())
-        name = "snapshot - {}".format(time)
+        now = datetime.datetime.now()
+        time = '{}{}{}'.format(now.hour, now.minute, now.second)
+        name = 'snapshot - {}'.format(time)
         filename, extension = QtGui.QFileDialog.getSaveFileNameAndFilter(
-            self, 'Save Backup file', '/home/{}/{}'.format(self.user, name), filter=self.tr(".rbf"))
+            self, 'Save Backup file', '/home/{}/{}'.format(self.user, name), filter=self.tr('.rbf'))
         try:
-            with open("installed", 'r') as inst, open(filename + extension, "w") as backup:
+            with open('installed', 'r') as inst, open(filename + extension, 'w') as backup:
                 for line in inst:
                     backup.writelines(line)
         except IOError:
@@ -331,7 +331,7 @@ class UiMainWindow(QtGui.QMainWindow):
         choice = QtGui.QMessageBox.warning \
             (self, 'RESET EVERYTHING?',
              "Reset Everything? \n\n This will reset your " + str(self.os_info['DESCRIPTION']) + " installation to its "
-             "factory defaults. local user accounts and home directories will also be removed."
+             "factory defaults. Local user accounts and home directories will also be removed."
                 "\n\nAre you sure you\'d like to continue?",
              QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if choice == QtGui.QMessageBox.Yes:
@@ -462,7 +462,7 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.info("getLocalUserList() completed")
 
         except (subprocess.CalledProcessError, Exception) as e:
-            print "an error has occured while getting users, please check the log file"
+            print ("an error has occured while getting users, please check the log file")
             self.logger.error("Error comparing files: ".format(e), exc_info=True)
 
     def findNonDefaultUsers(self):
@@ -484,7 +484,7 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.info("getLocalUserList() completed")
 
         except (subprocess.CalledProcessError, Exception) as e:
-            print "an error has occured while getting users, please check the log file"
+            print ("an error has occured while getting users, please check the log file")
             self.logger.error("Error comparing files: ".format(e), exc_info=True)
 
     def customReset(self):
@@ -516,7 +516,7 @@ if __name__ == '__main__':
         message = QtGui.QMessageBox()
         message.setWindowTitle("Already Running")
         message.setText("{} is already running".format(key))
-        print'{} is already running'.format(key)
+        print('{} is already running'.format(key))
         message.exec_()
         sys.exit(1)
     else:
