@@ -26,7 +26,7 @@ There are other reset features, see features list.
 
 # Status
 - The software is stable. Feedback will be greatly appreciated.
-- Current version is 1.1.0-stable has some huge improvements and is more intelligent overall.
+- Current version is 1.1.1-stable has some huge improvements and is more intelligent overall.
 - Future Project: Resetter-cli, a version of resetter that runs terminally.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
