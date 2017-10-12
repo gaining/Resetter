@@ -1,3 +1,10 @@
+resetter (1.1.1-stable) trusty; urgency=low
+
+  * Fixed crashing issue if offline
+
+ -- gaining <gaining7@outlook.com>  Wed, 11 Oct 2017 23:36:11 -0400
+
+
 resetter (1.1.0-stable) trusty; urgency=low
 
   * misc changes

@@ -180,22 +180,24 @@ class Settings(object):
             sys.exit(1)
 
     def checkForUpdate(self):
-        page = urllib2.urlopen('https://github.com/gaining/Resetter/tags')
-        #data = page.text
-        soup = BeautifulSoup(page, 'html.parser')
-        versions = soup.find('span', attrs={'class': 'tag-name'})
-        versions_tag = str(versions).strip()
-        site_version = versions_tag[24:].split('-', 1)[0]
-        current_version = StrictVersion(self.version)
-        if site_version > current_version:
-            self.error_msg.setIcon(QtGui.QMessageBox.Information)
-            self.error_msg.setWindowTitle("Update Available")
-            self.error_msg.setText("There's a new version of Resetter available.\n\n"
-                                   "Grab Resetter v{} at "
-                                   "https://github.com/gaining/Resetter/releases".format(site_version))
-            self.error_msg.exec_()
-        else:
-            print("Running most recent version of Resetter")
+        try:
+            page = urllib2.urlopen('https://github.com/gaining/Resetter/tags')
+            soup = BeautifulSoup(page, 'html.parser')
+            versions = soup.find('span', attrs={'class': 'tag-name'})
+            versions_tag = str(versions).strip()
+            site_version = versions_tag[24:].split('-', 1)[0]
+            current_version = StrictVersion(self.version)
+            if site_version > current_version:
+                self.error_msg.setIcon(QtGui.QMessageBox.Information)
+                self.error_msg.setWindowTitle("Update Available")
+                self.error_msg.setText("There's a new version of Resetter available.\n\n"
+                                       "Grab Resetter v{} at "
+                                       "https://github.com/gaining/Resetter/releases".format(site_version))
+                self.error_msg.exec_()
+            else:
+                print("Running most recent version of Resetter")
+        except urllib2.URLError:
+            pass
 
     def filesExist(self, manifest, userlist):
         if not os.path.isfile(manifest):

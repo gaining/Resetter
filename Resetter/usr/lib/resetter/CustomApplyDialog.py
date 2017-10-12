@@ -126,6 +126,8 @@ class Apply(QtGui.QDialog):
         self.movie = QtGui.QMovie(gif)
         self.movie.setScaledSize(QtCore.QSize(20, 20))
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/checkmark.png")
+        self.cuser = '/usr/lib/resetter/data/scripts/custom_user.sh'
+
         self.pixmap2 = self.pixmap.scaled(20, 20)
         verticalLayout = QtGui.QVBoxLayout(self)
         verticalLayout.addWidget(self.lbl1)
@@ -248,8 +250,7 @@ class Apply(QtGui.QDialog):
 
     def addUser2(self):  # determine to add a backup user if all normal users are marked for deletion.
         if self.custom_user:
-            custom_user = '/usr/lib/resetter/data/scripts/custom_user.sh'
-            p = subprocess.check_output(['bash', custom_user])
+            p = subprocess.check_output(['bash', self.cuser])
             print p
         else:
             if self.remaining == 0:
@@ -350,6 +351,8 @@ class Apply(QtGui.QDialog):
                 self.labels[(5, 1)].setPixmap(self.pixmap2)
 
     def rebootMessage(self):
+        if os.path.exists(self.cuser):
+            os.remove(self.cuser)
         choice = QtGui.QMessageBox.information \
             (self, 'Please reboot to complete system changes',
              "Reboot now?",

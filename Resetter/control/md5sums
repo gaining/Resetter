@@ -1,4 +1,4 @@
-4a396d61cd160cd193ea87a05bf3479b  usr/share/doc/resetter/changelog.gz
+0c10d88cb2fdbe080a4d363b75bba7d7  usr/share/doc/resetter/changelog.gz
 ff8b2c5b3b785bdccba43c0d5c4d7ad4  usr/share/doc/resetter/copyright
 343ad895e19fc427e6838d58c0929e49  usr/share/applications/Resetter.desktop
 2d4e80f6eff50c865f45d5f0fa9a73fd  usr/share/icons/hicolor/48x48/apps/resetter.png
@@ -11,11 +11,11 @@ c123316b8baff2e0f94c59850db392af  usr/lib/resetter/EasyRepo.py
 af74f0fada73e8f76808d693e41eb2ce  usr/lib/resetter/AptProgress.py
 90e7adb81cecea907b9bb43ed397b6c3  usr/lib/resetter/EasyInstall.py
 74745ad1f2abc29f37e482e5dab8a0f1  usr/lib/resetter/LicenceDialog.py
-993eade751838c3eb2072a140d4dc3ff  usr/lib/resetter/SetEnvironment.py
+6e499250e0f068ee393414e088992aa7  usr/lib/resetter/SetEnvironment.py
 c63abd6b7e36cb91da1ed2d8178f106c  usr/lib/resetter/PackageView.py
-cb98180ddecbf4ce78c5648068dc3e18  usr/lib/resetter/AboutPage.py
+8c26408d8124bd5df1171816272e8879  usr/lib/resetter/AboutPage.py
 aeddcec6822875c5b10a8941cd8c2a9e  usr/lib/resetter/Singleton.py
-a574474d75f1b18b28c1c6f2c9b77045  usr/lib/resetter/CustomApplyDialog.py
+f52bc82b8b00a8093079494716780498  usr/lib/resetter/CustomApplyDialog.py
 727f7601b544022e8efc6a4749f4bc87  usr/lib/resetter/ApplyDialog.py
 b3bd08bcc6a55e593c2d7ef6964f63ab  usr/lib/resetter/Sources.py
 5a8eff781c49e97f733303a8c984b92f  usr/lib/resetter/Account.py
