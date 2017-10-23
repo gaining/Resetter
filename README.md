@@ -1,20 +1,20 @@
 # Resetter v1.1.1-stable
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
-It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section. 
+It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section.
 
 # How to install
 Download the deb file found [here](https://github.com/gaining/Resetter/releases/tag/v1.1.1-stable) then on the terminal, run the following commands:
 
 1. `sudo apt install gdebi`
 2. `sudo gdebi resetter_1.1.1-stable_all.deb`
-It is easier to install any deb files with gdebi, especially on elementary os with no graphical way of installing a deb file. 
+It is easier to install any deb files with gdebi, especially on elementary os with no graphical way of installing a deb file.
 On the terminal, run `sudo apt install gdebi`.
 - Linux deepin isn't based on Ubuntu but on Debian so some modules are not available in their repos by default.
-**For Debian and Linux Deepin Users** 
-Before installing Resetter, fetch the add-apt-key package using 
-    `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb` 
-and install it with 
+**For Debian and Linux Deepin Users**
+Before installing Resetter, fetch the add-apt-key package using
+    `wget -c http://mirrors.kernel.org/ubuntu/pool/universe/a/add-apt-key/add-apt-key_1.0-0.5_all.deb`
+and install it with
     `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 
 # How does it work?
@@ -30,14 +30,14 @@ There are other reset features, see features list.
 - Future Project: Resetter-cli, a version of resetter that runs terminally.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
-# To Do 
+# To Do
 - Official video tutorial on YouTube
 - Debian Jessie support
-- Make Resetter multilingual. (Will need help of volunteer translators) 
+- Make Resetter multilingual. (Will need help of volunteer translators)
 - Make an app-image as there are many reasons why Resetter needs to be portable.
 
 # Bug reports
-- If you find a bug or problem please create an issue on github. 
+- If you find a bug or problem please create an issue on github.
 - If you do not have a github account do not hesitate to contact me and send your bug report to gaining7@outlook.com.
 
 # Options comparison
@@ -75,9 +75,9 @@ MPIA means missing pre-installed apps
 # Officially supported distros [64-bit]
 
 - Linux Mint 17.3+
-- Ubuntu 14.04+
-- Elementary OS 0.4+ 
-- Linux Deepin 15.4+ 
+- Ubuntu 14.04+ (ubuntu 17.10 not supported at the moment)
+- Elementary OS 0.4+
+- Linux Deepin 15.4+
 
 [![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8FET8RGU2ZKQ8)
 
