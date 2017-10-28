@@ -70,12 +70,12 @@ class AppRemovalPage(QtGui.QWizardPage):
                 try:
                     pkg = self.cache[line.strip()]
                     text = pkg.versions[0].description
-                    self.item = QtGui.QStandardItem(line.strip())
-                    self.item.setCheckable(True)
-                    self.item.setCheckState(QtCore.Qt.Unchecked)
-                    self.model.appendRow(self.item)
-                    self.item.row()
-                    self.item.setToolTip((textwrap.fill(text, 70)))
+                    item = QtGui.QStandardItem(line.strip())
+                    item.setCheckable(True)
+                    item.setCheckState(QtCore.Qt.Unchecked)
+                    self.model.appendRow(item)
+                    item.row()
+                    item.setToolTip((textwrap.fill(text, 70)))
                 except KeyError:
                     continue
             self.uninstall_view.setModel(self.model)
@@ -217,12 +217,12 @@ class AppInstallPage(QtGui.QWizardPage):
                 try:
                     pkg = self.cache[line.strip()]
                     text = (pkg.versions[0].description)
-                    self.item = QtGui.QStandardItem(line.strip())
-                    self.item.setCheckable(True)
-                    self.item.setCheckState(QtCore.Qt.Unchecked)
-                    self.model.appendRow(self.item)
-                    self.item.row()
-                    self.item.setToolTip((textwrap.fill(text, 70)))
+                    item = QtGui.QStandardItem(line)
+                    item.setCheckable(True)
+                    item.setCheckState(QtCore.Qt.Unchecked)
+                    self.model.appendRow(item)
+                    item.row()
+                    item.setToolTip((textwrap.fill(text, 70)))
                 except KeyError:
                     continue
             self.uninstall_view.setModel(self.model)
@@ -324,11 +324,10 @@ class UserRemovalPage(QtGui.QWizardPage):
         for column in range(3):
             for row in range(table.rowCount()):
                 if column % 3:
-                    self.item = QtGui.QTableWidgetItem(column)
-                    self.item.setFlags(QtCore.Qt.ItemIsUserCheckable |
-                                       QtCore.Qt.ItemIsEnabled)
-                    self.item.setCheckState(QtCore.Qt.Unchecked)
-                    table.setItem(row, column, self.item)
+                    item = QtGui.QTableWidgetItem(column)
+                    item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
+                    item.setCheckState(QtCore.Qt.Unchecked)
+                    table.setItem(row, column, item)
 
     def setChoice(self, item):
         if item.checkState() == QtCore.Qt.Checked:
