@@ -23,6 +23,7 @@ class Settings(object):
         self.directory = '.resetter/data'
         self.os_info = lsb_release.get_lsb_information()
         self.euid = os.geteuid()
+	os.environ['QT_X11_NO_MITSHM'] = "1"
         self.error_msg = QtGui.QMessageBox()
         self.error_msg.setIcon(QtGui.QMessageBox.Critical)
         self.error_msg.setWindowTitle("Error")
@@ -59,7 +60,7 @@ class Settings(object):
         if self.euid != 0:
             print "Need to be root to run this program"
             self.error_msg.setText("You need to be root to run this program")
-            self.error_msg.setDetailedText("You won't be able to run this program unless you're root")
+            self.error_msg.setDetailedText("You won't be able to run this program unless you're root, try running 'sudo resetter' from the terminal")
             self.error_msg.exec_()
             exit(1)
 
@@ -93,7 +94,7 @@ class Settings(object):
 
     def detectOS(self):
         compat_os = (['LinuxMint', 'Ubuntu', 'elementary', 'Deepin'])
-        compat_releases = (['17.3', '17.04', '18.1', '18', '14.04','16.04',
+        compat_releases = (['17.3', '17.04', '18.1', '18', '14.04','16.04', '17.10',
                             '16.10', '0.4', '15.4', '15.4.1', '18.2','0.4.1'])
         if self.os_info['ID'] in compat_os and self.os_info['RELEASE'] in compat_releases:
             if self.os_info['ID'] == 'LinuxMint':
@@ -121,7 +122,6 @@ class Settings(object):
                     userlist = 'userlists/mint-18.2-default-userlist'
                     return manifest, userlist, windowTitle
 
-
             elif self.os_info['ID'] == 'Ubuntu':
                 if self.os_info['RELEASE'] == '14.04':
                     windowTitle = self.os_info['ID'] + " Resetter"
@@ -145,6 +145,11 @@ class Settings(object):
                     windowTitle = self.os_info['ID'] + " Resetter"
                     manifest = 'manifests/ubuntu-17.04-unity.manifest'
                     userlist = 'userlists/ubuntu-17.04-default-userlist'
+                    return manifest, userlist, windowTitle
+                elif self.os_info['RELEASE'] == '17.10':
+                    windowTitle = self.os_info['ID'] + " Resetter"
+                    manifest = 'manifests/ubuntu-17.10.manifest'
+                    userlist = 'userlists/ubuntu-17.10-default-userlist'
                     return manifest, userlist, windowTitle
 
             elif self.os_info['ID'] == 'elementary':

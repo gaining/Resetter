@@ -1,10 +1,8 @@
 #!/bin/bash
 LANG=en_US.UTF-8
+xhost +si:localuser:root > /dev/null
+export QT_X11_NO_MITSHM=1
+python /usr/lib/resetter/Resetter.py
 
-if [[ $EUID -ne 0 ]]; then
-   pkexec /usr/lib/resetter/Resetter.py
-else
-     /usr/lib/resetter/Resetter.py
-fi
 
 
