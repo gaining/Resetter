@@ -10,15 +10,13 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 2. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 3. `sudo gdebi resetter_1.1.2-stable_all.deb`
 
-# How does it work?
-- Typical case of auto apps reset <br/>
-installed programs list - updated manifest = non-default programs <br/>
-updated manifest - installed programs list = MPIAs <br/>
-reset = (Installed programs list - non-default programs) + MPIAs <br/>
-There are other reset features, see features list.
+# Official video tutorial - courtesy of Byte of Linux
+
+[![IMAGE ALT TEXT](http://i3.ytimg.com/vi/PSmzWdGrs1M/maxresdefault.jpg)](https://youtu.be/PSmzWdGrs1M "Resetter Tutorial")
+
 
 # Status
-- version 1.1.2 adds support for Ubuntu 17.10. I'm not sure if it's because ubuntu 17.10 is filled with bugs or it's a "Feature" by design but many QT apps that worked on earlier version were broken in this release.
+- version 1.1.2 adds support for Ubuntu 17.10. I'm not sure if it's because ubuntu 17.10 is filled with bugs or it's a "Feature" by design but many QT apps that worked on earlier version were broken in this release. I'm still working on making Resetter completely compatible with
 - The software is stable. Feedback will be greatly appreciated.
 - Working Project: Resetter-cli, a version of resetter that runs terminally due to be released this early November.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
