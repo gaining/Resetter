@@ -10,13 +10,14 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 2. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 3. `sudo gdebi resetter_1.1.2-stable_all.deb`
 
-# Official video tutorial - courtesy of Byte of Linux
+# Official video tutorial - courtesy of *Byte of Linux*
 
-[![IMAGE ALT TEXT](http://i3.ytimg.com/vi/PSmzWdGrs1M/maxresdefault.jpg)](https://youtu.be/PSmzWdGrs1M "Resetter Tutorial")
+[![Video Tutorial](http://i3.ytimg.com/vi/PSmzWdGrs1M/maxresdefault.jpg)](https://youtu.be/PSmzWdGrs1M "Resetter Tutorial")
 
 
 # Status
-- version 1.1.2 adds support for Ubuntu 17.10. I'm not sure if it's because ubuntu 17.10 is filled with bugs or it's a "Feature" by design but many QT apps that worked on earlier version were broken in this release. I'm still working on making Resetter completely compatible with
+- version 1.1.2 adds support for Ubuntu 17.10.
+- policy kit is broken, using workaround with sudo for now.
 - The software is stable. Feedback will be greatly appreciated.
 - Working Project: Resetter-cli, a version of resetter that runs terminally due to be released this early November.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
