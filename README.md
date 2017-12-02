@@ -66,7 +66,7 @@ MPIA means missing pre-installed apps
 # Officially supported distros [64-bit]
 
 - Linux Mint 17.3+
-- Ubuntu 14.04+ (ubuntu 17.10 not supported at the moment)
+- Ubuntu 14.04+
 - Elementary OS 0.4+
 - Linux Deepin 15.4+
 
