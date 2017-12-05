@@ -5,13 +5,10 @@ import apt
 import apt.package
 import logging
 import textwrap
-import sys
 from PyQt4 import QtCore, QtGui
 from CustomApplyDialog import Apply
 from PackageView import AppView
-from SetEnvironment import Settings
-import pwd
-import os
+
 
 class AppRemovalPage(QtGui.QWizardPage):
     def __init__(self, parent=None):
@@ -40,10 +37,8 @@ class AppRemovalPage(QtGui.QWizardPage):
         self.switchBox = QtGui.QCheckBox('View dependent packages')
         self.switchBox.stateChanged.connect(self.toggleSwitch)
         self.switchBox.setToolTip(textwrap.fill
-            (
-            "Warning! Only use this for single packages for which you're curious about. Do not use the select all "
-            "option while this is checked. Packages in this list will be removed whether you checked them or not.",
-            50))
+        ("Warning! Only use this for single packages for which you're curious about. Do not use the select all "
+         "option while this is checked. Packages in this list will be removed whether you checked them or not.", 50))
         self.searchEditText.textChanged.connect(self.searchItem)
         self.verticalLayout = QtGui.QVBoxLayout(self)
         self.horizontalLayout = QtGui.QHBoxLayout()
@@ -69,8 +64,6 @@ class AppRemovalPage(QtGui.QWizardPage):
         self.cache = apt.Cache()
         self.model = QtGui.QStandardItemModel(self.uninstall_view)
         self.model.itemChanged.connect(self.setItems)
-        self.d_env = Settings()
-        print os.getcwd()
 
         with open('apps-to-remove') as f_in:
             for line in f_in:
@@ -160,7 +153,7 @@ class AppRemovalPage(QtGui.QWizardPage):
                 if package.marked_delete:
                     changes.append(package)
             dep_view.showView(changes, 'Dependent packages',
-                              text, False, width=370, height=200, check_state=1)
+                         text, False, width=370, height=200, check_state=1)
             dep_view.show()
         self.cache.clear()
         QtGui.QApplication.restoreOverrideCursor()
@@ -174,7 +167,6 @@ class AppRemovalPage(QtGui.QWizardPage):
 
     def closeCache(self):
         self.cache.close()
-
 
 class AppInstallPage(QtGui.QWizardPage):
     def __init__(self, parent=None):
@@ -224,13 +216,13 @@ class AppInstallPage(QtGui.QWizardPage):
             for line in f_in:
                 try:
                     pkg = self.cache[line.strip()]
-                    text = pkg.versions[0].description
-                    item = QtGui.QStandardItem(line.strip())
-                    item.setCheckable(True)
-                    item.setCheckState(QtCore.Qt.Unchecked)
-                    self.model.appendRow(item)
-                    item.row()
-                    item.setToolTip((textwrap.fill(text, 70)))
+                    text = (pkg.versions[0].description)
+                    self.item = QtGui.QStandardItem(line.strip())
+                    self.item.setCheckable(True)
+                    self.item.setCheckState(QtCore.Qt.Unchecked)
+                    self.model.appendRow(self.item)
+                    self.item.row()
+                    self.item.setToolTip((textwrap.fill(text, 70)))
                 except KeyError:
                     continue
             self.uninstall_view.setModel(self.model)
@@ -332,10 +324,11 @@ class UserRemovalPage(QtGui.QWizardPage):
         for column in range(3):
             for row in range(table.rowCount()):
                 if column % 3:
-                    item = QtGui.QTableWidgetItem(column)
-                    item.setFlags(QtCore.Qt.ItemIsUserCheckable | QtCore.Qt.ItemIsEnabled)
-                    item.setCheckState(QtCore.Qt.Unchecked)
-                    table.setItem(row, column, item)
+                    self.item = QtGui.QTableWidgetItem(column)
+                    self.item.setFlags(QtCore.Qt.ItemIsUserCheckable |
+                                       QtCore.Qt.ItemIsEnabled)
+                    self.item.setCheckState(QtCore.Qt.Unchecked)
+                    table.setItem(row, column, self.item)
 
     def setChoice(self, item):
         if item.checkState() == QtCore.Qt.Checked:
@@ -374,9 +367,7 @@ class UserRemovalPage(QtGui.QWizardPage):
         with open(path, mode) as f:
             f.write(text)
 
-
 class AppWizard(QtGui.QWizard):
-
     def __init__(self, parent=None):
         super(AppWizard, self).__init__(parent)
         self.setWindowTitle("Custom Reset")
@@ -409,10 +400,3 @@ class AppWizard(QtGui.QWizard):
         layout.addWidget(label)
         page.setLayout(layout)
         return page
-
-
-if __name__ == '__main__':
-    app = QtGui.QApplication(sys.argv)
-    custom = AppWizard()
-    custom.show()
-    sys.exit(app.exec_())

@@ -16,15 +16,14 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 
 # Status
-- version 1.1.2 adds support for Ubuntu 17.10.
-- policy kit is broken, using workaround with sudo for now.
+- version 1.1.3 adds support for Debian 9.2
+- policy kit is broken at the moment, using workaround with sudo for now.
 - The software is stable. Feedback will be greatly appreciated.
 - Working Project: Resetter-cli, a version of resetter that runs terminally due to be released this early November.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
 # To Do
-- Official video tutorial on YouTube
-- Debian Jessie, Sketh support
+- Debian Jessie, Sketch support
 - Make Resetter multilingual. (Will need help of volunteer translators)
 - Make an app-image or flatpack as there are many reasons why Resetter needs to be portable.
 
@@ -65,8 +64,8 @@ MPIA means missing pre-installed apps
 - Source Editor: It is a normal editor that can disable, enable, or remove ppas from a user's system but what makes this different from other source editors is that you can search for the ppa that you want to edit.
 
 # Officially supported distros [64-bit]
-
-- Linux Mint 17.3+
+- Debian 9.2 (stable) Gnome edition
+- Linux Mint 17.3+ (support for mint 18.3 coming soon)
 - Ubuntu 14.04+
 - Elementary OS 0.4+
 - Linux Deepin 15.4+

@@ -1,3 +1,17 @@
+resetter (1.1.3-stable) trusty; urgency=low
+
+  * added debian 9.2 (strech) support
+
+ -- gaining <gaining7@outlook.com>  Tue, 05 Dec 2017 16:20:57 -0500
+
+
+resetter (1.1.2-stable) trusty; urgency=low
+
+  * added support for ubuntu 17.10
+
+ -- gaining <gaining7@outlook.com>  Sun, 22 Oct 2017 21:17:49 -0400
+
+
 resetter (1.1.1-stable) trusty; urgency=low
 
   * Fixed crashing issue if offline
@@ -55,7 +69,7 @@ resetter (1.0.0-stable) trusty; urgency=high
 
 
 resetter (0.3.7-rc4) trusty; urgency=high
-  
+
   * Huge performance improvements
   * Better multithreading support
   * Remove old kernels feature improved
