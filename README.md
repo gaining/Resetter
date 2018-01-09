@@ -8,7 +8,11 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 1. `sudo apt install gdebi`
 2. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
+<<<<<<< HEAD
 3. `sudo gdebi resetter_2.0.0-stable_all.deb`
+=======
+3. `sudo gdebi resetter_1.1.3-stable_all.deb`
+>>>>>>> ac964d55ad2a179b2c11d3857c7910a9ece2ca85
 
 # Official video tutorial - courtesy of *Byte of Linux*
 
