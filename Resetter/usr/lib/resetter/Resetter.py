@@ -178,7 +178,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_version_label = QtGui.QLabel()
         self.os_name_label = QtGui.QLabel()
         self.os_codename_label = QtGui.QLabel()
-        self.os_info = lsb_release.get_lsb_information()
+        self.os_info = self.d_env.os_info#lsb_release.get_lsb_information()
         self.manifest_label = QtGui.QLabel()
         dse = QtGui.QGraphicsDropShadowEffect();
         dse.setBlurRadius(4)

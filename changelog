@@ -1,3 +1,11 @@
+resetter (2.0.0-stable) trusty; urgency=low
+
+  * support for mint 18.3
+  * updated ubuntu 17.10 manifest
+
+ -- gaining <gaining7@outlook.com>  Mon, 08 Jan 2018 21:53:28 -0500
+
+
 resetter (1.1.3-stable) trusty; urgency=low
 
   * added debian 9.2 (strech) support
@@ -69,7 +77,7 @@ resetter (1.0.0-stable) trusty; urgency=high
 
 
 resetter (0.3.7-rc4) trusty; urgency=high
-
+  
   * Huge performance improvements
   * Better multithreading support
   * Remove old kernels feature improved

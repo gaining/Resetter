@@ -21,9 +21,8 @@ class Settings(object):
     def __init__(self):
         super(Settings, self).__init__()
         self.directory = '.resetter/data'
-        self.os_info = lsb_release.get_lsb_information()
+        self.os_info = lsb_release.get_distro_information()
         self.euid = os.geteuid()
-	os.environ['QT_X11_NO_MITSHM'] = "1"
         self.error_msg = QtGui.QMessageBox()
         self.error_msg.setIcon(QtGui.QMessageBox.Critical)
         self.error_msg.setWindowTitle("Error")
@@ -93,9 +92,9 @@ class Settings(object):
                pass
 
     def detectOS(self):
-        compat_os = (['LinuxMint', 'Ubuntu', 'elementary', 'Deepin'])
-        compat_releases = (['17.3', '17.04', '18.1', '18', '14.04','16.04', '17.10',
-                            '16.10', '0.4', '15.4', '15.4.1', '18.2','0.4.1'])
+        compat_os = (['LinuxMint', 'Ubuntu', 'elementary', 'Deepin', 'Debian'])
+        compat_releases = (['17.3', '17.04', '18', '18.1', '18.2', '18.3', '14.04','16.04', '17.10',
+                            '16.10', '0.4', '15.4', '15.4.1','0.4.1', '9.2'])
         if self.os_info['ID'] in compat_os and self.os_info['RELEASE'] in compat_releases:
             if self.os_info['ID'] == 'LinuxMint':
                 if self.os_info['RELEASE'] == '17.3':
@@ -122,6 +121,12 @@ class Settings(object):
                     userlist = 'userlists/mint-18.2-default-userlist'
                     return manifest, userlist, windowTitle
 
+                elif self.os_info['RELEASE'] == '18.3':
+                    windowTitle = self.os_info['ID'] + " Resetter"
+                    manifest = 'manifests/mint-18.3-cinnamon.manifest'
+                    userlist = 'userlists/mint-18.3-default-userlist'
+                    return manifest, userlist, windowTitle
+
             elif self.os_info['ID'] == 'Ubuntu':
                 if self.os_info['RELEASE'] == '14.04':
                     windowTitle = self.os_info['ID'] + " Resetter"
@@ -146,6 +151,7 @@ class Settings(object):
                     manifest = 'manifests/ubuntu-17.04-unity.manifest'
                     userlist = 'userlists/ubuntu-17.04-default-userlist'
                     return manifest, userlist, windowTitle
+
                 elif self.os_info['RELEASE'] == '17.10':
                     windowTitle = self.os_info['ID'] + " Resetter"
                     manifest = 'manifests/ubuntu-17.10.manifest'
@@ -176,6 +182,13 @@ class Settings(object):
                     windowTitle = self.os_info['ID'] + " Resetter"
                     manifest = 'manifests/deepin-15.4.1.manifest'
                     userlist = 'userlists/deepin-15.4.1-default-userlist'
+                    return manifest, userlist, windowTitle
+
+            elif self.os_info['ID'] == 'Debian':
+                if self.os_info['RELEASE'] == '9.2':
+                    windowTitle = self.os_info['ID'] + " Resetter"
+                    manifest = 'manifests/debian-9.2.manifest'
+                    userlist = 'userlists/debian-9.2-default-userlist'
                     return manifest, userlist, windowTitle
         else:
             self.error_msg.setText("Your distro ({}) isn't supported at the moment.".format(self.os_info['DESCRIPTION']))
