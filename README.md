@@ -17,9 +17,8 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 # Status
 - Version 2.0.0 adds support for Linux Mint 18.3
-- policy kit is broken at the moment bec, using workaround with sudo for now.
 - The software is stable. Feedback will be greatly appreciated.
-- Working Project: Resetter-cli, a version of resetter that runs terminally due to be released this early November.
+- Working Project: Resetter-cli, a version of resetter that runs terminally.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
 # To Do
