@@ -10,6 +10,7 @@ from PyQt4 import QtCore, QtGui
 from Account import AccountDialog
 from AptProgress import UIAcquireProgress, UIInstallProgress
 from InstallMissingDialog import Install
+from Tools import UsefulTools
 
 
 class ProgressThread(QtCore.QThread):
@@ -22,9 +23,6 @@ class ProgressThread(QtCore.QThread):
         self.cache.open()
         self.file_in = file_in
         self.isDone = False
-        self.error_msg = QtGui.QMessageBox()
-        self.error_msg.setIcon(QtGui.QMessageBox.Critical)
-        self.error_msg.setWindowTitle("Error")
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
         handler = logging.FileHandler('/var/log/resetter/resetter.log')
@@ -112,9 +110,6 @@ class Apply(QtGui.QDialog):
         self.remaining = 0
         self.no_show = False
         self.setWindowTitle("Applying")
-        self.error_msg = QtGui.QMessageBox()
-        self.error_msg.setIcon(QtGui.QMessageBox.Critical)
-        self.error_msg.setWindowTitle("Error")
         self.buttonCancel = QtGui.QPushButton()
         self.buttonCancel.setText("Cancel")
         self.buttonCancel.clicked.connect(self.finished)
@@ -365,33 +360,17 @@ class Apply(QtGui.QDialog):
 
     def showError(self, error, m_type):
         self.movie.stop()
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle(m_type)
-        msg.setIcon(QtGui.QMessageBox.Critical)
-        msg.setText("Something went wrong, please check details.")
-        msg.setDetailedText(error)
-        msg.exec_()
+        UsefulTools().showMessage(m_type, "Something went wront, please check details.", QtGui.QMessageBox.Critical,
+                                  error)
 
-    def showMessage(self):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("Packages kept back")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("These packages could cause problems if removed so they've been kept back.")
-        text = "\n".join(self.progressView.broken_list)
-        msg.setInformativeText(text)
-        msg.exec_()
 
     def showUserInfo(self):
         if not self.no_show:
-            msg = QtGui.QMessageBox(self)
-            msg.setWindowTitle("User Credentials")
-            msg.setIcon(QtGui.QMessageBox.Information)
-            msg.setText("Please use these credentials the next time you log-in")
-            msg.setInformativeText(
-                "USERNAME: <b>{}</b><br/> PASSWORD: <b>{}</b>".format(self.account.getUser(), self.account.getPassword()))
-            msg.setDetailedText("If you deleted your old user account, "
+            msg = "Please use these credentials the next time you log-in\n\n"
+            msginf = ("USERNAME: <b>{}</b><br/> PASSWORD: <b>{}</b>".format(self.account.getUser(), self.account.getPassword()))
+            msgd = ("If you deleted your old user account, "
                                 "this account will be the only local user on your system")
-            msg.exec_()
+            UsefulTools().showMessage("User Credentials", msg + msginf, QtGui.QMessageBox.Information, msgd)
             self.logger.info("Credential message info shown")
             self.rebootMessage()
         else:

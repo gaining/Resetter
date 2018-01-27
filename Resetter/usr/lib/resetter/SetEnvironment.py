@@ -12,7 +12,6 @@ from PyQt4 import QtGui
 import urllib2
 from bs4 import BeautifulSoup
 from distutils.version import StrictVersion
-from AboutPage import About
 from Tools import UsefulTools
 
 
@@ -23,7 +22,7 @@ class Settings(object):
         self.directory = '.resetter/data'
         self.os_info = lsb_release.get_distro_information()
         self.euid = os.geteuid()
-        self.version = About().getVersion()
+        self.version = UsefulTools().getVersion()
         self.checkForUpdate()
         self.detectRoot()
         logdir = '/var/log/resetter'
@@ -97,15 +96,9 @@ class Settings(object):
             return manifest, userlist, window_title
         else:
             UsefulTools().showMessage("Apt Not Found",
-                             "Apt could not be found, Your distro does not appear to be Debian based, the.",
-                             QtGui.QMessageBox.Warning)
-
-    def checkForApt(self):
-        apt_locations = ('/usr/bin/apt', '/usr/lib/apt', '/etc/apt', '/usr/local/bin/apt')
-        if not any(os.path.exists(f) for f in apt_locations):
-            self.showMessage("Apt Not Found",
                              "Apt could not be found, Your distro does not appear to be Debian based.",
                              QtGui.QMessageBox.Warning)
+            exit(1)
 
     def checkForUpdate(self):
         try:
@@ -116,12 +109,10 @@ class Settings(object):
             site_version = versions_tag[24:].split('-', 1)[0]
             current_version = StrictVersion(self.version)
             if site_version > current_version:
-                self.error_msg.setIcon(QtGui.QMessageBox.Information)
-                self.error_msg.setWindowTitle("Update Available")
-                self.error_msg.setText("There's a new version of Resetter available.\n\n"
+                msg = ("There's a new version of Resetter available.\n\n"
                                        "Grab Resetter v{} at "
                                        "https://github.com/gaining/Resetter/releases".format(site_version))
-                self.error_msg.exec_()
+                UsefulTools().showMessage("Update Available", msg, QtGui.QMessageBox.Information)
             else:
                 print("Running most recent version of Resetter")
         except urllib2.URLError:

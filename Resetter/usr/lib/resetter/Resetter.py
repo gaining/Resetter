@@ -29,9 +29,6 @@ class UiMainWindow(QtGui.QMainWindow):
         self.d_env = Settings()
         QtGui.QApplication.setStyle("GTK")
         self.setWindowIcon(QtGui.QIcon('/usr/lib/resetter/data/icons/resetter-launcher.png'))
-        self.error_msg = QtGui.QMessageBox()
-        self.error_msg.setIcon(QtGui.QMessageBox.Critical)
-        self.error_msg.setWindowTitle("Error")
         self.setWindowTitle(self.d_env.window_title)
         self.logger = logging.getLogger(__name__)
         self.logger.setLevel(logging.DEBUG)
@@ -191,7 +188,8 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_codename_label = QtGui.QLabel()
         self.os_info = self.d_env.os_info#lsb_release.get_lsb_information()
         self.manifest_label = QtGui.QLabel()
-        dse = QtGui.QGraphicsDropShadowEffect();
+        self.userlist_label = QtGui.QLabel()
+        dse = QtGui.QGraphicsDropShadowEffect()
         dse.setBlurRadius(4)
         self.manifest = self.d_env.manifest
         self.userlist = self.d_env.userlist
@@ -203,8 +201,15 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_codename_label.setText('codename: '+self.os_info['CODENAME'])
         self.image_label = QtGui.QLabel()
         if self.manifest is not None:
-            m = self.manifest.split('/')[-1]
-            self.manifest_label.setText("Using: {}".format(m))
+            self.manifest_label.setText("Manifest: {}".format(self.manifest.split('/')[-1]))
+        else:
+            self.manifest_label.setText("Manifest: ???")
+
+        if self.userlist is not None:
+            self.userlist_label.setText("Userlist: {}".format(self.userlist.split('/')[-1]))
+        else:
+            self.manifest_label.setText("Userlist: ???")
+
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/resetter-logo.png")
         self.pixmap2 = self.pixmap.scaled(650, 200)
         self.image_label.setPixmap(self.pixmap2)
@@ -214,6 +219,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.verticalLayout2.addWidget(self.os_version_label)
         self.verticalLayout2.addWidget(self.os_codename_label)
         self.verticalLayout2.addWidget(self.manifest_label)
+        self.verticalLayout2.addWidget(self.userlist_label)
         self.verticalLayout2.setAlignment(QtCore.Qt.AlignRight)
         self.verticalLayout.setAlignment(QtCore.Qt.AlignCenter)
         self.verticalLayout.addWidget(self.image_label)
@@ -225,40 +231,23 @@ class UiMainWindow(QtGui.QMainWindow):
         self.setCentralWidget(self.centralWidget)
         self.center()
 
-    def getConfigFiles(self):  # future method for dealing with config files {disabled}
-        conf = '/home/{}/.config'.format(self.user)
-        x = 'apps-to-remove'
-        for f in os.listdir(conf):
-            shutil.rmtree(f, ignore_errors=True)
-            file_path = os.path.join(conf, f)
-            try:
-                if os.path.isfile(file_path):
-                    os.unlink(file_path)
-                elif os.path.isdir(file_path):
-                    shutil.rmtree(file_path)
-            except Exception as e:
-                print(e)
-
     def openManifest(self):
         try:
             manifest = QtGui.QFileDialog.getOpenFileName(self, 'Choose manifest',
                                             'manifests', "manifest file (*.manifest)")
             if os.path.isfile(manifest):
                 self.manifest = manifest
-                manifest = str(manifest).split('/')[-1]
-                self.manifest_label.setText('using: {}'.format(manifest))
+                self.manifest_label.setText('Manifest: {}'.format(str(manifest).split('/')[-1]))
         except IOError:
             pass
 
     def openUserList(self):
         try:
-            userList = QtGui.QFileDialog.getOpenFileName(self, 'Choose manifest',
-                                            'manifests', "manifest file (*.manifest)")
+            userList = QtGui.QFileDialog.getOpenFileName(self, 'Choose a userlist',
+                                            'userlists', "userlist file (*)")
             if os.path.isfile(userList):
-                pass
-                #self.manifest = manifest
-                #manifest = str(manifest).split('/')[-1]
-                #self.manifest_label.setText('using: {}'.format(manifest))
+                self.userlist = userList
+                self.userlist_label.setText('Userlist: {}'.format(str(userList).split('/')[-1]))
         except IOError:
             pass
 

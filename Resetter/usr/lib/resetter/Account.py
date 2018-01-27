@@ -2,8 +2,6 @@
 # -*- coding: utf-8 -*-
 
 from PyQt4 import QtGui, QtCore
-import crypt
-import random
 import logging
 from Tools import UsefulTools
 
@@ -67,21 +65,15 @@ class AccountDialog(QtGui.QDialog):
         self.user = 'default'
         self.password = 'NewLife3!'
 
-    def salt(self):
-        saltchars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-        return random.choice(saltchars) + random.choice(saltchars)
-
     def custom_user(self):
         self.user = self.textEditUser.text()
         self.password = self.textEditPassword.text()
-        hashed_pw = crypt.crypt(str(self.password), "$6$" + self.salt())
         if self.complexityChecker():
             new_user = '/usr/lib/resetter/data/scripts/new-user.sh'
             custom_user = '/usr/lib/resetter/data/scripts/custom_user.sh'
             with open(new_user, "r") as f, open(custom_user, 'w') as out:
                 for line in f:
                     if line.startswith('PASSWORD'):
-                        # line = ("PASSWORD=""\'{}\'\n".format(hashed_pw))
                         line = ("PASSWORD=""\'{}\'\n".format(self.password))
                     if line.startswith('USERNAME'):
                         line = ("USERNAME=""\'{}\'\n".format(self.user))

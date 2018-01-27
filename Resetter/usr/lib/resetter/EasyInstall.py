@@ -4,7 +4,7 @@ import apt
 import os
 import textwrap
 from PyQt4 import QtCore, QtGui
-
+from Tools import UsefulTools
 from InstallMissingDialog import Install
 
 
@@ -167,11 +167,8 @@ class EasyInstaller(QtGui.QDialog):
         self.close()
 
     def alreadyInstalled(self, package):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("Package already installed")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("{} is already on your system".format(package))
-        msg.exec_()
+        UsefulTools().showMessage("Package already installed ", "{} is already on your system".format(package),
+                                  QtGui.QMessageBox.Information)
 
     def showMessage(self, package):
         self.comboBox.clear()
@@ -183,11 +180,8 @@ class EasyInstaller(QtGui.QDialog):
                 self.comboBox.addItem(p.shortname)
         if self.comboBox.count() > 1:
             self.comboBox.setVisible(True)
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("Package not found")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("The package that you've tried to add is not found in the cache")
-        msg.setDetailedText("If you've recently added a ppa containing this package, "
-                            "please use [EasyPPA - refresh sources] feature, "
-                            "then try adding the package again.")
-        msg.exec_()
+        msg = "The package that you've tried to add is not found in the cache"
+        msgd = "If you've recently added a ppa containing this package, "\
+                            "please use [EasyPPA - refresh sources] feature, "\
+                            "then try adding the package again."
+        UsefulTools().showMessage("Package not found", msg, QtGui.QMessageBox.Information, msgd)

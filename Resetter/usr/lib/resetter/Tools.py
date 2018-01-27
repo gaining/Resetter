@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-# This class contains function tools that are often used by other classes
-import sys
-import os
-import pwd
+# This class contains function tools that are often used by other classes, i
 
-from PyQt4 import QtGui, QtCore
+
+from PyQt4 import QtGui
 
 
 class UsefulTools(object):
