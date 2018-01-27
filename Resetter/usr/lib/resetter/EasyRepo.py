@@ -12,6 +12,7 @@ from bs4 import BeautifulSoup
 
 from AptProgress import UIAcquireProgress
 from PackageView import AppView
+from Tools import UsefulTools
 
 
 class EasyPPAInstall(QtGui.QDialog):
@@ -56,7 +57,7 @@ class EasyPPAInstall(QtGui.QDialog):
         self.verticalLayout.addWidget(self.table)
         self.verticalLayout.addWidget(self.lbl1)
         self.verticalLayout.addLayout(self.horizontalLayout2)
-        self.os_info = lsb_release.get_lsb_information()
+        self.os_info = lsb_release.get_distro_information()
         self.sources = sourceslist.SourcesList()
 
         self.aprogress = UIAcquireProgress(True)
@@ -240,15 +241,14 @@ class EasyPPAInstall(QtGui.QDialog):
                 QtGui.QApplication.restoreOverrideCursor()
             except Exception as e:
                 QtGui.QApplication.restoreOverrideCursor()
-                self.error_msg.setIcon(QtGui.QMessageBox.Critical)
-                self.error_msg.setText("Unable fetch PPA key")
-                self.error_msg.setDetailedText("Error: {}".format(e))
-                self.error_msg.exec_()
+                UsefulTools().showMessage("Unable to fetch PPA key", "Error: {}".format(e), QtGui.QMessageBox.Critical)
             else:
-                self.successMessage()
+                UsefulTools().showMessage("PPA added", "This ppa has been successfully added to your sources list",
+                                  QtGui.QMessageBox.Information)
         else:
-            self.showMessage()
-
+            UsefulTools().showMessage("PPA not compatible", "This PPA is not compatible with your system because it's "
+                                                            "not available for {}".format(self.os_info['DESCRIPTION']),
+                                      QtGui.QMessageBox.Information)
     def getTableData(self, sauce):
         pasta = []
         for i in sauce.select('tr'):
@@ -272,20 +272,6 @@ class EasyPPAInstall(QtGui.QDialog):
                 available.show()
         QtGui.QApplication.restoreOverrideCursor()
 
-    def showMessage(self):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("PPA not compatible")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("This PPA is not compatible with your system because it's "
-                    "not available for {}".format(self.os_info['DESCRIPTION']))
-        msg.exec_()
-
-    def successMessage(self):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("PPA added")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("This ppa has been successfully added to your sources list")
-        msg.exec_()
 
 if __name__ == '__main__':
     app = QtGui.QApplication(sys.argv)

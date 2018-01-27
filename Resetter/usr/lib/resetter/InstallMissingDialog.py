@@ -9,7 +9,7 @@ import subprocess
 import sys
 from PyQt4 import QtCore, QtGui
 from AptProgress import UIAcquireProgress, UIInstallProgress
-
+from Tools import UsefulTools
 
 class ProgressThread(QtCore.QThread):
 
@@ -36,10 +36,6 @@ class ProgressThread(QtCore.QThread):
         self.thread1.started.connect(lambda: self.aprogress.play(0.0, False, ""))
         self.aprogress.finished.connect(self.thread1.quit)
 
-        self.error_msg = QtGui.QMessageBox()
-        self.error_msg.setIcon(QtGui.QMessageBox.Critical)
-        self.error_msg.setWindowTitle("Error")
-
         self.thread2 = QtCore.QThread()
         self.iprogress = UIInstallProgress()
         self.iprogress.moveToThread(self.thread2)
@@ -47,15 +43,11 @@ class ProgressThread(QtCore.QThread):
         self.iprogress.finished.connect(self.thread2.quit)
         self.broken_list = []
 
-    def lineCount(self):
-        x = open(self.file_in).readlines()
-        line_count = len(x)
-        return line_count
-
     def run(self):
-        if self.lineCount() > 0:
+        lc = UsefulTools().lineCount(self.file_in)
+        if lc > 0:
             loading = 0
-            x = float(100) / self.lineCount()
+            x = float(100) / lc
             with open(self.file_in) as packages:
                 for pkg_name in packages:
                     try:
@@ -110,9 +102,6 @@ class Install(QtGui.QDialog):
         self.setMinimumSize(400, 100)
         self.file_in = file_in
         self.setWindowTitle("Working...")
-        self.error_msg = QtGui.QMessageBox()
-        self.error_msg.setIcon(QtGui.QMessageBox.Critical)
-        self.error_msg.setWindowTitle("Error")
         self.buttonCancel = QtGui.QPushButton()
         self.buttonCancel.setText("Cancel")
         self.buttonCancel.clicked.connect(self.cancel)
@@ -156,9 +145,9 @@ class Install(QtGui.QDialog):
         self.connect(self.installProgress, QtCore.SIGNAL("showError(QString, QString)"), self.showError)
 
         self.start()
-        if not self.installProgress.lineCount() > 0:
-           print "Threads exited as there's nothing to do."
-           self.cancel()
+        # if not self.installProgress.lineCount() > 0:
+        #    print "Threads exited as there's nothing to do."
+        #    self.cancel()
 
     def updateProgressBar(self, percent, isdone):
         self.lbl1.setText("Loading Package List")
@@ -183,13 +172,8 @@ class Install(QtGui.QDialog):
 
     def showError(self, error, m_type):
         self.movie.stop()
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle(m_type)
-        msg.setIcon(QtGui.QMessageBox.Critical)
-        msg.setText("Something went wrong, please check details.")
-        msg.setDetailedText(error)
-        msg.exec_()
-
+        UsefulTools().showMessage(m_type, "Something went wront, please check details.", QtGui.QMessageBox.Critical,
+                                  error)
     def cancel(self):
         self.logger.warning("Progress thread was cancelled")
         self.installProgress.thread1.finished.connect(self.installProgress.thread1.exit)
@@ -210,15 +194,6 @@ class Install(QtGui.QDialog):
 
     def start(self):
         self.installProgress.start()
-
-    def showMessage(self):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle("Packages kept back")
-        msg.setIcon(QtGui.QMessageBox.Information)
-        msg.setText("These packages could cause problems if installed so they've been kept back.")
-        text = "\n".join(self.installProgress.broken_list)
-        msg.setInformativeText(text)
-        msg.exec_()
 
 if __name__ == '__main__':
     file = "apps-to-install"
