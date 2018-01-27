@@ -5,6 +5,7 @@ from PyQt4 import QtGui, QtCore
 import crypt
 import random
 import logging
+from Tools import UsefulTools
 
 
 class AccountDialog(QtGui.QDialog):
@@ -93,9 +94,9 @@ class AccountDialog(QtGui.QDialog):
         num_count = 0
         good_length = False
         for s in password:
-            if any(s.isupper() for x in self.password):
+            if s.isupper():
                 upper_count += 1
-            if any(s.isdigit() for x in self.password):
+            if s.isdigit():
                 num_count += 1
             if len(password) >= 8:
                 good_length = True
@@ -106,14 +107,12 @@ class AccountDialog(QtGui.QDialog):
             return True
 
     def showMessage(self):
-        msg = QtGui.QMessageBox(self)
-        msg.setWindowTitle('Password did not meet complexity requirements')
-        msg.setIcon(QtGui.QMessageBox.Warning)
-        msg.setText("Make sure that your password contains:\n"
+        title = 'Password did not meet complexity requirements'
+        text = ("Make sure that your password contains:\n"
                     "At least 8 characters\n"
                     "At least one number\n"
                     "At least one uppercase letter")
-        msg.exec_()
+        UsefulTools().showMessage(title, text, QtGui.QMessageBox.Warning)
 
     def getUser(self):
         return self.user

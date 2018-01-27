@@ -8,6 +8,8 @@ import textwrap
 from PyQt4 import QtCore, QtGui
 from CustomApplyDialog import Apply
 from PackageView import AppView
+from Tools import UsefulTools
+
 
 
 class AppRemovalPage(QtGui.QWizardPage):
@@ -90,12 +92,9 @@ class AppRemovalPage(QtGui.QWizardPage):
         if self.switch is False:
             self.switch = True
             if self.count == 0:  # show warning message only once
-                msg = QtGui.QMessageBox(self)
-                msg.setWindowTitle("Warning")
-                msg.setIcon(QtGui.QMessageBox.Warning)
-                msg.setText("Only use this option for single packages for which you're curious about. "
+                text = ("Only use this option for single packages for which you're curious about. "
                             "<strong>Do not use the <i>Select All</i> option while this is checked</strong>")
-                msg.exec_()
+                UsefulTools().showMessage("warning", text, QtGui.QMessageBox.Warning)
             self.count += 1
         else:
             self.switch = False
@@ -168,7 +167,9 @@ class AppRemovalPage(QtGui.QWizardPage):
     def closeCache(self):
         self.cache.close()
 
+
 class AppInstallPage(QtGui.QWizardPage):
+
     def __init__(self, parent=None):
         super(AppInstallPage, self).__init__(parent=parent)
         self.setTitle('Packages to Install')
@@ -275,6 +276,7 @@ class AppInstallPage(QtGui.QWizardPage):
 
 
 class UserRemovalPage(QtGui.QWizardPage):
+
     def __init__(self, parent=None):
         super(UserRemovalPage, self).__init__(parent)
         self.setTitle('Delete Local users')

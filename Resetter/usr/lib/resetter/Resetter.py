@@ -2,25 +2,26 @@
 # -*- coding: utf-8 -*-
 # This class is responsible for setting up the main ui and generating files that other functions will need
 # to work with.
+import datetime
 import logging
-import lsb_release
 import os
+import shutil
 import subprocess
 import sys
 import textwrap
-import shutil
 from PyQt4 import QtCore, QtGui
-import datetime
 from aptsources import sourceslist
 
 from AboutPage import About
 from CustomReset import AppWizard
+from EasyInstall import EasyInstaller
+from EasyRepo import EasyPPAInstall
 from PackageView import AppView
-from Sources import SourceEdit
 from SetEnvironment import Settings
 from Singleton import SingleApplication
-from EasyRepo import EasyPPAInstall
-from EasyInstall import EasyInstaller
+from Sources import SourceEdit
+from Tools import UsefulTools
+
 
 class UiMainWindow(QtGui.QMainWindow):
     def __init__(self, parent=None):
@@ -52,12 +53,18 @@ class UiMainWindow(QtGui.QMainWindow):
         self.statusbar = QtGui.QStatusBar(self)
         self.setStatusBar(self.statusbar)
         self.actionOpen = QtGui.QAction(self)
+        self.actionOpenUserList = QtGui.QAction(self)
+
         self.actionSaveSnapshot = QtGui.QAction(self)
         self.actionSaveSnapshot.setStatusTip('Save a snapshot of currently installed packages. '
                                              'It is best to save this file in a removable drive for later use.')
         self.actionOpen.triggered.connect(self.openManifest)
+        self.actionOpenUserList.triggered.connect(self.openUserList)
+
         self.actionSaveSnapshot.triggered.connect(self.save)
         self.actionSaveSnapshot.setShortcut('Ctrl+S')
+
+
 
         self.actionExit = QtGui.QAction(self)
         self.actionExit.setShortcut('Ctrl+Q')
@@ -85,6 +92,8 @@ class UiMainWindow(QtGui.QMainWindow):
         self.actionShowUsers.triggered.connect(self.showNonDefaultUsers)
 
         self.menuFile.addAction(self.actionOpen)
+        self.menuFile.addAction(self.actionOpenUserList)
+
         self.menuFile.addAction(self.actionSaveSnapshot)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
@@ -106,6 +115,8 @@ class UiMainWindow(QtGui.QMainWindow):
         self.menuHelp.setTitle("Help")
         self.actionExit.setText("Exit")
         self.actionOpen.setText("Open manifest")
+        self.actionOpenUserList.setText("Open default userlist")
+
         self.actionSaveSnapshot.setText('Save')
         self.actionAbout.setText("About")
         self.actionEasyPPA.setText("Easy PPA")
@@ -239,6 +250,18 @@ class UiMainWindow(QtGui.QMainWindow):
         except IOError:
             pass
 
+    def openUserList(self):
+        try:
+            userList = QtGui.QFileDialog.getOpenFileName(self, 'Choose manifest',
+                                            'manifests', "manifest file (*.manifest)")
+            if os.path.isfile(userList):
+                pass
+                #self.manifest = manifest
+                #manifest = str(manifest).split('/')[-1]
+                #self.manifest_label.setText('using: {}'.format(manifest))
+        except IOError:
+            pass
+
     def searchLaunchpad(self):
         easyppa = EasyPPAInstall(self)
         easyppa.show()
@@ -259,18 +282,17 @@ class UiMainWindow(QtGui.QMainWindow):
     def showMissings(self):
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
         self.getMissingPackages()
-        if self.lineCount('apps-to-install') > 0:
+        if UsefulTools().lineCount('apps-to-install') > 0:
             text = "These were pre-installed packages that are missing but due for install"
             view_missing = AppView(self)
             view_missing.showView("apps-to-install", "Missing pre-installed packages", text, False)
             view_missing.show()
             QtGui.QApplication.restoreOverrideCursor()
+
         else:
             QtGui.QApplication.restoreOverrideCursor()
-            self.error_msg.setWindowTitle("No missing pre-installed packages")
-            self.error_msg.setIcon(QtGui.QMessageBox.Information)
-            self.error_msg.setText("Nothing to show :-)")
-            self.error_msg.exec_()
+            UsefulTools().showMessage('No missing pre-installed packages', "Nothing to Show :-)",
+                                      QtGui.QMessageBox.Information)
 
     def getMissingPackages(self):
         self.getInstalledList()
@@ -291,10 +313,8 @@ class UiMainWindow(QtGui.QMainWindow):
                     if not any(s in line for s in black_list):
                         output.writelines(line)
         except Exception as e:
-            self.logger.error("Error comparing files [{}]".format(e), exc_info=True)
-            self.error_msg.setText("Error generating removable package list. Please see details")
-            self.error_msg.setDetailedText("Error: {}".format(e))
-            self.error_msg.exec_()
+            UsefulTools().showMessage('Error', "Error generating removable package list. Please see details",
+                                      QtGui.QMessageBox.Information, "Error: {}".format(e))
 
     def save(self):
         self.getInstalledList()
@@ -323,9 +343,7 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.info("getOldKernels() completed")
         except subprocess.CalledProcessError, e:
             self.logger.error("Error: {}".format(e.output))
-            self.error_msg.showMessage(str("Error: ", e.ouput))
-            self.error_msg.exec_()
-            print e.output
+            UsefulTools().showMessage("Error", "Error: {}".format(e.ouput), QtGui.QMessageBox.Critical)
 
     def warningPrompt(self):
         choice = QtGui.QMessageBox.warning \
@@ -339,7 +357,7 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.warning("auto reset chosen")
             self.getInstalledList()
             self.getMissingPackages()
-            if self.lineCount("apps-to-remove") != 0:
+            if UsefulTools().lineCount("apps-to-remove") > 0:
                 self.getLocalUserList()
                 self.findNonDefaultUsers()
                 view = AppView(self)
@@ -349,12 +367,11 @@ class UiMainWindow(QtGui.QMainWindow):
                 QtGui.QApplication.restoreOverrideCursor()
 
             else:
-                self.error_msg.setWindowTitle("Nothing left to remove")
-                self.error_msg.setIcon(QtGui.QMessageBox.Information)
-                self.error_msg.setText(
-                    "All removable packages have already been removed, there are no more packages left")
+                UsefulTools.showMessage("Nothing left to remove",
+                                        "All removable packages have already been removed, there are no more packages left",
+                                        QtGui.QMessageBox.Information)
                 QtGui.QApplication.restoreOverrideCursor()
-                self.error_msg.exec_()
+
         else:
             self.logger.info("auto reset cancelled")
 
@@ -371,8 +388,8 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.debug("installed list was generated with {} apps installed".format(i))
         except subprocess.CalledProcessError as e:
             self.logger.error("Error: {}".format(e.ouput), exc_info=True)
-            self.error_msg.setText("Installed list failed to generate or may not be complete: {}".format(e))
-            self.error_msg.exec_()
+            UsefulTools().showMessage("Error", "Installed list failed to generate or may not be complete: {}".format(e),
+                                      QtGui.QMessageBox.Critical)
 
     def about(self):
         about = About(self)
@@ -392,17 +409,7 @@ class UiMainWindow(QtGui.QMainWindow):
             self.compareFiles()
         except Exception as e:
             self.logger.error("Manifest processing failed [{}]".format(e))
-            self.error_msg.setText("Manifest processing failed")
-            self.error_msg.setDetailedText("{}".format(e))
-            self.error_msg.exec_()
-
-    def lineCount(self, f_in):
-        p = subprocess.Popen(['wc', '-l', f_in], stdout=subprocess.PIPE,
-                             stderr=subprocess.PIPE)
-        result, err = p.communicate()
-        if p.returncode != 0:
-            raise IOError(err)
-        return int(result.strip().split()[0])
+            UsefulTools().showMessage("Manifest Processing failed", e, QtGui.QMessageBox.Critical)
 
     def compareFiles(self):
         try:
@@ -417,9 +424,8 @@ class UiMainWindow(QtGui.QMainWindow):
                         output.writelines(line)
         except Exception as e:
             self.logger.error("Error comparing files [{}]".format(e), exc_info=True)
-            self.error_msg.setText("Error generating removable package list. Please see details")
-            self.error_msg.setDetailedText("Error: {}".format(e))
-            self.error_msg.exec_()
+            UsefulTools().showMessage("Error", "Error generating removable package list. Please see details",
+                                      QtGui.QMessageBox.Critical, detail=e)
 
     def showInstalled(self):
         QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
@@ -442,10 +448,8 @@ class UiMainWindow(QtGui.QMainWindow):
             QtGui.QApplication.restoreOverrideCursor()
         else:
             QtGui.QApplication.restoreOverrideCursor()
-            self.error_msg.setIcon(QtGui.QMessageBox.Information)
-            self.error_msg.setWindowTitle("No non-default users or groups on your system found")
-            self.error_msg.setText("Nothing to show :-)")
-            self.error_msg.exec_()
+            UsefulTools().showMessage("No non-default users or groups on your system found", "Nothing to show :-)",
+                                      QtGui.QMessageBox.Information)
 
     def getLocalUserList(self):
         try:

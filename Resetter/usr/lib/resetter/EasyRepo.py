@@ -56,7 +56,7 @@ class EasyPPAInstall(QtGui.QDialog):
         self.verticalLayout.addWidget(self.table)
         self.verticalLayout.addWidget(self.lbl1)
         self.verticalLayout.addLayout(self.horizontalLayout2)
-        self.os_info = lsb_release.get_lsb_information()
+        self.os_info = lsb_release.get_distro_information()
         self.sources = sourceslist.SourcesList()
 
         self.aprogress = UIAcquireProgress(True)

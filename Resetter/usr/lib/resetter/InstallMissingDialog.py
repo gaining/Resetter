@@ -9,7 +9,7 @@ import subprocess
 import sys
 from PyQt4 import QtCore, QtGui
 from AptProgress import UIAcquireProgress, UIInstallProgress
-
+from Tools import UsefulTools
 
 class ProgressThread(QtCore.QThread):
 
@@ -47,15 +47,11 @@ class ProgressThread(QtCore.QThread):
         self.iprogress.finished.connect(self.thread2.quit)
         self.broken_list = []
 
-    def lineCount(self):
-        x = open(self.file_in).readlines()
-        line_count = len(x)
-        return line_count
-
     def run(self):
-        if self.lineCount() > 0:
+        lc = UsefulTools().lineCount(self.file_in)
+        if lc > 0:
             loading = 0
-            x = float(100) / self.lineCount()
+            x = float(100) / lc
             with open(self.file_in) as packages:
                 for pkg_name in packages:
                     try:
