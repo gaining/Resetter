@@ -161,7 +161,6 @@ class UiMainWindow(QtGui.QMainWindow):
         self.btnReset.clicked.connect(self.warningPrompt)
         self.btnCustomReset = QtGui.QPushButton(self)
         self.btnCustomReset.setText("Custom Reset")
-        #self.btnCustomReset.resize(614, 110)
         self.btnCustomReset.setFixedHeight(100)
         self.btnCustomReset.setFont(font)
         self.btnCustomReset.setStyleSheet(button_style)
@@ -173,7 +172,6 @@ class UiMainWindow(QtGui.QMainWindow):
 
         self.btnEasyInstall = QtGui.QPushButton(self)
         self.btnEasyInstall.setText("Easy Install")
-        # self.btnCustomReset.resize(614, 110)
         self.btnEasyInstall.setFixedHeight(100)
         self.btnEasyInstall.setFont(font)
         self.btnEasyInstall.setStyleSheet(button_style)
@@ -208,7 +206,7 @@ class UiMainWindow(QtGui.QMainWindow):
         if self.userlist is not None:
             self.userlist_label.setText("Userlist: {}".format(self.userlist.split('/')[-1]))
         else:
-            self.manifest_label.setText("Userlist: ???")
+            self.userlist_label.setText("Userlist: ???")
 
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/resetter-logo.png")
         self.pixmap2 = self.pixmap.scaled(650, 200)
@@ -346,7 +344,7 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.warning("auto reset chosen")
             self.getInstalledList()
             self.getMissingPackages()
-            if UsefulTools().lineCount("apps-to-remove") > 0:
+            if UsefulTools().lineCount('apps-to-remove') > 0:
                 self.getLocalUserList()
                 self.findNonDefaultUsers()
                 view = AppView(self)
@@ -356,7 +354,7 @@ class UiMainWindow(QtGui.QMainWindow):
                 QtGui.QApplication.restoreOverrideCursor()
 
             else:
-                UsefulTools.showMessage("Nothing left to remove",
+                UsefulTools().showMessage("Nothing left to remove",
                                         "All removable packages have already been removed, there are no more packages left",
                                         QtGui.QMessageBox.Information)
                 QtGui.QApplication.restoreOverrideCursor()

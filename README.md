@@ -17,6 +17,7 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 # Status
 - Version 2.1.0 adds support for Deepin 15.5 and opens the possibility to easily make any other debian based distro compatible by using [Resetter Helper](https://github.com/gaining/ResetterHelper)
+I'll elaborate on that as *ResetterHelper* becomes more mature.
 - then on the terminal, run the following commands:
 - The software is stable. Feedback will be greatly appreciated.
 - Working Project: Resetter-cli, a version of resetter that runs terminally.
