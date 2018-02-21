@@ -200,7 +200,7 @@ class EasyPPAInstall(QtGui.QDialog):
             return True
 
     def codeName(self):
-        xenial_fam = (['serena', 'sarah', 'loki', 'sonya'])
+        xenial_fam = (['serena', 'sarah', 'loki', 'sonya', 'sylvia'])
         if self.os_info['CODENAME'] == 'rosa':
             return 'trusty'
         elif self.os_info['CODENAME'] in xenial_fam:
@@ -220,7 +220,7 @@ class EasyPPAInstall(QtGui.QDialog):
                     compatible = True
                 else:
                     compatible = False
-        result = [repo, compatible, signing_key]
+        result = (repo, compatible, signing_key)
         self.ppa.append(result)
 
     def addPPA(self, ppa):

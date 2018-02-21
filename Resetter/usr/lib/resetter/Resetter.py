@@ -197,6 +197,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_version_label.setText('OS version: '+self.os_info['RELEASE'])
         self.os_name_label.setGraphicsEffect(dse)
         self.os_codename_label.setText('codename: '+self.os_info['CODENAME'])
+        self.non_defaults = []
         self.image_label = QtGui.QLabel()
         if self.manifest is not None:
             self.manifest_label.setText("Manifest: {}".format(self.manifest.split('/')[-1]))
@@ -461,7 +462,6 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.info("getting local users...")
             cmd = subprocess.check_output(['bash', '-c', 'compgen -u'])
             black_list = []
-            self.non_defaults = []
             with open(self.userlist, 'r') as userlist, open('users', 'r') as normal_users:
                 for user in userlist:
                     black_list.append(user.strip())
@@ -498,6 +498,7 @@ class UiMainWindow(QtGui.QMainWindow):
         centerPoint = QtGui.QApplication.desktop().screenGeometry(screen).center()
         frameGm.moveCenter(centerPoint)
         self.move(frameGm.topLeft())
+
 
 if __name__ == '__main__':
     key = 'Resetter'

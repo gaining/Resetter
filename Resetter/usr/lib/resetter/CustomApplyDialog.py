@@ -230,14 +230,12 @@ class Apply(QtGui.QDialog):
             self.no_show = True
             with open('users') as u, open('custom-users-to-delete.sh') as du:
                 converted_du = []
-                i = 0
                 for line in du:
                     line = line.split(' ')[-1]
                     converted_du.append(line)
                 if len(converted_du) > 0:
                     diff = set(u).difference(converted_du)
-                    for x in diff:
-                        i += 1
+                    i = len(diff)
                 else:
                     i = len(u.read().strip().splitlines())
                 self.remaining = i
@@ -363,15 +361,19 @@ class Apply(QtGui.QDialog):
         UsefulTools().showMessage(m_type, "Something went wront, please check details.", QtGui.QMessageBox.Critical,
                                   error)
 
-
     def showUserInfo(self):
         if not self.no_show:
-            msg = "Please use these credentials the next time you log-in\n\n"
-            msginf = ("USERNAME: <b>{}</b><br/> PASSWORD: <b>{}</b>".format(self.account.getUser(), self.account.getPassword()))
-            msgd = ("If you deleted your old user account, "
+            msg = QtGui.QMessageBox(self)
+            msg.setWindowTitle("User Credentials")
+            msg.setIcon(QtGui.QMessageBox.Information)
+            msg.setText("Please use these credentials the next time you log-in")
+            msg.setInformativeText(
+                "USERNAME: <b>{}</b><br/> PASSWORD: <b>{}</b>".format(self.account.getUser(),
+                                                                      self.account.getPassword()))
+            msg.setDetailedText("If you deleted your old user account, "
                                 "this account will be the only local user on your system")
-            UsefulTools().showMessage("User Credentials", msg + msginf, QtGui.QMessageBox.Information, msgd)
-            self.logger.info("Credential message info shown")
+            msg.exec_()
+            self.logger.info("Credential message shown")
             self.rebootMessage()
         else:
             self.rebootMessage()

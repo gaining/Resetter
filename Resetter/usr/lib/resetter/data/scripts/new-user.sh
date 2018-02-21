@@ -12,3 +12,5 @@ else
 	usermod -a -G sudo $USERNAME
 	echo $USERNAME:$PASSWORD | chpasswd
 fi
+
+chown -R $USERNAME:$USERNAME /home/$USERNAME

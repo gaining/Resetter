@@ -16,7 +16,6 @@ class EasyInstaller(QtGui.QDialog):
         self.list_view.setFixedWidth(380)
         self.EditText = QtGui.QLineEdit()
         self.EditText.setPlaceholderText("Search for applications")
-        #self.setWindowFlags(QtCore.Qt.Window)
         self.model = QtGui.QStandardItemModel(self.list_view)
         self.setFixedSize(600, 350)
         self.font = QtGui.QFont()
