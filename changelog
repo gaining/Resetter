@@ -1,3 +1,19 @@
+resetter (2.2.0-stable) trusty; urgency=low
+
+  * fixes issue where users are unable to login after a reset
+  * fixes bug in Easy PPA where it thinks no packages are compatible with mint 18.3
+  * fixes user creation issues in some very odd senarios.
+
+ -- gaining <gaining7@outlook.com>  Tue, 20 Feb 2018 20:56:22 -0500
+
+
+resetter (2.1.0-stable) trusty; urgency=low
+
+  * Updated resetter to welcome more distros, Also closes #42
+
+ -- gaining <gaining7@outlook.com>  Sat, 27 Jan 2018 01:26:17 -0500
+
+
 resetter (2.0.0-stable) trusty; urgency=low
 
   * support for mint 18.3
