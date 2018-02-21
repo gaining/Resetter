@@ -8,7 +8,7 @@ from PyQt4 import QtGui
 
 class UsefulTools(object):
     def __init__(self):
-        self.version = '2.1.0'
+        self.version = '2.2.0'
 
     def showMessage(self, title, message, icon, detail=None):  # Method for showing various message types to user
         self.msg = QtGui.QMessageBox()

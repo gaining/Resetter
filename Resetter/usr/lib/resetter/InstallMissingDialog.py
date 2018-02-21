@@ -143,11 +143,8 @@ class Install(QtGui.QDialog):
         self.connect(self.installProgress.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
         self.connect(self.installProgress.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
         self.connect(self.installProgress, QtCore.SIGNAL("showError(QString, QString)"), self.showError)
-
         self.start()
-        # if not self.installProgress.lineCount() > 0:
-        #    print "Threads exited as there's nothing to do."
-        #    self.cancel()
+
 
     def updateProgressBar(self, percent, isdone):
         self.lbl1.setText("Loading Package List")
