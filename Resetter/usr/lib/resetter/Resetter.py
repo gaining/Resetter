@@ -4,11 +4,12 @@
 # to work with.
 import datetime
 import logging
+import mechanize
 import os
-import shutil
 import subprocess
 import sys
 import textwrap
+import urllib2
 from PyQt4 import QtCore, QtGui
 from aptsources import sourceslist
 
@@ -51,6 +52,8 @@ class UiMainWindow(QtGui.QMainWindow):
         self.setStatusBar(self.statusbar)
         self.actionOpen = QtGui.QAction(self)
         self.actionOpenUserList = QtGui.QAction(self)
+        self.actionUpdateManifests = QtGui.QAction(self)
+        self.actionUpdateUserlists = QtGui.QAction(self)
 
         self.actionSaveSnapshot = QtGui.QAction(self)
         self.actionSaveSnapshot.setStatusTip('Save a snapshot of currently installed packages. '
@@ -60,8 +63,6 @@ class UiMainWindow(QtGui.QMainWindow):
 
         self.actionSaveSnapshot.triggered.connect(self.save)
         self.actionSaveSnapshot.setShortcut('Ctrl+S')
-
-
 
         self.actionExit = QtGui.QAction(self)
         self.actionExit.setShortcut('Ctrl+Q')
@@ -87,6 +88,9 @@ class UiMainWindow(QtGui.QMainWindow):
         self.actionShowUsers = QtGui.QAction(self)
         self.actionShowUsers.setStatusTip('View non-default system users')
         self.actionShowUsers.triggered.connect(self.showNonDefaultUsers)
+        self.actionUpdateManifests.triggered.connect(self.fetchUpdatedManifests)
+        self.actionUpdateUserlists.triggered.connect(self.updateUserlists)
+
 
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionOpenUserList)
@@ -100,6 +104,9 @@ class UiMainWindow(QtGui.QMainWindow):
         self.menuView.addAction(self.actionShowUsers)
         self.menuTools.addAction(self.actionEasyPPA)
         self.menuTools.addAction(self.actionEditSources)
+        self.menuHelp.addAction(self.actionUpdateManifests)
+        self.menuHelp.addAction(self.actionUpdateUserlists)
+
 
         self.menuHelp.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
@@ -122,6 +129,9 @@ class UiMainWindow(QtGui.QMainWindow):
         self.actionShowUsers.setText("Show non-default system users and groups")
         self.actionShowSources.setText("Show system repository list")
         self.actionShow_Installed.setText("Show installed list")
+        self.actionUpdateManifests.setText("Update manifest files")
+        self.actionUpdateUserlists.setText("Update userlist files")
+
         font = QtGui.QFont()
         font.setPointSize(25)
         button_style = ("""
@@ -184,7 +194,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_version_label = QtGui.QLabel()
         self.os_name_label = QtGui.QLabel()
         self.os_codename_label = QtGui.QLabel()
-        self.os_info = self.d_env.os_info#lsb_release.get_lsb_information()
+        self.os_info = self.d_env.os_info
         self.manifest_label = QtGui.QLabel()
         self.userlist_label = QtGui.QLabel()
         dse = QtGui.QGraphicsDropShadowEffect()
@@ -193,10 +203,10 @@ class UiMainWindow(QtGui.QMainWindow):
         self.userlist = self.d_env.userlist
         self.user = self.d_env.user
 
-        self.os_name_label.setText('OS Name: '+self.os_info['ID'])
-        self.os_version_label.setText('OS version: '+self.os_info['RELEASE'])
+        self.os_name_label.setText('OS Name: ' + self.os_info['ID'])
+        self.os_version_label.setText('OS version: ' + self.os_info['RELEASE'])
         self.os_name_label.setGraphicsEffect(dse)
-        self.os_codename_label.setText('codename: '+self.os_info['CODENAME'])
+        self.os_codename_label.setText('codename: ' + self.os_info['CODENAME'])
         self.non_defaults = []
         self.image_label = QtGui.QLabel()
         if self.manifest is not None:
@@ -233,7 +243,7 @@ class UiMainWindow(QtGui.QMainWindow):
     def openManifest(self):
         try:
             manifest = QtGui.QFileDialog.getOpenFileName(self, 'Choose manifest',
-                                            'manifests', "manifest file (*.manifest)")
+                                                         'manifests', "manifest file (*.manifest)")
             if os.path.isfile(manifest):
                 self.manifest = manifest
                 self.manifest_label.setText('Manifest: {}'.format(str(manifest).split('/')[-1]))
@@ -243,7 +253,7 @@ class UiMainWindow(QtGui.QMainWindow):
     def openUserList(self):
         try:
             userList = QtGui.QFileDialog.getOpenFileName(self, 'Choose a userlist',
-                                            'userlists', "userlist file (*)")
+                                                         'userlists', "userlist file (*)")
             if os.path.isfile(userList):
                 self.userlist = userList
                 self.userlist_label.setText('Userlist: {}'.format(str(userList).split('/')[-1]))
@@ -291,7 +301,7 @@ class UiMainWindow(QtGui.QMainWindow):
             else:
                 word = None
             black_list = (['linux-image', 'linux-headers', 'linux-generic', 'linux-kernel-generic',
-                          'openjdk-7-jre', 'grub'])
+                           'openjdk-7-jre', 'grub'])
             with open("apps-to-install", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as man:
                 diff = set(man).difference(installed)
@@ -336,9 +346,9 @@ class UiMainWindow(QtGui.QMainWindow):
     def warningPrompt(self):
         choice = QtGui.QMessageBox.warning \
             (self, 'RESET EVERYTHING?',
-             "Reset Everything? \n\n This will reset your " + str(self.os_info['DESCRIPTION']) + " installation to its "
-             "factory defaults. Local user accounts and home directories will also be removed."
-                "\n\nAre you sure you\'d like to continue?",
+             "Reset Everything? \n\n This will reset your " + self.os_info['DESCRIPTION'] + " installation to its "
+                                                                                                 "factory defaults. Local user accounts and home directories will also be removed."
+                                                                                                 "\n\nAre you sure you\'d like to continue?",
              QtGui.QMessageBox.Yes | QtGui.QMessageBox.No)
         if choice == QtGui.QMessageBox.Yes:
             QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
@@ -356,8 +366,8 @@ class UiMainWindow(QtGui.QMainWindow):
 
             else:
                 UsefulTools().showMessage("Nothing left to remove",
-                                        "All removable packages have already been removed, there are no more packages left",
-                                        QtGui.QMessageBox.Information)
+                                          "All removable packages have already been removed, there are no more packages left",
+                                          QtGui.QMessageBox.Information)
                 QtGui.QApplication.restoreOverrideCursor()
 
         else:
@@ -368,10 +378,9 @@ class UiMainWindow(QtGui.QMainWindow):
             self.logger.info("getting installed list...")
             p1 = subprocess.Popen(['dpkg', '--get-selections'], stdout=subprocess.PIPE, bufsize=1)
             result = p1.stdout
-            tab = '\t'
             with open("installed", "w") as output:
                 for i, line in enumerate(result):
-                    line = line.split(tab, 1)[0]
+                    line = line.split('\t', 1)[0]
                     output.write(line + '\n')
             self.logger.debug("installed list was generated with {} apps installed".format(i))
         except subprocess.CalledProcessError as e:
@@ -383,13 +392,60 @@ class UiMainWindow(QtGui.QMainWindow):
         about = About(self)
         about.show()
 
+    def fetchUpdatedManifests(self):
+        try:
+            QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+            browser = mechanize.Browser()
+            browser.set_handle_robots(False)
+            browser.open('https://github.com/gaining/Resetter/tree/master/Resetter/usr/lib/resetter/data/manifests')
+            browser.addheaders = [("User-agent", "Mozilla/5.0")]
+            for link in browser.links():
+                if 'blob' in link.url:
+                    fname = link.url.split('/')[-1]
+                    file_data = urllib2.urlopen("https://raw.githubusercontent.com/gaining/Resetter/master/Resetter"
+                                                "/usr/lib/resetter/data/manifests/"+fname)
+                    manifest = file_data.read()
+                    with open("manifests/"+fname, 'w') as f:
+                        f.write(manifest)
+        except urllib2.URLError:
+            QtGui.QApplication.restoreOverrideCursor()
+            pass
+        else:
+            QtGui.QApplication.restoreOverrideCursor()
+            UsefulTools().showMessage("Done!", "Manifest directory has been updated",
+                                      QtGui.QMessageBox.Information)
+
+    def updateUserlists(self):
+        try:
+            QtGui.QApplication.setOverrideCursor(QtCore.Qt.WaitCursor)
+            browser = mechanize.Browser()
+            browser.set_handle_robots(False)
+            browser.open('https://github.com/gaining/Resetter/tree/master/Resetter/usr/lib/resetter/data/userlists')
+            browser.addheaders = [("User-agent", "Mozilla/5.0")]
+            for link in browser.links():
+                if 'blob' in link.url:
+                    print link.base_url
+                    fname = link.url.split('/')[-1]
+                    file_data = urllib2.urlopen("https://raw.githubusercontent.com/gaining/Resetter/master/Resetter"
+                                                "/usr/lib/resetter/data/userlists/"+fname)
+                    userlist = file_data.read()
+                    with open("userlists/"+fname, 'w') as f:
+                        f.write(userlist)
+        except urllib2.URLError:
+            QtGui.QApplication.restoreOverrideCursor()
+            pass
+        else:
+            QtGui.QApplication.restoreOverrideCursor()
+            UsefulTools().showMessage("Done!", "Userlists directory has been updated",
+                                      QtGui.QMessageBox.Information)
+
+
     def processManifest(self):
         try:
             self.logger.info("processing updated manifest...")
             with open(self.manifest) as f, open("processed-manifest", "w") as output:
                 for line in f:
-                    tab = '\t'
-                    line = line.split(tab, 1)[0]
+                    line = line.split('\t', 1)[0]
                     if line.endswith('\n'):
                         line = line.strip()
                     output.write(line + '\n')
@@ -402,8 +458,9 @@ class UiMainWindow(QtGui.QMainWindow):
     def compareFiles(self):
         try:
             black_list = (['linux-image', 'linux-headers', 'linux-generic', 'ca-certificates', 'pyqt4-dev-tools',
-                          'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
-                          'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'grub', 'python-mechanize', 'python-bs4'])
+                           'python-apt', 'python-aptdaemon', 'python-qt4', 'python-qt4-doc', 'libqt',
+                           'pyqt4-dev-tools', 'openjdk', 'python-sip', 'gksu', 'grub', 'python-mechanize',
+                           'python-bs4'])
             with open("apps-to-remove", "w") as output, open("installed", "r") as installed, \
                     open(self.manifest, "r") as pman:
                 diff = set(installed).difference(pman)

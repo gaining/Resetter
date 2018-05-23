@@ -1,4 +1,4 @@
-# Resetter v2.2.0-stable
+# Resetter v2.2.1-stable
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section.
@@ -8,7 +8,7 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 1. `sudo apt install gdebi`
 2. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
-3. `sudo gdebi resetter_2.2.0-stable_all.deb`
+3. `sudo gdebi resetter_2.2.1-stable_all.deb`
 
 # Official video tutorial - courtesy of *Byte of Linux*
 
@@ -16,9 +16,8 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 
 # Status
-- Version 2.2.0 fixes some bugs reported by the community. Easy PPA now works again in Mint 18.3.
-- Check out [Resetter Helper](https://github.com/gaining/ResetterHelper) if you want your distro to have support, by using it, you'll be able to add support yourself, no coding required, no fuss. Just your time. I'll elaborate on that as *ResetterHelper* becomes more mature.
-- The software is stable. Feedback will be greatly appreciated.
+
+- Version 2.2.1 supports virtually all debian based distros, a video demonstrating how to easily support your favourite debian based distro will be uploaded. I also hope to make it the last release of resetter that is based on python2.7 and pyqt4 next version will be based on their respective newer technologies and frameworks.
 - Working Project: Resetter-cli, a version of resetter that runs terminally.
 - Please check the [changelog](https://github.com/gaining/Resetter/blob/master/changelog) for more details.
 
@@ -44,9 +43,9 @@ MPIA means missing pre-installed apps
 | Create custom backup user              |             ✗             |            ✓           |
 | Auto install MPIAs                     |             ✓             |            ✓           |
 | Choose which MPIAs to install          |             ✗             |            ✓           |
-| remove non-default users               |             ✓             |            ✓           |
-| dependent package view                 |             ✗             |            ✓           |
-| remove snap packages                   |             ✓             |            ✓           |
+| Remove non-default users               |             ✓             |            ✓           |
+| Dependent package view                 |             ✗             |            ✓           |
+| Remove snap packages                   |             ✓             |            ✓           |
 
 
 </center>

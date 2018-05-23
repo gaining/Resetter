@@ -3,12 +3,12 @@
 # This class contains function tools that are often used by other classes, i
 
 
-from PyQt4 import QtGui
+from PyQt4 import QtGui, QtCore
 
 
 class UsefulTools(object):
     def __init__(self):
-        self.version = '2.2.0'
+        self.version = '2.2.1'
 
     def showMessage(self, title, message, icon, detail=None):  # Method for showing various message types to user
         self.msg = QtGui.QMessageBox()
@@ -25,3 +25,10 @@ class UsefulTools(object):
     def lineCount(self, file_path):  # line counter
         lc = open(file_path).readlines()
         return len(lc)
+
+    def removeItems(self, model):
+        for row in xrange(model.rowCount()):
+            item = model.item(row)
+            if item and item.checkState() == QtCore.Qt.Checked:
+                model.removeRow(row)
+                self.removeItems()

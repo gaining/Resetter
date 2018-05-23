@@ -1,7 +1,12 @@
-# If you wish to contribute:
+# If you wish to contribute manifests and userlists for distros:
+The best way to contribute to this project is by submitting manifests and userlists of distros created with resetter helper. It is actually very easy to do so and does not require to learn any type of coding other than your time.
+
+
+# If you wish to contribute to other things...
 Please check the issues list, there are some things to work on. If I like you work, I'll gladly merge them into my project. If I don't like it, don't take it personal, it just means that we have different views on the topic and I'd prefer to go my way.
 
-# When creating pull/merge requests
+
+# When creating other pull/merge requests
 I'd prefer there to be a message to go with your commit as a comment preferably with some sort of intro detailing what your pull request is about in a courteous manner with good etiquette. If you're being rude, I'll just close it on the spot.
 
 # Would like to contribute but don't know where to start?

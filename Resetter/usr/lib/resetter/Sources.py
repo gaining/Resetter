@@ -7,6 +7,8 @@ import os
 import sys
 from PyQt4 import QtCore, QtGui
 from aptsources import sourceslist
+from Tools import UsefulTools
+
 
 
 class SourceEdit(QtGui.QDialog):
@@ -79,43 +81,41 @@ class SourceEdit(QtGui.QDialog):
 
     def setItems(self, item):
         if item.checkState() == QtCore.Qt.Checked:
-            self.items.append(item.text())
-        if item.checkState() == QtCore.Qt.Unchecked \
-                and len(self.items) > 0 and item.text() in self.items:
-            self.items.remove(item.text())
+            self.items.append(item)
+        if item.checkState() == QtCore.Qt.Unchecked:
+            self.items.remove(item)
 
     def disableSelectedSources(self):
+        char = "#"
         for item in self.items:
-            item = str(item)
-            char = "#"
             for line in fileinput.FileInput(self.sourceslists, inplace=1):
-                if char not in item and item in line:
-                    disable = "# {}".format(item)
-                    line = line.replace(item, disable)
+                if char not in item.text() and item.text() == line.strip()\
+                        and item.checkState() == QtCore.Qt.Checked:
+                    disable = "{} {}".format(char, item.text())
+                    line = line.replace(item.text(), disable)
+                    item.setText(disable)
                 sys.stdout.write(line)
                 fileinput.close()
-        self.close()
-        self.msg.exec_()
+
 
     def enableSelectedSources(self):
         for item in self.items:
-            item = str(item)
             for line in fileinput.FileInput(self.sourceslists, inplace=1):
-                if item in line and item.startswith("#"):
-                    enable = "{}".format(item[2:])
-                    line = line.replace(item, enable)
+                if str(item.text()).startswith("#") and item.text() == line.strip() \
+                        and item.checkState() == QtCore.Qt.Checked:
+                    enable = "{}".format(str(item.text())[2:])
+                    line = line.replace(item.text(), enable)
+                    item.setText(enable)
                 sys.stdout.write(line)
                 fileinput.close()
-        self.close()
-        self.msg.exec_()
 
     def removeSelectedSources(self):
         for item in self.items:
-            x = sourceslist.SourceEntry(str(item))
-            self.s.remove(x)
-            self.s.save()
-        self.close()
-        self.msg.exec_()
+            if item.checkState() == QtCore.Qt.Checked:
+                self.model.removeRow(item.row())
+                x = sourceslist.SourceEntry(str(item.text()))
+                self.s.remove(x)
+                self.s.save()
 
     def searchItem(self, model, view):
         search_string = self.searchEditText.text()

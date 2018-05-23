@@ -1,12 +1,13 @@
 Package: resetter
-Version: 1.1.2-stable
-Installed-Size: 1420
+Version: 2.2.1-stable
+Installed-Size: 1540
 Maintainer: gaining <gaining7@outlook.com>
 Section: python
 Homepage: https://github.com/gaining/resetter
 Architecture: all
 Priority: optional
 Depends: python-qt4 (>=4.10), python-apt (>=0.9.3), coreutils (>=7.0), python-mechanize (>=1:0.2.5), python-bs4 (>=4.2), add-apt-key (>=1.0)
+Recommends: gtk2-engines-pixbuf (>=2.24)
 Pre-Depends: python (>=2.7.5), policykit-1 (>=0.105)
 Description: Resets debian or ubuntu based distros.
  Resetter is an easy way to reset your debian based linux back to stock. It also has other useful tools such as a ppa manager, an installer and a way to install ppa's straight from launchpad.net.
