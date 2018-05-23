@@ -106,10 +106,10 @@ class EasyPPAInstall(QtGui.QDialog):
             browser.select_form(nr=0)
             search_string = self.searchEditText.text()
             found_links = []
-            browser['field.text'] = search_string  # use the proper input type=text name
+            browser['field.text'] = search_string
             browser.submit()
             match = "+archive"
-            exclude = (["+packages", "+build", "+sourcepub"])
+            exclude = ("+packages", "+build", "+sourcepub")
 
             for link in browser.links():
                 if not any(s in link.url for s in exclude) and match in link.url:
@@ -148,12 +148,9 @@ class EasyPPAInstall(QtGui.QDialog):
                 buttonPackageDetails.setText("View packages")
                 buttonPackageDetails.setEnabled(True)
                 buttonPackageDetails.clicked.connect(lambda: self.showPackages(self.table_data))
-                htmltext = browser.open(link.url).read()
-                soup = BeautifulSoup(htmltext, 'html.parser')
+                soup = BeautifulSoup(browser.open(link.url).read(), 'html.parser')
                 ppaTag = soup.find('strong', attrs={'class': 'ppa-reference'})
-                if ppaTag is not None:
-                    ppa_name = ppaTag.text.strip()
-                    ppa.setText(ppa_name)
+                ppa.setText(ppaTag.text.strip())
                 b = QtCore.QByteArray.fromPercentEncoding(link.text)
                 text = b.data().decode('utf8')
                 desc.setText(textwrap.fill(text, 20))
@@ -166,17 +163,13 @@ class EasyPPAInstall(QtGui.QDialog):
                 table.setCellWidget(i, 3, buttonAddPPA)
                 QtGui.qApp.processEvents()
                 repo = soup.find('pre', attrs={'class': 'wrap'})
-                if repo is not None:
-                    repo_name = repo.text.strip()
+                repo_name = repo.text.strip()
                 raw = soup.find('code')
-                if raw is not None:
-                    raw_key = raw.text.strip()
+                raw_key = raw.text.strip()
                 select_node = soup.findAll('select', attrs={'name': 'field.series_filter'})
-                if select_node is not None:
-                    self.isCompatible(select_node, repo_name, raw_key)
+                self.isCompatible(select_node, repo_name, raw_key)
                 sauce = soup.find('table', attrs={'class': 'listing sortable'})
-                if sauce is not None:
-                    self.getTableData(sauce)
+                self.getTableData(sauce)
                 loading += x
                 self.progressbar.setValue(int(loading))
                 QtGui.qApp.processEvents()

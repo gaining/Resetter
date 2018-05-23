@@ -92,11 +92,11 @@ class Settings(object):
         if any(os.path.exists(f) for f in apt_locations):
             manifest = self.os_info['ID'] + self.os_info['RELEASE'] + '.manifest'
             userlist = self.os_info['ID'] + self.os_info['RELEASE'] + '-default-userlist'
-            window_title = self.os_info['ID']
+            window_title = self.os_info['ID'] + ' Resetter'
             return manifest, userlist, window_title
         else:
-            UsefulTools().showMessage("Apt Not Found",
-                             "Apt could not be found, Your distro does not appear to be Debian based.",
+            UsefulTools().showMessage("APT Not Found",
+                             "APT could not be found, your distro does not appear to be Debian based.",
                              QtGui.QMessageBox.Warning)
             exit(1)
 
@@ -111,7 +111,7 @@ class Settings(object):
             if site_version > current_version:
                 msg = ("There's a new version of Resetter available.\n\n"
                                        "Grab Resetter v{} at "
-                                       "https://github.com/gaining/Resetter/releases".format(site_version))
+                                       "github.com/gaining/Resetter/releases/latest".format(site_version))
                 UsefulTools().showMessage("Update Available", msg, QtGui.QMessageBox.Information)
             else:
                 print("Running most recent version of Resetter")
