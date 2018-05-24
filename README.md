@@ -18,11 +18,11 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 # How to share your distro's manifest and userlist by creating a github pull request
 
-[![How to share your distro's manifest and userlist by creating a github pull request](http://img.youtube.com/vi/PExKj6wLq9U/0.jpg)](http://www.youtube.com/watch?v=PExKj6wLq9U "share")
+[![How to share your distro's manifest and userlist by creating a github pull request](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](http://https://youtu.be/k0wsPzO355o "share")
 
 
 # How to make Resetter fetch Ubuntu 18.04'so or future compatible distros user list and manifest please see
-[![18.04 manifest and userlist](http://img.youtube.com/vi/PExKj6wLq9U/0.jpg)](https://youtu.be/PExKj6wLq9U?t=236 "update")
+[![18.04 manifest and userlist](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](https://youtu.be/k0wsPzO355o?t=236 "update")
 
 
 
