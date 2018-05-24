@@ -22,7 +22,7 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 
 # To make Resetter fetch Ubuntu 18.04's user list and manifest for compatibility please see
-[![18.04 manifest and userlist](http://img.youtube.com/vi/PExKj6wLq9U/0.jpg)](http://www.youtube.com/watch?v=PExKj6wLq9U "update")
+[![18.04 manifest and userlist](http://img.youtube.com/vi/PExKj6wLq9U/0.jpg)](https://youtu.be/PExKj6wLq9U?t=236 "update")
 
 
 
