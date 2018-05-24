@@ -424,7 +424,6 @@ class UiMainWindow(QtGui.QMainWindow):
             browser.addheaders = [("User-agent", "Mozilla/5.0")]
             for link in browser.links():
                 if 'blob' in link.url:
-                    print link.base_url
                     fname = link.url.split('/')[-1]
                     file_data = urllib2.urlopen("https://raw.githubusercontent.com/gaining/Resetter/master/Resetter"
                                                 "/usr/lib/resetter/data/userlists/"+fname)
@@ -438,7 +437,6 @@ class UiMainWindow(QtGui.QMainWindow):
             QtGui.QApplication.restoreOverrideCursor()
             UsefulTools().showMessage("Done!", "Userlists directory has been updated",
                                       QtGui.QMessageBox.Information)
-
 
     def processManifest(self):
         try:

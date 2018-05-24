@@ -8,7 +8,7 @@ class Licence(QtGui.QDialog):
     def __init__(self, parent=None):
         super(Licence, self).__init__(parent)
         self.resize(350, 300)
-        self.setWindowTitle("Licence")
+        self.setWindowTitle("License")
         licence_text = QtGui.QTextBrowser(self)
         close_button = QtGui.QPushButton(self)
         text = open('/usr/share/doc/resetter/copyright').read()

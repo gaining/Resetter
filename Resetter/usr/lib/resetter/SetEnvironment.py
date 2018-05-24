@@ -46,8 +46,8 @@ class Settings(object):
         self.createDirs()
         os.chdir(self.directory)
 
-        self.manifest = ("manifests/{}").format(self.detectOS()[0])
-        self.userlist = ("userlists/{}").format(self.detectOS()[1])
+        self.manifest = 'manifests/{}'.format(self.detectOS()[0])
+        self.userlist = 'userlists/{}'.format(self.detectOS()[1])
         self.window_title = self.detectOS()[2]
         self.filesExist(self.manifest, self.userlist)
 
