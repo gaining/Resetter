@@ -1,4 +1,4 @@
-# Resetter v2.2.1-stable
+# Resetter v2.2.2-stable
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section.
@@ -8,7 +8,7 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 1. `sudo apt install gdebi`
 2. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
-3. `sudo gdebi resetter_2.2.1-stable_all.deb`
+3. `sudo gdebi resetter_2.2.2-stable_all.deb`
 
 
 # New video tutorial on how to make any debian based distro compatible with Resetter with [resetter-helper](https://github.com/gaining/ResetterHelper)
