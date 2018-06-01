@@ -20,12 +20,12 @@ Download the deb files found [here](https://github.com/gaining/Resetter/releases
 
 # How to share your distro's manifest and userlist by creating a github pull request
 
-[![Tutorial link](http://img.youtube.com/vi/PExKj6wLq9U/0.jpg)](http://www.youtube.com/watch?v=PExKj6wLq9U "share")
+[![Tutorial link](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](http://www.youtube.com/watch?v=k0wsPzO355o "share")
 
 
 # How to make Resetter fetch the latest manifests and userlists available.
 
-[![Tutorial link](http://img.youtube.com/vi/PExKj6wLq9U/0.jpg)](https://youtu.be/PExKj6wLq9U?t=236 "update")
+[![Tutorial link](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](https://youtu.be/k0wsPzO355o?t=236 "update")
 
 
 # Official video tutorial - courtesy of *Byte of Linux*
