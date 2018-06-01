@@ -91,7 +91,6 @@ class UiMainWindow(QtGui.QMainWindow):
         self.actionUpdateManifests.triggered.connect(self.fetchUpdatedManifests)
         self.actionUpdateUserlists.triggered.connect(self.updateUserlists)
 
-
         self.menuFile.addAction(self.actionOpen)
         self.menuFile.addAction(self.actionOpenUserList)
 
@@ -106,7 +105,6 @@ class UiMainWindow(QtGui.QMainWindow):
         self.menuTools.addAction(self.actionEditSources)
         self.menuHelp.addAction(self.actionUpdateManifests)
         self.menuHelp.addAction(self.actionUpdateUserlists)
-
 
         self.menuHelp.addAction(self.actionAbout)
         self.menubar.addAction(self.menuFile.menuAction())
@@ -194,6 +192,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.os_version_label = QtGui.QLabel()
         self.os_name_label = QtGui.QLabel()
         self.os_codename_label = QtGui.QLabel()
+        self.os_d_env_label = QtGui.QLabel()
         self.os_info = self.d_env.os_info
         self.manifest_label = QtGui.QLabel()
         self.userlist_label = QtGui.QLabel()
@@ -202,6 +201,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.manifest = self.d_env.manifest
         self.userlist = self.d_env.userlist
         self.user = self.d_env.user
+        self.desktop = self.d_env.desktop_environment
 
         self.os_name_label.setText('OS Name: ' + self.os_info['ID'])
         self.os_version_label.setText('OS version: ' + self.os_info['RELEASE'])
@@ -219,6 +219,11 @@ class UiMainWindow(QtGui.QMainWindow):
         else:
             self.userlist_label.setText("Userlist: ???")
 
+        if self.desktop is not None:
+            self.os_d_env_label.setText("Desktop Environment: {}".format(self.desktop.split('/')[-1]))
+        else:
+            self.userlist_label.setText("Desktop Environment: ???")
+
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/resetter-logo.png")
         self.pixmap2 = self.pixmap.scaled(650, 200)
         self.image_label.setPixmap(self.pixmap2)
@@ -227,6 +232,7 @@ class UiMainWindow(QtGui.QMainWindow):
         self.verticalLayout2.addWidget(self.os_name_label)
         self.verticalLayout2.addWidget(self.os_version_label)
         self.verticalLayout2.addWidget(self.os_codename_label)
+        self.verticalLayout2.addWidget(self.os_d_env_label)
         self.verticalLayout2.addWidget(self.manifest_label)
         self.verticalLayout2.addWidget(self.userlist_label)
         self.verticalLayout2.setAlignment(QtCore.Qt.AlignRight)

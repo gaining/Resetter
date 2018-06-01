@@ -1,3 +1,13 @@
+resetter (2.2.3-stable) trusty; urgency=low
+
+  * Support for resetter helper 1.2 file naming conventions
+  * Now detects desktop environments for better distro support
+  * New distro support additions
+  * Misc improvements
+
+ -- gaining <gaining7@outlook.com>  Fri, 01 Jun 2018 11:20:08 -0400
+
+
 resetter (2.2.2-stable) trusty; urgency=low
 
   * misc improvements
@@ -111,7 +121,7 @@ resetter (1.0.0-stable) trusty; urgency=high
 
 
 resetter (0.3.7-rc4) trusty; urgency=high
-  
+
   * Huge performance improvements
   * Better multithreading support
   * Remove old kernels feature improved

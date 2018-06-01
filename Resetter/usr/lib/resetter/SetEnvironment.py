@@ -8,6 +8,7 @@ import lsb_release
 import os
 import pwd
 import shutil
+import platform
 from PyQt4 import QtGui
 import urllib2
 from bs4 import BeautifulSoup
@@ -45,7 +46,7 @@ class Settings(object):
             self.user = os.environ['SUDO_USER']
         self.createDirs()
         os.chdir(self.directory)
-
+        self.desktop_environment = self.detectDesktopEnviron()
         self.manifest = 'manifests/{}'.format(self.detectOS()[0])
         self.userlist = 'userlists/{}'.format(self.detectOS()[1])
         self.window_title = self.detectOS()[2]
@@ -58,6 +59,15 @@ class Settings(object):
                                       QtGui.QMessageBox.Warning,
                                       "You won't be able to run this program unless you're root, try running 'sudo resetter' from the terminal")
             exit(1)
+
+
+    def detectDesktopEnviron(self):
+        try:
+            desktop_session = open("/home/{}/desktop_session".format(self.user)).readline()
+        except IOError:
+            pass
+        else:
+            return desktop_session.strip()
 
     def createDirs(self):
         uid_change = pwd.getpwnam(self.user).pw_uid
@@ -90,8 +100,10 @@ class Settings(object):
     def detectOS(self):
         apt_locations = ('/usr/bin/apt', '/usr/lib/apt', '/etc/apt', '/usr/local/bin/apt')
         if any(os.path.exists(f) for f in apt_locations):
-            manifest = self.os_info['ID'] + self.os_info['RELEASE'] + '.manifest'
-            userlist = self.os_info['ID'] + self.os_info['RELEASE'] + '-default-userlist'
+            manifest = '_'.join((self.os_info['ID'], self.os_info['RELEASE'], self.desktop_environment,
+                                 platform.architecture()[0], '.manifest'))
+            userlist = '_'.join((self.os_info['ID'], self.os_info['RELEASE'], 'default-userlist',
+                                 self.desktop_environment, platform.architecture()[0]))
             window_title = self.os_info['ID'] + ' Resetter'
             return manifest, userlist, window_title
         else:
