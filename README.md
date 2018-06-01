@@ -9,21 +9,35 @@ If you would like for Resetter to work on your debian/ubuntu based distro, watch
 Download the deb files found [here](https://github.com/gaining/Resetter/releases/latest) then on the terminal, run the following commands:
 
 1. `sudo apt install gdebi`
+<<<<<<< HEAD
 2. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
 3. `sudo gdebi resetter_2.2.3-stable_all.deb`
+=======
+2. `sudo gdebi add-apt-key_1.0-0.5_all.deb` (only non ubuntu based distro's need to run this, e.g Debian and Deepin...)
+3. `sudo gdebi resetter_2.2.2-stable_all.deb`
+>>>>>>> 0b9641b3c9231287107c7a918a9d554e905fa8ae
 
 
-# New video tutorial on how to make any debian based distro compatible with Resetter with [resetter-helper](https://github.com/gaining/ResetterHelper)
+# New video tutorial on how to make any debian based distro compatible with Resetter using [resetter-helper](https://github.com/gaining/ResetterHelper)
 
 [![](http://img.youtube.com/vi/5VfSvEryOWU/0.jpg)](http://www.youtube.com/watch?v=5VfSvEryOWU "compatible")
 
 
 # How to share your distro's manifest and userlist by creating a github pull request
 
+<<<<<<< HEAD
 [![Tutorial link](http://img.youtube.com/vi/PExKj6wLq9U/0.jpg)](http://www.youtube.com/watch?v=PExKj6wLq9U "share")
 
 
 # How to make Resetter fetch the latest manifests and userlists available.
+=======
+[![How to share your distro's manifest and userlist by creating a github pull request](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](https://youtu.be/k0wsPzO355o "share")
+
+
+# How to fetch Ubuntu 18.04's or other future compatible distro's user list and manifest in Resetter
+
+[![18.04 manifest and userlist](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](https://youtu.be/k0wsPzO355o?t=224 "update")
+>>>>>>> 0b9641b3c9231287107c7a918a9d554e905fa8ae
 
 [![Tutorial link](http://img.youtube.com/vi/PExKj6wLq9U/0.jpg)](https://youtu.be/PExKj6wLq9U?t=236 "update")
 

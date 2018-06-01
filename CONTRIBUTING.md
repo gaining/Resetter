@@ -1,5 +1,9 @@
 # If you wish to contribute manifests and userlists for distros:
+<<<<<<< HEAD
 The best way to contribute to this project is by submitting manifests and userlists of distros created with resetter helper. It is actually very easy to do so and does not require to learn any type of coding other than your time. You can also send me those files by email.
+=======
+The best way to contribute to this project is by submitting manifests and userlists of distros created with resetter helper. It is actually very easy to do so and does not require to learn any type of coding other than your time. There are two ways to do this. One way is to make a pull request, you can find out how to make one from watching a video: https://www.youtube.com/watch?v=k0wsPzO355o, the other is just to email me your manifest and userlist file and I'll add it to the repository.
+>>>>>>> 0b9641b3c9231287107c7a918a9d554e905fa8ae
 
 
 # If you wish to contribute to other things...
