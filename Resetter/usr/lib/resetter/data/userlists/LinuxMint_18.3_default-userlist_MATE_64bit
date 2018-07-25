@@ -28,8 +28,8 @@ lightdm
 ntp
 avahi-autoipd
 avahi
-dnsmasq
 colord
+dnsmasq
 geoclue
 speech-dispatcher
 hplip
