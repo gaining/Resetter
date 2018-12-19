@@ -1,7 +1,7 @@
 # Resetter v2.2.3-stable (Deprecated)
 ![alt tag](https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png)
 
-<h2> Hi all, this version of resetter is deprecated because it is behind the OS's manifests and new technologies. Please wait for Resetter 3.0 which I will be releasing in or before January 1st 2019 coming with new features and fixes or use this version at your own risk. Thank you, happy holidays and God bless! </h2>
+<h4> Hi all, this version of resetter is deprecated because it is behind the OSs manifests and new technologies. Please wait for Resetter 3.0 which I will be releasing in or before January 1st 2019 coming with new features and fixes or use this version at your own risk. Thank you, happy holidays and God bless! </h4>
 
 It is an application built with python and pyqt that will help to reset an Ubuntu, Linux-Mint, and some other distros to stock, without having to manually re-install by using a live usb/cd/dvd image. For the list of supported distros, please see the *Officially supported distros* section.
 
