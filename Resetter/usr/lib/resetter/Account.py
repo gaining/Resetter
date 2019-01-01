@@ -1,19 +1,21 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from PyQt4 import QtGui, QtCore
+from PyQt5 import QtGui, QtCore
 import logging
 from Tools import UsefulTools
+from PyQt5.QtWidgets import *
 
 
-class AccountDialog(QtGui.QDialog):
+
+class AccountDialog(QDialog):
     def __init__(self, parent=None):
         super(AccountDialog, self).__init__(parent)
         AccountDialog.resize(self, 375, 150)
         AccountDialog.setWindowTitle(self, "Set Custom user and password")
-        self.buttonOk = QtGui.QPushButton(self)
+        self.buttonOk = QPushButton(self)
         self.buttonOk.setText("OK")
-        self.buttonCancel = QtGui.QPushButton(self)
+        self.buttonCancel = QPushButton(self)
         self.buttonCancel.setText("Cancel")
         font = QtGui.QFont()
         font.setBold(True)
@@ -22,32 +24,32 @@ class AccountDialog(QtGui.QDialog):
         font2.setBold(True)
         font2.setPixelSize(20)
         font2.setWeight(75)
-        self.textEditUser = QtGui.QLineEdit(self)
+        self.textEditUser = QLineEdit(self)
         self.textEditUser.setFocus()
         self.textEditUser.setFont(font2)
         self.textEditUser.setFixedWidth(280)
-        self.textEditPassword = QtGui.QLineEdit(self)
-        self.textEditPassword.setEchoMode(QtGui.QLineEdit.Password)
+        self.textEditPassword = QLineEdit(self)
+        self.textEditPassword.setEchoMode(QLineEdit.Password)
         self.textEditPassword.setFixedWidth(280)
         self.textEditPassword.setFont(font2)
-        self.label = QtGui.QLabel(self)
+        self.label = QLabel(self)
         self.label.setFont(font)
         self.label.setText("Please set your username and password")
         self.label.setWordWrap(True)
-        self.label_2 = QtGui.QLabel(self)
+        self.label_2 = QLabel(self)
         self.label_2.setText("Password")
-        self.label_3 = QtGui.QLabel(self)
+        self.label_3 = QLabel(self)
         self.label_3.setText("Username")
-        self.verticalLayout = QtGui.QVBoxLayout(self)
+        self.verticalLayout = QVBoxLayout(self)
         self.verticalLayout.addWidget(self.label)
-        self.h1 = QtGui.QHBoxLayout()
+        self.h1 = QHBoxLayout()
         self.h1.addWidget(self.label_2)
         self.h1.addWidget(self.textEditPassword)
-        self.h2 = QtGui.QHBoxLayout()
+        self.h2 = QHBoxLayout()
         self.h2.setAlignment(QtCore.Qt.AlignRight)
         self.h2.addWidget(self.buttonCancel)
         self.h2.addWidget(self.buttonOk)
-        self.h3 = QtGui.QHBoxLayout()
+        self.h3 = QHBoxLayout()
         self.h3.addWidget(self.label_3)
         self.h3.addWidget(self.textEditUser)
         self.verticalLayout.addLayout(self.h3)
@@ -104,7 +106,7 @@ class AccountDialog(QtGui.QDialog):
                     "At least 8 characters\n"
                     "At least one number\n"
                     "At least one uppercase letter")
-        UsefulTools().showMessage(title, text, QtGui.QMessageBox.Warning)
+        UsefulTools().showMessage(title, text, QMessageBox.Warning)
 
     def getUser(self):
         return self.user

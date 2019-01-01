@@ -1,7 +1,8 @@
 #!/bin/bash
 #fix broken packages after package removals by resetter
+rm -f /var/cache/apt/archives/lock
+rm -f /var/lib/dpkg/lock
 dpkg --configure -a
 apt install -fy
-#apt-get is used instead of apt because trusty doesn't support the new apt
-apt-get autoremove -y
-apt-get clean
+apt autoremove -y
+apt clean

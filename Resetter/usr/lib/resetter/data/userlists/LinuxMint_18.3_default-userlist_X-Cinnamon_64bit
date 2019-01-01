@@ -24,11 +24,13 @@ syslog
 _apt
 messagebus
 uuidd
+lightdm
 ntp
 avahi-autoipd
 avahi
 dnsmasq
 colord
+geoclue
 speech-dispatcher
 hplip
 kernoops
@@ -37,4 +39,3 @@ nm-openvpn
 rtkit
 saned
 usbmux
-mdm

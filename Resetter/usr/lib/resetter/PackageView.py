@@ -3,12 +3,15 @@
 
 import apt
 import textwrap
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
 
 from ApplyDialog import Apply
+from PyQt5.QtWidgets import *
+from Tools import UsefulTools
 
 
-class AppView(QtGui.QDialog):
+class AppView(QDialog):
+
     def __init__(self, parent=None):
         super(AppView, self).__init__(parent)
         self.resize(600, 500)
@@ -16,34 +19,12 @@ class AppView(QtGui.QDialog):
         self.font.setBold(True)
         self.font2 = QtGui.QFont()
         self.font2.setBold(False)
-        self.searchEditText = QtGui.QLineEdit()
+        self.searchEditText = QLineEdit()
         self.searchEditText.setPlaceholderText("Search for packages")
         palette = QtGui.QPalette()
         palette.setColor(QtGui.QPalette.Foreground, QtCore.Qt.red)
-        self.label = QtGui.QLabel()
+        self.label = QLabel()
         self.label.setPalette(palette)
-
-    def searchItem(self, model, view):
-        search_string = self.searchEditText.text()
-        items = model.findItems(search_string, QtCore.Qt.MatchStartsWith)
-        if len(items) > 0:
-            for item in items:
-                if search_string is not None:
-                    item.setEnabled(True)
-                    model.takeRow(item.row())
-                    model.insertRow(0, item)
-
-                    if item.text()[:3] == search_string:
-                        item.setFont(self.font)
-                        self.label.clear()
-
-                    if len(search_string) == 0:
-                        self.label.clear()
-                        item.setFont(self.font2)
-            view.scrollToTop()
-        else:
-            self.label.setText("Package doesn't exist")
-        view.show()
 
     def closeview(self):
         self.cache.close()
@@ -54,14 +35,14 @@ class AppView(QtGui.QDialog):
         self.setToolTip(tip)
         self.cache = apt.Cache()
         self.resize(400, 400)
-        buttonBox = QtGui.QDialogButtonBox(self)
+        buttonBox = QDialogButtonBox(self)
         buttonBox.setOrientation(QtCore.Qt.Horizontal)
-        buttonBox.setStandardButtons(QtGui.QDialogButtonBox.Cancel | QtGui.QDialogButtonBox.Ok)
-        list_view = QtGui.QListView(self)
-        verticalLayout = QtGui.QVBoxLayout(self)
+        buttonBox.setStandardButtons(QDialogButtonBox.Cancel | QDialogButtonBox.Ok)
+        list_view = QListView(self)
+        verticalLayout = QVBoxLayout(self)
         verticalLayout.addWidget(self.searchEditText)
         verticalLayout.addWidget(list_view)
-        horizontalLayout = QtGui.QHBoxLayout()
+        horizontalLayout = QHBoxLayout()
         horizontalLayout.addWidget(self.label)
         horizontalLayout.addWidget(buttonBox)
         verticalLayout.addLayout(horizontalLayout)
@@ -71,7 +52,9 @@ class AppView(QtGui.QDialog):
             buttonBox.accepted.connect(self.closeview)
         buttonBox.rejected.connect(self.closeview)
         model = QtGui.QStandardItemModel(list_view)
-        self.searchEditText.textChanged.connect(lambda: self.searchItem(model, list_view))
+        mode = 1
+        args = (model, list_view,  self.label, self.font, self.font2, mode)
+        self.searchEditText.textChanged.connect(lambda: UsefulTools().searchItem(*args, self.searchEditText.text()))
         self.file_in = data
 
         if type(data) is str:

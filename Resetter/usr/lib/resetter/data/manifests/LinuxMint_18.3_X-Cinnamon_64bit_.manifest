@@ -670,6 +670,7 @@ libcrack2:amd64
 libcroco3:amd64
 libcrypt-passwdmd5-perl
 libcryptsetup4:amd64
+libcrystalhd3:amd64
 libcscreensaver0:amd64
 libcups2:amd64
 libcupscgi1:amd64
@@ -998,7 +999,7 @@ liblightdm-gobject-1-0:amd64
 liblircclient0:amd64
 liblist-moreutils-perl
 libllvm4.0:amd64
-libllvm5.0:amd64
+libllvm6.0:amd64
 liblocale-gettext-perl
 liblockfile-bin
 liblockfile1:amd64
@@ -1039,6 +1040,7 @@ libmirprotobuf3:amd64
 libmm-glib0:amd64
 libmng2:amd64
 libmnl0:amd64
+libmodplug1:amd64
 libmono-addins-gui0.2-cil
 libmono-addins0.2-cil
 libmono-cairo4.0-cil
@@ -1115,9 +1117,12 @@ libnux-4.0-common
 liboauth0:amd64
 libodfgen-0.1-1
 libogg0:amd64
+libopenal-data
+libopenal1:amd64
 libopencore-amrnb0:amd64
 libopencore-amrwb0:amd64
 libopenexr22:amd64
+libopenjpeg5:amd64
 libopenobex2
 libopts25:amd64
 libopus0:amd64
@@ -1198,8 +1203,10 @@ libpython3.5:amd64
 libpython3.5-minimal:amd64
 libpython3.5-stdlib:amd64
 libqmi-glib1:amd64
+libqmi-glib5:amd64
 libqmi-proxy
 libqpdf17:amd64
+libqpdf21:amd64
 libqt4-dbus:amd64
 libqt4-declarative:amd64
 libqt4-designer:amd64
@@ -1213,9 +1220,12 @@ libqt4-svg:amd64
 libqt4-test:amd64
 libqt4-xml:amd64
 libqt4-xmlpatterns:amd64
+libqt5clucene5:amd64
 libqt5core5a:amd64
 libqt5dbus5:amd64
+libqt5designer5:amd64
 libqt5gui5:amd64
+libqt5help5:amd64
 libqt5libqgtk2:amd64
 libqt5network5:amd64
 libqt5opengl5:amd64
@@ -1225,6 +1235,7 @@ libqt5quick5:amd64
 libqt5sql5:amd64
 libqt5sql5-sqlite:amd64
 libqt5svg5:amd64
+libqt5test5:amd64
 libqt5webkit5:amd64
 libqt5widgets5:amd64
 libqt5xml5:amd64
@@ -1303,6 +1314,7 @@ libsasl2-2:amd64
 libsasl2-modules:amd64
 libsasl2-modules-db:amd64
 libsbc1:amd64
+libschroedinger-1.0-0:amd64
 libsdl1.2debian:amd64
 libseccomp2:amd64
 libsecret-1-0:amd64
@@ -1325,6 +1337,7 @@ libslang2:amd64
 libsm6:amd64
 libsmartcols1:amd64
 libsmbclient:amd64
+libsnappy1v5:amd64
 libsndfile1:amd64
 libsnmp-base
 libsnmp30:amd64
@@ -1375,6 +1388,7 @@ libtk8.6:amd64
 libtotem-plparser-common
 libtotem-plparser18:amd64
 libtsan0:amd64
+libtwolame0:amd64
 libtxc-dxtn-s2tc0:amd64
 libubsan0:amd64
 libudev1:amd64
@@ -1421,6 +1435,7 @@ libwebkitgtk-1.0-common
 libwebkitgtk-3.0-0:amd64
 libwebkitgtk-3.0-common
 libwebp5:amd64
+libwebpdemux1:amd64
 libwebpmux1:amd64
 libwebrtc-audio-processing-0:amd64
 libwind0-heimdal:amd64
@@ -1515,6 +1530,7 @@ libxt6:amd64
 libxtables11:amd64
 libxtst6:amd64
 libxv1:amd64
+libxvidcore4:amd64
 libxvmc1:amd64
 libxxf86dga1:amd64
 libxxf86vm1:amd64
@@ -1782,7 +1798,6 @@ python-lxml
 python-mako
 python-markupsafe
 python-mate-menu
-python-mechanize
 python-minimal
 python-nemo
 python-netifaces
@@ -1842,6 +1857,7 @@ python3-aptdaemon.gtk3widgets
 python3-aptdaemon.pkcompat
 python3-blinker
 python3-brlapi
+python3-bs4
 python3-cairo
 python3-cffi-backend
 python3-chardet
@@ -1878,10 +1894,12 @@ python3-ptyprocess
 python3-pyasn1
 python3-pyatspi
 python3-pycurl
+python3-pyqt5
 python3-reportlab
 python3-reportlab-accel:amd64
 python3-requests
 python3-setproctitle
+python3-sip
 python3-six
 python3-speechd
 python3-uno
@@ -2106,3 +2124,4 @@ zenity
 zenity-common
 zip
 zlib1g:amd64
+python3-pyqt5.qtsvg

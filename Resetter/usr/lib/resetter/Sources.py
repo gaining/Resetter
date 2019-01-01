@@ -5,13 +5,11 @@ import fileinput
 import fnmatch
 import os
 import sys
-from PyQt4 import QtCore, QtGui
-from aptsources import sourceslist
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtWidgets import *
 from Tools import UsefulTools
 
-
-
-class SourceEdit(QtGui.QDialog):
+class SourceEdit(QDialog):
     def __init__(self, parent=None):
         super(SourceEdit, self).__init__(parent)
         self.resize(600, 500)
@@ -19,15 +17,15 @@ class SourceEdit(QtGui.QDialog):
         self.font.setBold(True)
         self.font2 = QtGui.QFont()
         self.font2.setBold(False)
-        self.searchEditText = QtGui.QLineEdit()
+        self.searchEditText = QLineEdit()
         self.searchEditText.setPlaceholderText("Search for repositories")
         palette = QtGui.QPalette()
         palette.setColor(QtGui.QPalette.Foreground, QtCore.Qt.red)
-        self.label = QtGui.QLabel()
-        self.btnRemove = QtGui.QPushButton()
-        self.btDisable = QtGui.QPushButton()
-        self.btnEnable = QtGui.QPushButton()
-        self.btnClose = QtGui.QPushButton()
+        self.label = QLabel()
+        self.btnRemove = QPushButton()
+        self.btDisable = QPushButton()
+        self.btnEnable = QPushButton()
+        self.btnClose = QPushButton()
         self.btnClose.setText("Close")
         self.btnRemove.setText("Remove entries")
         self.btDisable.setText("Disable entries")
@@ -36,25 +34,24 @@ class SourceEdit(QtGui.QDialog):
         self.btnRemove.clicked.connect(self.removeSelectedSources)
         self.btDisable.clicked.connect(self.disableSelectedSources)
         self.btnEnable.clicked.connect(self.enableSelectedSources)
-        self.msg = QtGui.QMessageBox()
-        self.msg.setIcon(QtGui.QMessageBox.Information)
+        self.msg = QMessageBox()
+        self.msg.setIcon(QMessageBox.Information)
         self.msg.setWindowTitle("Success")
         self.msg.setText("Your changes have been successfully applied")
         self.btnClose.clicked.connect(self.close)
-        self.s = sourceslist.SourcesList()
         self.sourceslists = []
         self.items = []
 
     def editSources(self, title, tip):
         self.setWindowTitle(title)
-        list_view = QtGui.QListView(self)
+        list_view = QListView(self)
         self.model = QtGui.QStandardItemModel(list_view)
         self.model.itemChanged.connect(self.setItems)
         self.setToolTip(tip)
-        verticalLayout = QtGui.QVBoxLayout(self)
+        verticalLayout = QVBoxLayout(self)
         verticalLayout.addWidget(self.searchEditText)
         verticalLayout.addWidget(list_view)
-        horizontalLayout = QtGui.QHBoxLayout()
+        horizontalLayout = QHBoxLayout()
         horizontalLayout.setAlignment(QtCore.Qt.AlignRight)
         horizontalLayout.addWidget(self.label)
         horizontalLayout.addWidget(self.btDisable)
@@ -62,7 +59,9 @@ class SourceEdit(QtGui.QDialog):
         horizontalLayout.addWidget(self.btnRemove)
         horizontalLayout.addWidget(self.btnClose)
         verticalLayout.addLayout(horizontalLayout)
-        self.searchEditText.textChanged.connect(lambda: self.searchItem(self.model, list_view))
+        mode = 0
+        args = (self.model, list_view,  self.label, self.font, self.font2, mode)
+        self.searchEditText.textChanged.connect(lambda: UsefulTools().searchItem(*args, self.searchEditText.text()))
 
         for dirpath, dirs, files in os.walk('/etc/apt/'):
             word = 'deb'
@@ -82,13 +81,14 @@ class SourceEdit(QtGui.QDialog):
     def setItems(self, item):
         if item.checkState() == QtCore.Qt.Checked:
             self.items.append(item)
-        if item.checkState() == QtCore.Qt.Unchecked:
+        if item.checkState() == QtCore.Qt.Unchecked and len(self.items) > 0:
             self.items.remove(item)
 
     def disableSelectedSources(self):
         char = "#"
         for item in self.items:
             for line in fileinput.FileInput(self.sourceslists, inplace=1):
+
                 if char not in item.text() and item.text() == line.strip()\
                         and item.checkState() == QtCore.Qt.Checked:
                     disable = "{} {}".format(char, item.text())
@@ -96,7 +96,6 @@ class SourceEdit(QtGui.QDialog):
                     item.setText(disable)
                 sys.stdout.write(line)
                 fileinput.close()
-
 
     def enableSelectedSources(self):
         for item in self.items:
@@ -110,30 +109,13 @@ class SourceEdit(QtGui.QDialog):
                 fileinput.close()
 
     def removeSelectedSources(self):
+        item_r = list();
         for item in self.items:
-            if item.checkState() == QtCore.Qt.Checked:
-                self.model.removeRow(item.row())
-                x = sourceslist.SourceEntry(str(item.text()))
-                self.s.remove(x)
-                self.s.save()
-
-    def searchItem(self, model, view):
-        search_string = self.searchEditText.text()
-        items = model.findItems(search_string, QtCore.Qt.MatchContains or QtCore.Qt.MatchStartsWith)
-        if len(items) > 0:
-            for item in items:
-                if item.row() == 0:
-                    item.setFont(self.font)
-                else:
-                    item.setFont(self.font2)
-                if search_string is not None:
-                    item.setEnabled(True)
-                    model.takeRow(item.row())
-                    model.insertRow(0, item)
-                    if len(search_string) == 0:
-                        self.label.clear()
-                        item.setFont(self.font2)
-            view.scrollToTop()
-        else:
-            self.label.setText("Repository doesn't exist")
-        view.show()
+            for line in fileinput.FileInput(self.sourceslists, inplace=1):
+                if item.text() == line.strip() \
+                        and item.checkState() == QtCore.Qt.Checked:
+                    item_r.append(item)
+                    line = line.replace(item.text(), '')
+                sys.stdout.write(line)
+                fileinput.close()
+        [self.model.removeRow(r.row()) for r in item_r]

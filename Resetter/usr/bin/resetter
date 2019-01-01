@@ -11,6 +11,7 @@ if [[ $EUID -ne 0 ]]; then
     pkexec /usr/lib/resetter/Resetter.py
 else
     USER_HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
+    exec 2> /dev/null
     echo $XDG_CURRENT_DESKTOP > /$USER_HOME/desktop_session
     /usr/lib/resetter/Resetter.py
 fi

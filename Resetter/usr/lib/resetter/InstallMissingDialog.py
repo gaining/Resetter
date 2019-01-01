@@ -5,15 +5,18 @@ import apt
 import apt.package
 import logging
 import os
-import subprocess
 import sys
-from PyQt4 import QtCore, QtGui
+from PyQt5 import QtCore, QtGui
+from PyQt5.QtWidgets import *
 from AptProgress import UIAcquireProgress, UIInstallProgress
 from Tools import UsefulTools
 
-class ProgressThread(QtCore.QThread):
 
+class ProgressThread(QtCore.QThread):
     end_of_threads = QtCore.pyqtSignal()
+    start_op = QtCore.pyqtSignal(str, str)  # Error string transmitter
+    start_op1 = QtCore.pyqtSignal(int, bool)  # Loading progress transmitter
+
 
     def __init__(self, file_in, install):
         QtCore.QThread.__init__(self)
@@ -55,11 +58,11 @@ class ProgressThread(QtCore.QThread):
                         self.pkg = self.cache[pkg_name.strip()]
                         if not self.install:
                             self.pkg.mark_delete(True, True)
-                            print "{} will be removed".format(self.pkg)
+                            print ("{} will be removed".format(self.pkg))
                         else:
                             self.pkg.mark_install()
-                            print "{} will be installed ".format(self.pkg.shortname)
-                        self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), loading, self.isDone)
+                            print ("{} will be installed ".format(self.pkg.shortname))
+                        self.start_op1.emit(loading, self.isDone)
                     except (KeyError, SystemError) as error:
                         # if resolver cannot find a way to cleanly install packages, move it to the broken list
                         if self.pkg.is_inst_broken:
@@ -70,15 +73,15 @@ class ProgressThread(QtCore.QThread):
                             text = "Error loading apps"
                             error2 = "Problems trying to install: {}\n{}".format(self.pkg.fullname, error.message)
                             self.logger.critical("{} {}".format(error, error2, exc_info=True))
-                            self.emit(QtCore.SIGNAL('showError(QString, QString)'), error2, text)
+                            self.start_op.emit(error2, text)
                             break
                 self.thread1.start()
                 self.thread2.start()
                 self.installPackages()
                 self.end_of_threads.emit()
         else:
-            print "All removable packages are already removed"
-            self.emit(QtCore.SIGNAL('updateProgressBar(int, bool)'), 100, True)
+            print ("All removable packages are already removed")
+            self.start_op1.emit(100, True)
 
     def installPackages(self):
         try:
@@ -86,43 +89,43 @@ class ProgressThread(QtCore.QThread):
             self.cache.commit(self.aprogress, self.iprogress)
         except Exception as e:
             self.logger.error("Action on package failed. Error: [{}]".format(e, exc_info=True))
-            error = e.message
+            error = str(e)
             if self.install:
                 text = "Package install failed"
-                self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
+                self.start_op.emit(error, text)
             else:
                 text = "Package removal failed"
-                self.emit(QtCore.SIGNAL('showError(QString, QString)'), error, text)
+                self.start_op.emit(error, text)
 
 
+class Install(QDialog):
 
-class Install(QtGui.QDialog):
     def __init__(self, file_in, action, action_type, parent=None):
         super(Install, self).__init__(parent)
         self.setMinimumSize(400, 100)
         self.file_in = file_in
         self.setWindowTitle("Working...")
-        self.buttonCancel = QtGui.QPushButton()
+        self.buttonCancel = QPushButton()
         self.buttonCancel.setText("Cancel")
         self.buttonCancel.clicked.connect(self.cancel)
-        self.progress = QtGui.QProgressBar()
-        self.progress2 = QtGui.QProgressBar()
+        self.progress = QProgressBar()
+        self.progress2 = QProgressBar()
         self.progress2.setVisible(False)
-        self.lbl1 = QtGui.QLabel()
+        self.lbl1 = QLabel()
         gif = os.path.abspath("/usr/lib/resetter/data/icons/chassingarrows.gif")
         self.movie = QtGui.QMovie(gif)
         self.movie.setScaledSize(QtCore.QSize(20, 20))
         self.pixmap = QtGui.QPixmap("/usr/lib/resetter/data/icons/checkmark.png")
         self.pixmap2 = self.pixmap.scaled(20, 20)
-        verticalLayout = QtGui.QVBoxLayout(self)
+        verticalLayout = QVBoxLayout(self)
         verticalLayout.addWidget(self.lbl1)
         verticalLayout.addWidget(self.progress)
         verticalLayout.addWidget(self.progress2)
-        gridLayout = QtGui.QGridLayout()
+        gridLayout = QGridLayout()
         self.labels = {}
         for i in range(1, 3):
             for j in range(1, 3):
-                self.labels[(i, j)] = QtGui.QLabel()
+                self.labels[(i, j)] = QLabel()
                 self.labels[(i, j)].setMinimumHeight(20)
                 gridLayout.addWidget(self.labels[(i, j)], i, j)
         gridLayout.setAlignment(QtCore.Qt.AlignCenter)
@@ -139,13 +142,13 @@ class Install(QtGui.QDialog):
         handler.setFormatter(formatter)
         self.logger.addHandler(handler)
         self.installProgress = ProgressThread(file_in, action_type)
-        self.connect(self.installProgress, QtCore.SIGNAL("updateProgressBar(int, bool)"), self.updateProgressBar)
-        self.connect(self.installProgress.aprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
-        self.connect(self.installProgress.iprogress, QtCore.SIGNAL("updateProgressBar2(int, bool, QString)"), self.updateProgressBar2)
-        self.connect(self.installProgress, QtCore.SIGNAL("showError(QString, QString)"), self.showError)
+        self.installProgress.start_op1.connect(self.updateProgressBar)
+        self.installProgress.aprogress.run_op.connect(self.updateProgressBar2)
+        self.installProgress.iprogress.run_op.connect(self.updateProgressBar2)
+        self.installProgress.start_op.connect(self.showError)
         self.start()
 
-
+    @QtCore.pyqtSlot(int, bool)
     def updateProgressBar(self, percent, isdone):
         self.lbl1.setText("Loading Package List")
         self.progress.setValue(percent)
@@ -154,6 +157,7 @@ class Install(QtGui.QDialog):
         if isdone:
             self.movie.stop()
 
+    @QtCore.pyqtSlot(int, bool, str)
     def updateProgressBar2(self, percent, isdone, status):
         self.progress.setVisible(False)
         self.progress2.setVisible(True)
@@ -167,9 +171,10 @@ class Install(QtGui.QDialog):
             self.labels[(2, 1)].setPixmap(self.pixmap2)
             self.close()
 
+    @QtCore.pyqtSlot(str, str)
     def showError(self, error, m_type):
         self.movie.stop()
-        UsefulTools().showMessage(m_type, "Something went wront, please check details.", QtGui.QMessageBox.Critical,
+        UsefulTools().showMessage(m_type, "Something went wrong, please check the details.", QMessageBox.Critical,
                                   error)
     def cancel(self):
         self.logger.warning("Progress thread was cancelled")
@@ -192,9 +197,10 @@ class Install(QtGui.QDialog):
     def start(self):
         self.installProgress.start()
 
+
 if __name__ == '__main__':
     file = "apps-to-install"
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     install = Install(file, True)
     install.show()
     sys.exit(app.exec_())
