@@ -1,6 +1,10 @@
 # Resetter v3.0.0-stable
  <img src="https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png" alt="Resetter Screenshot">
 
+<h1>Hear are some stats for last year</h1>
+<a href="http://www.somsubhra.com/github-release-stats/?username=gaining&repository=Resetter">Download Stats</a>
+
+
 # How to install
 Download the deb files found [here](https://github.com/gaining/Resetter/releases/latest) then on the terminal, run the following commands:
 
