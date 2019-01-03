@@ -1,25 +1,28 @@
-# Resetter v3.0.0-stable
+<h1> Resetter v3.0.0-stable </h1>
  <img src="https://github.com/gaining/Resetter/blob/master/Resetter/resetter-screenshot.png" alt="Resetter Screenshot">
 
 <h1>Here are some stats for last year</h1>
 <a href="http://www.somsubhra.com/github-release-stats/?username=gaining&repository=Resetter">Download Stats</a>
 
 
-# How to install
+<h1> How to install</h1>
 Download the deb files found [here](https://github.com/gaining/Resetter/releases/latest) then on the terminal, run the following commands:
 
-1. `sudo apt install gdebi`
-2. `sudo gdebi add-apt-key_1.0-0.5_all.deb`
-3. `sudo gdebi resetter_3.0.0-stable_all.deb`
+<h4>Ubuntu based systems (Mint, Elementary, Budgie, etc...)</h4>
+`sudo apt install ./resetter_3.0.0-stable_all.deb`
+
+<h4>Debian based systems (Deepin, raspbian, etc...)</h4>
+`sudo apt install ./add-apt-key_1.0-0.5_all.deb`
+`sudo apt install ./resetter_3.0.0-stable_all.deb`
 
 <h2>Video Tutorial - Coming soon!</h2>
 
-# How to share your distro's manifest and userlist by creating a github pull request
+<h1> How to share your distro's manifest and userlist by creating a github pull request </h1>
 
 [![Tutorial link](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](http://www.youtube.com/watch?v=k0wsPzO355o "share")
 
 
-# How to make Resetter fetch the latest manifests and userlists available.
+<h1> How to make Resetter fetch the latest manifests and userlists available.</h1>
 
 [![Tutorial link](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](https://youtu.be/k0wsPzO355o?t=236 "update")
 
@@ -66,10 +69,15 @@ MPA means missing pre-installed apps
 
 # Officially supported distros [64-bit]
 
--Ubuntu 16.04, 18.04
--Linux Mint Cinnamon 18.3, 19x
--Linux Mint 18.3 Mate
-Other distro support coming soon - If you want to add support yourself, it is very easy to do so, just upload your files to share with everyone following the guides above.
+<ul>
+<li>Ubuntu Gnome 16.04, 18.04</li>
+<li>Linux Mint Cinnamon 18.3, 19x</li>
+<li>Linux Mint 18.3 Mate</li>
+<li>Elementary OS 5.0</li>
+<li>Deepin OS 15.8</li>
+</ul>
+
+Other distro support coming soon - If you want to add support yourself, it is very easy to do so, just upload your files to share with everyone following the video guides above.
 
 
 
