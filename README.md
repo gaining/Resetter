@@ -6,14 +6,14 @@
 
 
 <h1> How to install</h1>
-Download the deb files found [here](https://github.com/gaining/Resetter/releases/latest) then on the terminal, run the following commands:
+Download the deb files found <a href="https://github.com/gaining/Resetter/releases/latest">here</a> then on the terminal, run the following commands:
 
 <h4>Ubuntu based systems (Mint, Elementary, Budgie, etc...)</h4>
-`sudo apt install ./resetter_3.0.0-stable_all.deb`
+<code>sudo apt install ./resetter_3.0.0-stable_all.deb</code>
 
 <h4>Debian based systems (Deepin, raspbian, etc...)</h4>
-`sudo apt install ./add-apt-key_1.0-0.5_all.deb`
-`sudo apt install ./resetter_3.0.0-stable_all.deb`
+<code>sudo apt install ./add-apt-key_1.0-0.5_all.deb</code>
+<code>sudo apt install ./resetter_3.0.0-stable_all.deb</code>
 
 <h2>Video Tutorial - Coming soon!</h2>
 
