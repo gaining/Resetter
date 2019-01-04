@@ -12,7 +12,7 @@ Download the deb files found <a href="https://github.com/gaining/Resetter/releas
 <code>sudo apt install ./resetter_3.0.0-stable_all.deb</code>
 
 <h4>Debian based systems (Deepin, raspbian, etc...)</h4>
-<code>sudo apt install ./add-apt-key_1.0-0.5_all.deb</code>
+<code>sudo apt install ./add-apt-key_1.0-0.5_all.deb</code></br>
 <code>sudo apt install ./resetter_3.0.0-stable_all.deb</code>
 
 <h2>Video Tutorial - Coming soon!</h2>
