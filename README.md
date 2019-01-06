@@ -1,9 +1,10 @@
 <h1> Resetter v3.0.0-stable </h1>
  <img src="https://github.com/gaining/Resetter/blob/master/Resetter/screenshots/resetter-screenshot.png" alt="Resetter Screenshot">
 
-<h2>Here are some stats for last year</h2>
+<h2>Here are some download stats for this this year and last year</h2>
 <a href="http://www.somsubhra.com/github-release-stats/?username=gaining&repository=Resetter">Download Stats</a>
 
+<h2>If Resetter complains that you're missing a manifest or userlist although your distro is supported please see the <a href="https://github.com/gaining/Resetter/wiki">WIKI page</a></h2>
 
 <h2> How to install</h2>
 Download the deb files found <a href="https://github.com/gaining/Resetter/releases/latest">here</a> then on the terminal, run the following commands:
@@ -14,17 +15,6 @@ Download the deb files found <a href="https://github.com/gaining/Resetter/releas
 <h4>Debian based systems (Deepin, raspbian, etc...)</h4>
 <code>sudo apt install ./add-apt-key_1.0-0.5_all.deb</code></br>
 <code>sudo apt install ./resetter_3.0.0-stable_all.deb</code>
-
-<h2>Video Tutorial - Coming soon!</h2>
-
-<h2> How to share your distro's manifest and userlist by creating a github pull request </h2>
-
-[![Tutorial link](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](http://www.youtube.com/watch?v=k0wsPzO355o "share")
-
-
-<h2> How to make Resetter fetch the latest manifests and userlists available.</h2>
-
-[![Tutorial link](http://img.youtube.com/vi/k0wsPzO355o/0.jpg)](https://youtu.be/k0wsPzO355o?t=236 "update")
 
 <h2>Status</h2>
 
