@@ -1,1 +1,0 @@
-Defaults    env_keep += "XDG_CURRENT_DESKTOP QT_X11_NO_MITSHM"
