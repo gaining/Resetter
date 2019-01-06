@@ -59,8 +59,9 @@ MPA means missing pre-installed apps
 # Officially supported distros [64-bit]
 
 <ul>
-<li>Ubuntu Gnome 16.04, 18.04</li>
-<li>Linux Mint Cinnamon 18.3, 19x</li>
+<li>Ubuntu Unity 16.04</li>
+<li>Ubuntu Gnome 18.04, 18.10</li>
+<li>Linux Mint Cinnamon 18.3, 19, 19.1</li>
 <li>Linux Mint 18.3 Mate</li>
 <li>Elementary OS 5.0</li>
 <li>Deepin OS 15.8</li>
