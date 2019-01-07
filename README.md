@@ -12,13 +12,11 @@
 <li>Debian Gnome 9.6 </li>
 <li>Linux Mint Cinnamon 18.3, 19, 19.1</li>
 <li>Linux Mint 18.3 Mate</li>
-<li>Ubuntu Unity 16.04</li>
 <li>Ubuntu Gnome 18.04, 18.10</li>
+<li>Ubuntu Unity 16.04</li>
 </ul>
-If Resetter complains that you're missing a manifest or userlist although your distro is supported please see the <a href="https://github.com/gaining/Resetter/wiki">wiki page</a>
+If Resetter complains that you're missing a manifest or userlist although your distro is supported please see the <a href="https://github.com/gaining/Resetter/wiki">wiki page</a>.
 Other distro support coming soon - If you want to add support yourself, it is very easy to do so, just upload your files to share with everyone following the video guides above.
-
-
 
 <h2> How to install</h2>
 Download the deb files found <a href="https://github.com/gaining/Resetter/releases/latest">here</a> then on the terminal, run the following commands:
