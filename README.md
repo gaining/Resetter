@@ -16,7 +16,7 @@
 <li>Ubuntu Unity 16.04</li>
 </ul>
 If Resetter complains that you're missing a manifest or userlist although your distro is supported please see the <a href="https://github.com/gaining/Resetter/wiki">wiki page</a>.
-Other distro support coming soon - If you want to add support yourself, it is very easy to do so, just upload your files to share with everyone following the video guides above.
+Other distro support coming soon - If you want to add support yourself, it is very easy to do so, just upload your files to share with everyone following <a href="https://www.youtube.com/watch?v=k0wsPzO355o">this video</a>.
 
 <h2> How to install</h2>
 Download the deb files found <a href="https://github.com/gaining/Resetter/releases/latest">here</a> then on the terminal, run the following commands:
