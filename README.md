@@ -28,25 +28,82 @@ Download the deb files found <a href="https://github.com/gaining/Resetter/releas
 
 MPA means missing pre-installed apps
 
-<center>
-
-| Features List                          | Option 1: Automatic Reset | Option 2: Custom Reset |
-|----------------------------------------|:-------------------------:|:----------------------:|
-| Auto remove apps for reset             |             ✓             |            ✓           |
-| Choose which apps to remove for reset  |             ✗             |            ✓           |
-| Remove old kernels                     |             ✗             |            ✓           |
-| Choose to only delete user             |             ✗             |            ✓           |
-| Delete users and home directories      |             ✓             |            ✓           |
-| Choose which user to delete            |             ✗             |            ✓           |
-| Create default backup user             |             ✓             |            ✓           |
-| Create custom backup user              |             ✗             |            ✓           |
-| Auto install MPAs                      |             ✓             |            ✓           |
-| Choose which MPAs to install           |             ✗             |            ✓           |
-| Remove non-default users               |             ✓             |            ✓           |
-| Dependent package view                 |             ✗             |            ✓           |
-| Remove snap packages                   |             ✓             |            ✓           |
-
-</center>
+<table>
+<thead>
+<tr>
+<th>Features List</th>
+<th align="center">Option 1: Automatic Reset</th>
+<th align="center">Option 2: Custom Reset</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Auto remove apps for reset</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Choose which apps to remove for reset</td>
+<td align="center">✗</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Remove old kernels</td>
+<td align="center">✗</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Choose to only delete user</td>
+<td align="center">✗</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Delete users and home directories</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Choose which user to delete</td>
+<td align="center">✗</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Create default backup user</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Create custom backup user</td>
+<td align="center">✗</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Auto install MPAs</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Choose which MPAs to install</td>
+<td align="center">✗</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Remove non-default users</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Dependent package view</td>
+<td align="center">✗</td>
+<td align="center">✓</td>
+</tr>
+<tr>
+<td>Remove snap packages</td>
+<td align="center">✓</td>
+<td align="center">✓</td>
+</tr>
+</tbody>
+</table>
 
 # Other features:
 - Manifest and userlist updater: By clicking on *"help"*>*"update files"*
@@ -56,15 +113,16 @@ MPA means missing pre-installed apps
 
 - Source Editor: It is a normal editor that can disable, enable, or remove ppas from a user's system but what makes this different from other source editors is that you can search for the ppa that you want to edit.
 
-# Officially supported distros [64-bit]
+<h2>Officially supported distros (64-bit)</h2>
 
 <ul>
-<li>Ubuntu Unity 16.04</li>
-<li>Ubuntu Gnome 18.04, 18.10</li>
-<li>Linux Mint Cinnamon 18.3, 19, 19.1</li>
-<li>Linux Mint 18.3 Mate</li>
 <li>Elementary OS 5.0</li>
 <li>Deepin OS 15.8</li>
+<li>Debian Gnome 9.6 </li>
+<li>Linux Mint Cinnamon 18.3, 19, 19.1</li>
+<li>Linux Mint 18.3 Mate</li>
+<li>Ubuntu Unity 16.04</li>
+<li>Ubuntu Gnome 18.04, 18.10</li>
 </ul>
 
 Other distro support coming soon - If you want to add support yourself, it is very easy to do so, just upload your files to share with everyone following the video guides above.
