@@ -9,7 +9,7 @@
 <ul>
 <li>Elementary OS 5.0</li>
 <li>Deepin OS 15.8, 15.9, 15.10</li>
-<li>Debian Gnome 9.6, 9.9, 10.0</li>
+<li>Debian Gnome 9.6, 9.7, 9.9, 10.0</li>
 <li>Linux Mint Cinnamon 18.3, 19, 19.1, 19.2</li>
 <li>Linux Mint 18.3 Mate</li>
 <li>Ubuntu Gnome 18.04, 18.10</li>
