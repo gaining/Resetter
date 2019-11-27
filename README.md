@@ -15,6 +15,7 @@
 <li>Linux Mint 18.3 Mate</li>
 <li>Ubuntu Gnome 18.04, 18.10, 19.04</li>
 <li>Ubuntu Unity 16.04</li>
+<li>Parrot OS Mate 4.7</li>
 </ul>
 
 <h2>How to make Resetter compatible with any debian based distros?</h2>
