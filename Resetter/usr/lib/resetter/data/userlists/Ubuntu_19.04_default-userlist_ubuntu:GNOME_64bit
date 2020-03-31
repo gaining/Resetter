@@ -41,3 +41,4 @@ pulse
 gnome-initial-setup
 gdm
 systemd-coredump
+dhcpd
