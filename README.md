@@ -9,13 +9,14 @@
 <ul>
 <li>Elementary OS 5.0</li>
 <li>Deepin OS 15.8, 15.9, 15.10</li>
-<li>Debian Gnome 9.6, 9.7, 9.9, 10.0</li>
+<li>Debian Gnome 9.6, 9.7, 9.9, 10.0, 10.1</li>
 <li>Debian KDE 10.0</li>
 <li>Linux Mint Cinnamon 18.3, 19, 19.1, 19.2</li>
 <li>Linux Mint 18.3 Mate</li>
-<li>Ubuntu Gnome 18.04, 18.10, 19.04</li>
+<li>Ubuntu Gnome 18.04, 18.10, 19.04, 20.04</li>
 <li>Ubuntu Unity 16.04</li>
 <li>Parrot OS Mate 4.7</li>
+<li>BunsenLabs 10.4 XFCE</li>
 </ul>
 
 <h2>How to make Resetter compatible with any debian based distros?</h2>
