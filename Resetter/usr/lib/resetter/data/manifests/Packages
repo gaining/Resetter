@@ -1,0 +1,1891 @@
+Package: b43-fwcutter
+Architecture: amd64
+Version: 1:019-4
+Priority: optional
+Section: utils
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian QA Group <packages@qa.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 98
+Depends: debconf (>= 0.5) | debconf-2.0, libc6 (>= 2.4)
+Filename: pool/main/b/b43-fwcutter/b43-fwcutter_019-4_amd64.deb
+Size: 25728
+SHA256: b5b221f8ec1cb2f080198f6de5ee8eaa86fe9b40a00e0affa6395da66155a798
+SHA512: 41261c2759947b76904f441154cc6653d99a637e8b8d0b00cff81a1eae50638eb98c96772fe69d9773479c5817eb62f5a0e409e000b2847036de6d13a39207d9
+Homepage: http://wireless.kernel.org/en/users/Drivers/b43
+Description: utility for extracting Broadcom 43xx firmware
+ This package provides a tool for extracting BCM43xx wireless chip
+ firmware from Broadcom's proprietary driver files.
+ .
+ It is used by the firmware-b43(legacy)-installer packages as part of
+ the automated process of downloading and installing firmware.
+
+Package: binutils-common
+Architecture: amd64
+Version: 2.34-6ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: binutils
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 424
+Breaks: binutils (<< 2.29.1-3.1~)
+Replaces: binutils (<< 2.29.1-3.1~)
+Filename: pool/main/b/binutils/binutils-common_2.34-6ubuntu1_amd64.deb
+Size: 206692
+SHA256: f203d3b9c623185944a151bb4513538c6b08a105d92696d4ef74a533de8a6641
+SHA512: b8db28bf20f89ea9f75a8933e4ec66f08f8992777683e3f363bacefea7fa8cd5cfb8605744d0792284b6289e546615e762905d44666b24b90a0e0ec5e26bd04a
+Homepage: https://www.gnu.org/software/binutils/
+Description: Common files for the GNU assembler, linker and binary utilities
+ This package contains the localization files used by binutils packages for
+ various target architectures and parts of the binutils documentation. It is
+ not useful on its own.
+
+Package: binutils-x86-64-linux-gnu
+Architecture: amd64
+Version: 2.34-6ubuntu1
+Multi-Arch: allowed
+Priority: extra
+Build-Essential: yes
+Section: devel
+Source: binutils
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 9848
+Depends: binutils-common (= 2.34-6ubuntu1), libbinutils (= 2.34-6ubuntu1), libc6 (>= 2.27), libctf-nobfd0 (>= 2.33.50), libctf0 (>= 2.33.50), libgcc-s1 (>= 3.0), libstdc++6 (>= 5.2), zlib1g (>= 1:1.1.4)
+Suggests: binutils-doc (= 2.34-6ubuntu1)
+Breaks: binutils (<< 2.29-6)
+Replaces: binutils (<< 2.29-6)
+Filename: pool/main/b/binutils/binutils-x86-64-linux-gnu_2.34-6ubuntu1_amd64.deb
+Size: 1613868
+SHA256: ae3a254fe8073bb581e4fefcdc4d2b9d5a798f9b1f669e1d737d6fdc118f37df
+SHA512: b2a19ed7afaa69b8af85a2daadb14d0cd265b27cc557e693532fa505514c65e8880dfa98a59684a6f1dbaad93b03c9b587158dbf6389c4e528938954a941cdaa
+Homepage: https://www.gnu.org/software/binutils/
+Description: GNU binary utilities, for x86-64-linux-gnu target
+ This package provides GNU assembler, linker and binary utilities
+ for the x86-64-linux-gnu target.
+ .
+ You don't need this package unless you plan to cross-compile programs
+ for x86-64-linux-gnu and x86-64-linux-gnu is not your native platform.
+
+Package: binutils
+Architecture: amd64
+Version: 2.34-6ubuntu1
+Priority: optional
+Build-Essential: yes
+Section: devel
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 107
+Provides: binutils-gold, elf-binutils
+Depends: binutils-common (= 2.34-6ubuntu1), libbinutils (= 2.34-6ubuntu1), binutils-x86-64-linux-gnu (= 2.34-6ubuntu1)
+Suggests: binutils-doc (>= 2.34-6ubuntu1)
+Conflicts: binutils-mingw-w64-i686 (<< 2.23.52.20130612-1+3), binutils-mingw-w64-x86-64 (<< 2.23.52.20130612-1+3), binutils-multiarch (<< 2.27-8), modutils (<< 2.4.19-1)
+Filename: pool/main/b/binutils/binutils_2.34-6ubuntu1_amd64.deb
+Size: 3376
+SHA256: f62b4893a49048d1378ab3ea0c5653af396925319f7695071e6d371dd29147fb
+SHA512: c406bf6d9d059f6c73b2b84c8647b459bc480f2737f104905dab75c129b517f7528a9bd4f6c639cabd5935fb5aa32f4849d5013621a7c414344ee247dca38efe
+Homepage: https://www.gnu.org/software/binutils/
+Description: GNU assembler, linker and binary utilities
+ The programs in this package are used to assemble, link and manipulate
+ binary and object files.  They may be used in conjunction with a compiler
+ and various libraries to build programs.
+
+Package: libbinutils
+Architecture: amd64
+Version: 2.34-6ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: binutils
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 2696
+Depends: libc6 (>= 2.14), zlib1g (>= 1:1.2.0), binutils-common (= 2.34-6ubuntu1)
+Breaks: binutils (<< 2.29-6)
+Replaces: binutils (<< 2.29-6)
+Filename: pool/main/b/binutils/libbinutils_2.34-6ubuntu1_amd64.deb
+Size: 473556
+SHA256: 7a7da2b3a4c7586fdf11b21ee3144ee1bd3ccb17250644810f1332c9214b29d7
+SHA512: 4699718221dec4ca07f230ba84919a1cf8c046330c8127c0825d7f42e76ee14d630e9d524236bd6022b0410fea08dbdd75615ab1d45f0cb3a5250a7a0aa61dec
+Homepage: https://www.gnu.org/software/binutils/
+Description: GNU binary utilities (private shared library)
+ This package includes the private shared libraries libbfd and libopcodes.
+
+Package: libctf-nobfd0
+Architecture: amd64
+Version: 2.34-6ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: binutils
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 197
+Depends: libc6 (>= 2.14), zlib1g (>= 1:1.2.0)
+Filename: pool/main/b/binutils/libctf-nobfd0_2.34-6ubuntu1_amd64.deb
+Size: 47028
+SHA256: 171e3fb633348b5f96d15714907549ce120c34bcde0141a641b6761cfc7ae17b
+SHA512: 711e945521f65f1c3046d544890b9d53b5a7ed8829eec686aae21c4b364575e9be7b585f851ca5c4b0abb07751c5ca5d2e7ed5d739efdc48122361351443efb1
+Homepage: https://www.gnu.org/software/binutils/
+Description: Compact C Type Format library (runtime, no BFD dependency)
+ This package includes the libctf-nobfd shared library.  The Compact C Type
+ Format (CTF) is a way of representing information about a binary program
+
+Package: libctf0
+Architecture: amd64
+Version: 2.34-6ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: binutils
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 130
+Depends: libbinutils (= 2.34-6ubuntu1), libc6 (>= 2.14), zlib1g (>= 1:1.2.0)
+Filename: pool/main/b/binutils/libctf0_2.34-6ubuntu1_amd64.deb
+Size: 46620
+SHA256: 3bfee182c162f9e6128a419f214d9f507f86c6841b84d27dd5c1dfd0b2b09098
+SHA512: 26f4a73adc599afb0259e59161539a2bd35a400f4e57f025834e189d62b68576c8dd4ed22bc57239092565eb31f145814710b491a9f92dc1c50232ebf91406c2
+Homepage: https://www.gnu.org/software/binutils/
+Description: Compact C Type Format library (runtime, BFD dependency)
+ This package includes the libctf-nobfd shared library.  The Compact C Type
+ Format (CTF) is a way of representing information about a binary program
+
+Package: build-essential
+Architecture: amd64
+Version: 12.8ubuntu1
+Priority: optional
+Build-Essential: yes
+Section: devel
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Matthias Klose <doko@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 20
+Depends: libc6-dev | libc-dev, gcc (>= 4:9.2), g++ (>= 4:9.2), make, dpkg-dev (>= 1.17.11)
+Filename: pool/main/b/build-essential/build-essential_12.8ubuntu1_amd64.deb
+Size: 4624
+SHA256: 6292fa54511a0d1c0f8c798de35e23318375de006a5df9a7c3369d7d9d7afa84
+SHA512: d513d3e85248a070806da65564e6033cffcbd5373d67cae3bfce588de31ae58126f451161051906e12bad07d9afb7109736df7de53c277503f9b73d50c074847
+Description: Informational list of build-essential packages
+ If you do not plan to build Debian packages, you don't need this
+ package.  Starting with dpkg (>= 1.14.18) this package is required
+ for building Debian packages.
+ .
+ This package contains an informational list of packages which are
+ considered essential for building Debian packages.  This package also
+ depends on the packages on that list, to make it easy to have the
+ build-essential packages installed.
+ .
+ If you have this package installed, you only need to install whatever
+ a package specifies as its build-time dependencies to build the
+ package.  Conversely, if you are determining what your package needs
+ to build-depend on, you can always leave out the packages this
+ package depends on.
+ .
+ This package is NOT the definition of what packages are
+ build-essential; the real definition is in the Debian Policy Manual.
+ This package contains merely an informational list, which is all
+ most people need.   However, if this package and the manual disagree,
+ the manual is correct.
+
+Package: dkms
+Architecture: all
+Version: 2.8.1-5ubuntu1
+Multi-Arch: foreign
+Priority: optional
+Section: admin
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Dynamic Kernel Modules Support Team <dkms@packages.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 289
+Pre-Depends: lsb-release
+Depends: kmod | kldutils, gcc | c-compiler, dpkg-dev, make | build-essential, coreutils (>= 7.4), patch
+Recommends: fakeroot, sudo, linux-headers-686-pae | linux-headers-amd64 | linux-headers-generic | linux-headers
+Suggests: menu, e2fsprogs
+Breaks: shim-signed (<< 1.34~)
+Filename: pool/main/d/dkms/dkms_2.8.1-5ubuntu1_all.deb
+Size: 66632
+SHA256: f9d460f186b0b41b3d544e45f9b87b865fcaa84023fec16dd2b50af46c523138
+SHA512: 7c3c96905a1556961225253873706ec063ea24a508edc941b7ad3fce01705ab6bf49b82ae7b5ff454f58efffe675ac5da7194d1fe5de98ce28a20311715eff4e
+Homepage: https://github.com/dell-oss/dkms
+Description: Dynamic Kernel Module Support Framework
+ DKMS is a framework designed to allow individual kernel modules to be upgraded
+ without changing the whole kernel. It is also very easy to rebuild modules as
+ you upgrade kernels.
+
+Package: dpkg-dev
+Architecture: all
+Version: 1.19.7ubuntu3
+Multi-Arch: foreign
+Priority: optional
+Build-Essential: yes
+Section: utils
+Source: dpkg
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Dpkg Developers <debian-dpkg@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 2074
+Depends: perl:any, libdpkg-perl (= 1.19.7ubuntu3), tar (>= 1.28-1), bzip2, xz-utils, patch (>= 2.7), make, binutils
+Recommends: build-essential, gcc | c-compiler, fakeroot, gnupg | gnupg2, gpgv | gpgv2, libalgorithm-merge-perl
+Suggests: debian-keyring
+Breaks: debhelper (<< 10.10.1~)
+Filename: pool/main/d/dpkg/dpkg-dev_1.19.7ubuntu3_all.deb
+Size: 679036
+SHA256: c5163213c0096f4e59e8f34018820b06e60c9994c52561aafb0c821dafe5e35f
+SHA512: e99d5c6a6ffb79caf975047c2e4a44edf150f433fc454426eb8c3ebf911b244924dc5c84454911fc6514ea0cd6aaa0ee6cabf477286783bd9607acdd3c25996f
+Homepage: https://wiki.debian.org/Teams/Dpkg
+Description: Debian package development tools
+ This package provides the development tools (including dpkg-source)
+ required to unpack, build and upload Debian source packages.
+ .
+ Most Debian source packages will require additional tools to build;
+ for example, most packages need make and the C compiler gcc.
+
+Package: efibootmgr
+Architecture: amd64
+Version: 17-1
+Multi-Arch: foreign
+Priority: optional
+Section: admin
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian UEFI Maintainers <debian-efi@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 91
+Depends: libc6 (>= 2.14), libefiboot1 (>= 37), libefivar1 (>= 37), libpopt0 (>= 1.14)
+Filename: pool/main/e/efibootmgr/efibootmgr_17-1_amd64.deb
+Size: 28132
+SHA256: 0da33e43c97e5505d4d54e4145a72e76ce72278c3a9488792da86d9f30709d73
+SHA512: e67f183bff2b124ff937a26fd42e409855b67bfb68726466503f184997d7a315d11fcde4a00635175b335beae305ae0fbfdfb4af12f4847955df7eeec4e6dedd
+Description: Interact with the EFI Boot Manager
+ This is a Linux user-space application to modify the Intel Extensible
+ Firmware Interface (EFI) Boot Manager configuration. This application can
+ create and destroy boot entries, change the boot order, change the next
+ running boot option, and more.
+ .
+ Additional information about (U)EFI can be found at http://www.uefi.org/.
+ .
+ Note: efibootmgr requires that the kernel module efivars be loaded prior
+ to use. 'modprobe efivars' should do the trick if it does not
+ automatically load.
+
+Package: fakeroot
+Architecture: amd64
+Version: 1.24-1
+Multi-Arch: foreign
+Priority: optional
+Section: utils
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Clint Adams <clint@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 227
+Depends: libfakeroot (>= 1.24-1), libc6 (>= 2.15)
+Filename: pool/main/f/fakeroot/fakeroot_1.24-1_amd64.deb
+Size: 62636
+SHA256: 2d9cc4fe6c6b0925e452d1454645171b957a37610a068e153abd6318746d996f
+SHA512: 46a99a9a590be4827c53cdbf8908db4e863b54dbaac7430e6f69bd288515bd4c1cb370d35c3c367c5f2676179d3b004bc007b60f401ab0409c555785bb2af3b3
+Description: tool for simulating superuser privileges
+ fakeroot provides a fake "root environment" by means of LD_PRELOAD and
+ SysV IPC (or TCP) trickery. It puts wrappers around getuid(), chown(),
+ stat(), and other file-manipulation functions, so that unprivileged
+ users can (for instance) populate .deb archives with root-owned files;
+ various build tools use fakeroot for this by default.
+ .
+ This package contains fakeroot command and the daemon that remembers
+ fake ownership/permissions of files manipulated by fakeroot
+ processes.
+
+Package: libfakeroot
+Architecture: amd64
+Version: 1.24-1
+Multi-Arch: same
+Priority: optional
+Section: utils
+Source: fakeroot
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Clint Adams <clint@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 157
+Depends: libc6 (>= 2.14)
+Breaks: fakeroot (<< 1.20-2~)
+Replaces: fakeroot (<< 1.20-2~)
+Filename: pool/main/f/fakeroot/libfakeroot_1.24-1_amd64.deb
+Size: 25720
+SHA256: e542e0c0543be5b02d59306d3747a527e054225816465a2c3e4c97c6e7439222
+SHA512: f1d71c3a789d5a6d27bfc8b107fef5f5cec38fff3abbd65e5e30634a5491108ea31727c8269cb6ceeb1f30f26cacb615be6bd973497695f0d6c394e775426619
+Description: tool for simulating superuser privileges - shared libraries
+ fakeroot provides a fake "root environment" by means of LD_PRELOAD and
+ SysV IPC (or TCP) trickery. It puts wrappers around getuid(), chown(),
+ stat(), and other file-manipulation functions, so that unprivileged
+ users can (for instance) populate .deb archives with root-owned files;
+ various build tools use fakeroot for this by default.
+ .
+ This package contains the LD_PRELOAD libraries.
+
+Package: libatomic1
+Architecture: amd64
+Version: 10-20200411-0ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libs
+Source: gcc-10
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 45
+Depends: gcc-10-base (= 10-20200411-0ubuntu1), libc6 (>= 2.14)
+Filename: pool/main/g/gcc-10/libatomic1_10-20200411-0ubuntu1_amd64.deb
+Size: 9284
+SHA256: 38ad154ad6f4a76030bc3cb5522b23bf871cb9cc772fd9d7c0cad00815b9dbc7
+SHA512: 3908111f01d3ef7749e7b485c6b1428efe1336cd8ea419345ea59ecdc8a01bf84e8eafe1f90190296fd2e8576ae0b5095f68ac23ebb212aeb9066b329708382a
+Homepage: http://gcc.gnu.org/
+Description: support library providing __atomic built-in functions
+ library providing __atomic built-in functions. When an atomic call cannot
+ be turned into lock-free instructions, GCC will make calls into this library.
+
+Package: libitm1
+Architecture: amd64
+Version: 10-20200411-0ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libs
+Source: gcc-10
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 115
+Depends: gcc-10-base (= 10-20200411-0ubuntu1), libc6 (>= 2.14)
+Filename: pool/main/g/gcc-10/libitm1_10-20200411-0ubuntu1_amd64.deb
+Size: 26260
+SHA256: 938c76eed182ca7acf89c0ea58227c222c49fde8b07f089c805e4e3b24e3ff90
+SHA512: 4707b7fa5b30306b7d77730804684801ce3795a42a7f603315259829a385a5aaf4ec44b0ffcd119a99e77d1e70065607e2a618ddcfec39fe1f9d466a303afaab
+Homepage: http://gcc.gnu.org/
+Description: GNU Transactional Memory Library
+ GNU Transactional Memory Library (libitm) provides transaction support for
+ accesses to the memory of a process, enabling easy-to-use synchronization of
+ accesses to shared memory by several threads.
+
+Package: liblsan0
+Architecture: amd64
+Version: 10-20200411-0ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libs
+Source: gcc-10
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 390
+Depends: gcc-10-base (= 10-20200411-0ubuntu1), libc6 (>= 2.17), libgcc-s1 (>= 3.3)
+Filename: pool/main/g/gcc-10/liblsan0_10-20200411-0ubuntu1_amd64.deb
+Size: 143996
+SHA256: e96c77a7bfe8f92f26c498032c3da951f34d92dc6324d5d5f0fcc36535dfa58c
+SHA512: d6bd470d367aa34bbbba1eb795290dff28f9aa542f2c60128a3722cba1cac73eff3dcac80e8048f15e4bf12c21477e84803cec30f3a0dd3cbe4200a43680acfa
+Homepage: http://gcc.gnu.org/
+Description: LeakSanitizer -- a memory leak detector (runtime)
+ LeakSanitizer (Lsan) is a memory leak detector which is integrated
+ into AddressSanitizer.
+
+Package: libquadmath0
+Architecture: amd64
+Version: 10-20200411-0ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libs
+Source: gcc-10
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 304
+Depends: gcc-10-base (= 10-20200411-0ubuntu1), libc6 (>= 2.23)
+Filename: pool/main/g/gcc-10/libquadmath0_10-20200411-0ubuntu1_amd64.deb
+Size: 145896
+SHA256: a95f27c8d2a5e4e30ba09c6aa101bed235b0f2df64a62f8e66b548ca45a1bb2b
+SHA512: bed88b0ff59ee0dfaa6c79e104bd4f3ca7d19ca1177340e26164db7919fb4567cef883b6ae3034075c4dd3026c457b52cc3201a603fedbc04f0be765e9844717
+Homepage: http://gcc.gnu.org/
+Description: GCC Quad-Precision Math Library
+ A library, which provides quad-precision mathematical functions on targets
+ supporting the __float128 datatype. The library is used to provide on such
+ targets the REAL(16) type in the GNU Fortran compiler.
+
+Package: libtsan0
+Architecture: amd64
+Version: 10-20200411-0ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libs
+Source: gcc-10
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 1184
+Depends: gcc-10-base (= 10-20200411-0ubuntu1), libc6 (>= 2.23), libgcc-s1 (>= 3.3)
+Filename: pool/main/g/gcc-10/libtsan0_10-20200411-0ubuntu1_amd64.deb
+Size: 319328
+SHA256: a5717ff5660d72d60c26f60a902c2204521d511ccd41289dbf0821d0d2d9e3ce
+SHA512: ded50ee4cafead5538e7940e612d0e424629bd2c294027cd3f53e6a7c4d8b97247921a66bc2d618d358231b96ad0c6938fd1b6ae93e6a50f554b3948aaec9444
+Homepage: http://gcc.gnu.org/
+Description: ThreadSanitizer -- a Valgrind-based detector of data races (runtime)
+ ThreadSanitizer (Tsan) is a data race detector for C/C++ programs.
+ The Linux and Mac versions are based on Valgrind.
+
+Package: libubsan1
+Architecture: amd64
+Version: 10-20200411-0ubuntu1
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libs
+Source: gcc-10
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 378
+Depends: gcc-10-base (= 10-20200411-0ubuntu1), libc6 (>= 2.17), libgcc-s1 (>= 3.3), libstdc++6 (>= 4.1.1)
+Filename: pool/main/g/gcc-10/libubsan1_10-20200411-0ubuntu1_amd64.deb
+Size: 136076
+SHA256: 56491058bae43ae15e6ec53f3dc93077b7855c94c9e92f588a33c032b9254091
+SHA512: f93e2983e4a78f8a2b8da72bba85d204b8e266380b930a538672cdc8a41544ca0f620fffef00a05655ea1c6eee252f8424318e8675664fcdd347ba3132e62b7f
+Homepage: http://gcc.gnu.org/
+Description: UBSan -- undefined behaviour sanitizer (runtime)
+ UndefinedBehaviorSanitizer can be enabled via -fsanitize=undefined.
+ Various computations will be instrumented to detect undefined behavior
+ at runtime. Available for C and C++.
+
+Package: g++-9
+Architecture: amd64
+Version: 9.3.0-10ubuntu2
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: gcc-9
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 27985
+Provides: c++-compiler, c++abi2-dev
+Depends: gcc-9-base (= 9.3.0-10ubuntu2), gcc-9 (= 9.3.0-10ubuntu2), libstdc++-9-dev (= 9.3.0-10ubuntu2), libc6 (>= 2.14), libgmp10 (>= 2:5.0.1~), libisl22 (>= 0.15), libmpc3, libmpfr6 (>= 3.1.3), zlib1g (>= 1:1.1.4)
+Suggests: g++-9-multilib, gcc-9-doc (>= 8)
+Filename: pool/main/g/gcc-9/g++-9_9.3.0-10ubuntu2_amd64.deb
+Size: 8404272
+SHA256: d3a28ee92e65e4f719fec86063bb83961b21fe52b737a967ba00936b32b72c12
+SHA512: 41fdb0373c35e0f5380baf087e4f470bc0ef482f1cea815da0983fb4df065230e43e2ca1bdd0344ed78d97513806fffc95e69eda276622fbab1999249fe19f15
+Homepage: http://gcc.gnu.org/
+Description: GNU C++ compiler
+ This is the GNU C++ compiler, a fairly portable optimizing compiler for C++.
+
+Package: gcc-9
+Architecture: amd64
+Version: 9.3.0-10ubuntu2
+Priority: optional
+Build-Essential: yes
+Section: devel
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 29783
+Provides: c-compiler
+Depends: cpp-9 (= 9.3.0-10ubuntu2), gcc-9-base (= 9.3.0-10ubuntu2), libcc1-0 (>= 9.3.0-10ubuntu2), binutils (>= 2.34), libgcc-9-dev (= 9.3.0-10ubuntu2), libc6 (>= 2.15), libgcc-s1 (>= 3.0), libgmp10 (>= 2:5.0.1~), libisl22 (>= 0.15), libmpc3, libmpfr6 (>= 3.1.3), libstdc++6 (>= 5), zlib1g (>= 1:1.1.4)
+Recommends: libc6-dev (>= 2.13-0ubuntu6)
+Suggests: gcc-9-multilib, gcc-9-doc (>= 8), gcc-9-locales (>= 8)
+Replaces: cpp-9 (<< 7.1.1-8)
+Filename: pool/main/g/gcc-9/gcc-9_9.3.0-10ubuntu2_amd64.deb
+Size: 8233992
+SHA256: 22f0282dc1549a4f5715b94e9c71ed0e96c400d522ec15453e1a8000d45ea8d7
+SHA512: d3c53e6fd8cde401b3b2bfe6477c7c8d2294740000dc39b22639e5da033ee0e0497926a039a872b7627bfcdc99570ca4bc99c5bcf2a0b7d60e36a318268e6682
+Homepage: http://gcc.gnu.org/
+Description: GNU C compiler
+ This is the GNU C compiler, a fairly portable optimizing compiler for C.
+
+Package: libasan5
+Architecture: amd64
+Version: 9.3.0-10ubuntu2
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libs
+Source: gcc-9
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 1656
+Depends: gcc-9-base (= 9.3.0-10ubuntu2), libc6 (>= 2.23), libgcc-s1
+Filename: pool/main/g/gcc-9/libasan5_9.3.0-10ubuntu2_amd64.deb
+Size: 395460
+SHA256: 7c80d740abb6de1e7ba527c446b22ed074c0b2107c5d5cf2927144b88c06aacb
+SHA512: 75de86456258b638803d92e0b9d04f59bc97f177f6349a20c7528c562f5bbef197a05c895fe3a56d0561b5e8e97bcadddd86d911cb9c87d4157dbd237fbe3477
+Homepage: http://gcc.gnu.org/
+Description: AddressSanitizer -- a fast memory error detector
+ AddressSanitizer (ASan) is a fast memory error detector.  It finds
+ use-after-free and {heap,stack,global}-buffer overflow bugs in C/C++ programs.
+
+Package: libgcc-9-dev
+Architecture: amd64
+Version: 9.3.0-10ubuntu2
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libdevel
+Source: gcc-9
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 13892
+Depends: gcc-9-base (= 9.3.0-10ubuntu2), libgcc-s1 (>= 9.3.0-10ubuntu2), libgomp1 (>= 9.3.0-10ubuntu2), libitm1 (>= 9.3.0-10ubuntu2), libatomic1 (>= 9.3.0-10ubuntu2), libasan5 (>= 9.3.0-10ubuntu2), liblsan0 (>= 9.3.0-10ubuntu2), libtsan0 (>= 9.3.0-10ubuntu2), libubsan1 (>= 9.3.0-10ubuntu2), libquadmath0 (>= 9.3.0-10ubuntu2)
+Recommends: libc6-dev (>= 2.13-0ubuntu6)
+Breaks: libgccjit-9-dev (<< 9.3.0-6)
+Replaces: libgccjit-9-dev (<< 9.3.0-6)
+Filename: pool/main/g/gcc-9/libgcc-9-dev_9.3.0-10ubuntu2_amd64.deb
+Size: 2358672
+SHA256: d1db4de59b4184e502407a2abfde23ed1a966e590f17b4d206bdb4fbb7df0040
+SHA512: adb1d0e35d7da59d34822f352c98d923df4cb8e8913aa88e00258836e7c04569c612dd34c11c22e44ab5694c66f932540a422bf8bb659c88fae680a38608678b
+Homepage: http://gcc.gnu.org/
+Description: GCC support library (development files)
+ This package contains the headers and static library files necessary for
+ building C programs which use libgcc, libgomp, libquadmath, libssp or libitm.
+
+Package: libstdc++-9-dev
+Architecture: amd64
+Version: 9.3.0-10ubuntu2
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libdevel
+Source: gcc-9
+Origin: Ubuntu
+Maintainer: Ubuntu Core developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 17624
+Provides: libstdc++-dev
+Depends: gcc-9-base (= 9.3.0-10ubuntu2), libgcc-9-dev (= 9.3.0-10ubuntu2), libstdc++6 (>= 9.3.0-10ubuntu2), libc6-dev (>= 2.13-0ubuntu6)
+Suggests: libstdc++-9-doc
+Conflicts: libg++2.8-dev, libg++27-dev, libg++272-dev (<< 2.7.2.8-1), libstdc++2.10-dev (<< 1:2.95.3-2), libstdc++2.8-dev, libstdc++2.9-dev, libstdc++2.9-glibc2.1-dev, libstdc++3.0-dev
+Filename: pool/main/g/gcc-9/libstdc++-9-dev_9.3.0-10ubuntu2_amd64.deb
+Size: 1711276
+SHA256: 11196f4a1beb5ea0399052227aafe4c341c8de3602698b572333acee15f0088c
+SHA512: a28ded2ae8ddb0cf071515afe5772db2b04ed682bebca903196edf5eea189d9524fbd724f45306811cf351a0a784f524d5badf6cfe83386f6eff97d1a1d7a5f3
+Homepage: http://gcc.gnu.org/
+Description: GNU Standard C++ Library v3 (development files)
+ This package contains the headers and static library files necessary for
+ building C++ programs which use libstdc++.
+ .
+ libstdc++-v3 is a complete rewrite from the previous libstdc++-v2, which
+ was included up to g++-2.95. The first version of libstdc++-v3 appeared
+ in g++-3.0.
+
+Package: g++
+Architecture: amd64
+Version: 4:9.3.0-1ubuntu2
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: gcc-defaults (1.185.1ubuntu2)
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 16
+Provides: c++-compiler, g++-x86-64-linux-gnu (= 4:9.3.0-1ubuntu2)
+Depends: cpp (= 4:9.3.0-1ubuntu2), gcc (= 4:9.3.0-1ubuntu2), g++-9 (>= 9.3.0-3~), gcc-9 (>= 9.3.0-3~)
+Suggests: g++-multilib
+Filename: pool/main/g/gcc-defaults/g++_9.3.0-1ubuntu2_amd64.deb
+Size: 1604
+SHA256: c613719f24d30e87ed196f27a324a6820032675759330772a1e6620c7662840e
+SHA512: 5d97e9b6acbd0f631ebed16981509c5a2cf73526ce41af05614473d0cff78fb73b0d2d550bef83a16659144ce42f44654758e6dbab20a21c216114766517095b
+Description: GNU C++ compiler
+ This is the GNU C++ compiler, a fairly portable optimizing compiler for C++.
+ .
+ This is a dependency package providing the default GNU C++ compiler.
+
+Package: gcc
+Architecture: amd64
+Version: 4:9.3.0-1ubuntu2
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: gcc-defaults (1.185.1ubuntu2)
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian GCC Maintainers <debian-gcc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 50
+Provides: c-compiler, gcc-x86-64-linux-gnu (= 4:9.3.0-1ubuntu2)
+Depends: cpp (= 4:9.3.0-1ubuntu2), gcc-9 (>= 9.3.0-3~)
+Recommends: libc6-dev | libc-dev
+Suggests: gcc-multilib, make, manpages-dev, autoconf, automake, libtool, flex, bison, gdb, gcc-doc
+Conflicts: gcc-doc (<< 1:2.95.3)
+Filename: pool/main/g/gcc-defaults/gcc_9.3.0-1ubuntu2_amd64.deb
+Size: 5208
+SHA256: 78ab6a8841c68300ba39992e8e33190371e133b3592c601ed3052d54e2ba59ea
+SHA512: d235f02e9b7f04eea78a44c4ca0289775a73e412343f9841da0f9c3bafe878b3f254f60b793de8e561c6af1bca3db9aac5bf519aca3efbea6fe702f4b8cae471
+Description: GNU C compiler
+ This is the GNU C compiler, a fairly portable optimizing compiler for C.
+ .
+ This is a dependency package providing the default GNU C compiler.
+
+Package: libc-dev-bin
+Architecture: amd64
+Version: 2.31-0ubuntu9
+Multi-Arch: foreign
+Priority: optional
+Build-Essential: yes
+Section: libdevel
+Source: glibc
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 440
+Depends: libc6 (>> 2.31), libc6 (<< 2.32)
+Recommends: manpages, manpages-dev
+Filename: pool/main/g/glibc/libc-dev-bin_2.31-0ubuntu9_amd64.deb
+Size: 71820
+SHA256: 51bf3e807747de738435e9aa4213f43ec62769d7178614e4db9de387446c714e
+SHA512: b19e6b39f9e7b946ba677299b739f693ac1ffc1705e604425b732b558f5e953f71c38b8267eeed1a18861618d351d0b910b0b2528ec6025afaab99dd84fab12f
+Homepage: https://www.gnu.org/software/libc/libc.html
+Description: GNU C Library: Development binaries
+ This package contains utility programs related to the GNU C Library
+ development package.
+
+Package: libc6-dev
+Architecture: amd64
+Version: 2.31-0ubuntu9
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libdevel
+Source: glibc
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: GNU Libc Maintainers <debian-glibc@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 19070
+Provides: libc-dev
+Depends: libc6 (= 2.31-0ubuntu9), libc-dev-bin (= 2.31-0ubuntu9), linux-libc-dev, libcrypt-dev
+Suggests: glibc-doc, manpages-dev
+Conflicts: libc0.1-dev, libc0.3-dev, libc6.1-dev
+Breaks: binutils (<< 2.26), binutils-gold (<< 2.20.1-11), cmake (<< 2.8.4+dfsg.1-5), gcc-4.4 (<< 4.4.6-4), gcc-4.5 (<< 4.5.3-2), gcc-4.6 (<< 4.6.0-12), libhwloc-dev (<< 1.2-3), libjna-java (<< 3.2.7-4), liblouis-dev (<< 2.3.0-2), liblouisxml-dev (<< 2.4.0-2), libperl5.26 (<< 5.26.1-3), make (<< 3.81-8.1), pkg-config (<< 0.26-1)
+Filename: pool/main/g/glibc/libc6-dev_2.31-0ubuntu9_amd64.deb
+Size: 2519944
+SHA256: adb78f38fb00c76af4384be7a4c5f41da242e05bea6b0483e03b7e0c86738477
+SHA512: c06ab9e19366b17fae1e65ddb427b6c811e3d57632b9cf2b85184b40c3d547a883fd4c52b662f82ef89dd9f90fec1d39a7e7eb13e652f2f6982ed6ce60165609
+Homepage: https://www.gnu.org/software/libc/libc.html
+Description: GNU C Library: Development Libraries and Header Files
+ Contains the symlinks, headers, and object files needed to compile
+ and link programs which use the standard C library.
+
+Package: grub-efi-amd64-signed
+Architecture: amd64
+Version: 1.142.4+2.04-1ubuntu26.2
+Built-Using: grub2 (= 2.04-1ubuntu26.2)
+Priority: optional
+Section: utils
+Source: grub2-signed (1.142.4)
+Origin: Ubuntu
+Maintainer: Colin Watson <cjwatson@ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 4452
+Depends: grub-efi-amd64-bin (= 2.04-1ubuntu26.2), grub-efi-amd64 | grub-pc
+Recommends: secureboot-db
+Filename: pool/main/g/grub2-signed/grub-efi-amd64-signed_1.142.4+2.04-1ubuntu26.2_amd64.deb
+Size: 469628
+SHA256: cc8f6d082f519cd07b48f00cf468d338ade212bfd5f6c23d6c2b5d801800bea3
+SHA512: b74da25baa66a21f041aa9de89a72bf3d332634525dcaf3e0cf17554db62638355aef3ed34955aff6904855abe2f31dd4bdb4dacb3b9b4cf5d5b83bb153f614d
+Description: GRand Unified Bootloader, version 2 (EFI-AMD64 version, signed)
+ GRUB is a portable, powerful bootloader.  This version of GRUB is based on a
+ cleaner design than its predecessors, and provides the following new features:
+ .
+  - Scripting in grub.cfg using BASH-like syntax.
+  - Support for modern partition maps such as GPT.
+  - Modular generation of grub.cfg via update-grub.  Packages providing GRUB
+    add-ons can plug in their own script rules and trigger updates by invoking
+    update-grub.
+ .
+ This package contains a version of GRUB built for use with the EFI-AMD64
+ architecture, signed with Canonical's UEFI signing key.
+Task: system-image
+Phased-Update-Percentage: 10
+
+Package: grub-efi-amd64-bin
+Architecture: amd64
+Version: 2.04-1ubuntu26.2
+Multi-Arch: foreign
+Priority: extra
+Section: admin
+Source: grub2
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: GRUB Maintainers <pkg-grub-devel@alioth-lists.debian.net>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 7289
+Depends: grub-common (= 2.04-1ubuntu26.2)
+Recommends: grub-efi-amd64-signed, efibootmgr
+Replaces: grub-common (<= 1.97~beta2-1), grub-efi-amd64 (<< 1.99-1), grub2 (<< 2.04-1ubuntu26.2)
+Filename: pool/main/g/grub2/grub-efi-amd64-bin_2.04-1ubuntu26.2_amd64.deb
+Size: 703324
+SHA256: b19a4b82d601bcdfe89d5d868f6e3a0b6333e4a6cd5fbc9c2df859fde63e642a
+SHA512: 95a804976db09274cd714a1f9d1fe08757eb84397db3e321bb55ef3d886bb6bd2eddda7cbb789a09f4d1943b6bc830d59ae116d8d3be70ada9ceb34d0e2262b8
+Homepage: https://www.gnu.org/software/grub/
+Description: GRand Unified Bootloader, version 2 (EFI-AMD64 modules)
+ GRUB is a portable, powerful bootloader.  This version of GRUB is based on a
+ cleaner design than its predecessors, and provides the following new features:
+ .
+  - Scripting in grub.cfg using BASH-like syntax.
+  - Support for modern partition maps such as GPT.
+  - Modular generation of grub.cfg via update-grub.  Packages providing GRUB
+    add-ons can plug in their own script rules and trigger updates by invoking
+    update-grub.
+ .
+ This package contains GRUB modules that have been built for use with the
+ EFI-AMD64 architecture, as used by Intel Macs (unless a BIOS interface has
+ been activated).  It can be installed in parallel with other flavours, but
+ will not automatically install GRUB as the active boot loader nor
+ automatically update grub.cfg on upgrade unless grub-efi-amd64 is also
+ installed.
+Task: system-image
+Efi-Vendor: ubuntu
+Phased-Update-Percentage: 10
+
+Package: grub-efi-amd64
+Architecture: amd64
+Version: 2.04-1ubuntu26.2
+Multi-Arch: foreign
+Priority: extra
+Section: admin
+Source: grub2
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: GRUB Maintainers <pkg-grub-devel@alioth-lists.debian.net>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 178
+Depends: debconf (>= 0.5) | debconf-2.0, grub-common (= 2.04-1ubuntu26.2), grub2-common (= 2.04-1ubuntu26.2), grub-efi-amd64-bin (= 2.04-1ubuntu26.2), ucf
+Conflicts: elilo, grub, grub-coreboot, grub-efi-ia32, grub-ieee1275, grub-legacy, grub-pc, grub-xen
+Replaces: grub, grub-common (<= 1.97~beta2-1), grub-coreboot, grub-efi-ia32, grub-ieee1275, grub-legacy, grub-pc, grub2 (<< 2.04-1ubuntu26.2)
+Filename: pool/main/g/grub2/grub-efi-amd64_2.04-1ubuntu26.2_amd64.deb
+Size: 46672
+SHA256: 4dbeb4e740e967e7cce4fcb6cc6dc913ef6a7f44adcb4c8339916d2850fa80cc
+SHA512: 3bd5a9898bac27021f5ce04f35d66e5263cbb654f91355cefae2adf0ecd134244f5e69296761d815ef67b4c95c5228eb217bf37379801c63af98a33e4f8cf944
+Homepage: https://www.gnu.org/software/grub/
+Description: GRand Unified Bootloader, version 2 (EFI-AMD64 version)
+ GRUB is a portable, powerful bootloader.  This version of GRUB is based on a
+ cleaner design than its predecessors, and provides the following new features:
+ .
+  - Scripting in grub.cfg using BASH-like syntax.
+  - Support for modern partition maps such as GPT.
+  - Modular generation of grub.cfg via update-grub.  Packages providing GRUB
+    add-ons can plug in their own script rules and trigger updates by invoking
+    update-grub.
+ .
+ This is a dependency package for a version of GRUB that has been built for
+ use with the EFI-AMD64 architecture, as used by Intel Macs (unless a BIOS
+ interface has been activated).  Installing this package indicates that this
+ version of GRUB should be the active boot loader.
+Phased-Update-Percentage: 10
+
+Package: grub-efi
+Architecture: amd64
+Version: 2.04-1ubuntu26.2
+Multi-Arch: foreign
+Priority: extra
+Section: admin
+Source: grub2
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: GRUB Maintainers <pkg-grub-devel@alioth-lists.debian.net>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 16
+Depends: grub-common (= 2.04-1ubuntu26.2), grub-efi-amd64 (= 2.04-1ubuntu26.2)
+Filename: pool/main/g/grub2/grub-efi_2.04-1ubuntu26.2_amd64.deb
+Size: 2596
+SHA256: c67ad7d07dab0e7a7ed2353904f1b3f46e773d00e6c04681e89e1c16a40eff12
+SHA512: 755a1a806ea9728ef44beb1c2fb8508df1d2402e5dc6122ae9a30418ea760ca94b591dd7236e70aa97ccab70ed2659ecb345e1a076b6bc3d080dfd48d60bd602
+Homepage: https://www.gnu.org/software/grub/
+Description: GRand Unified Bootloader, version 2 (dummy package)
+ This is a dummy transitional package that depends on either grub-efi-ia32 or
+ grub-efi-amd64, depending on the architecture.
+Phased-Update-Percentage: 10
+
+Package: linux-headers-oem-20.04
+Architecture: amd64
+Version: 5.6.0.1020.17
+Priority: optional
+Section: kernel
+Source: linux-meta-oem-5.6
+Origin: Ubuntu
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 9
+Provides: linux-headers-oem-5.6
+Depends: linux-headers-5.6.0-1020-oem
+Filename: pool/main/l/linux-meta-oem-5.6/linux-headers-oem-20.04_5.6.0.1020.17_amd64.deb
+Size: 2420
+SHA256: 4c328dac9ec44361f1f49dda4d4b04d23e0bd4507dd981c4ed479d0fae839f9f
+SHA512: c7212be9b9d6056335d4db464edf78fb653c307982caf8cd04479c033184b523b2a4066c4158f46d094ffcd1880d79b986922c7dace5cd0f667c46212b867174
+Description: OEM Linux kernel headers
+ This package will always depend on the latest OEM kernel headers
+ available.
+
+Package: linux-image-oem-20.04
+Architecture: amd64
+Version: 5.6.0.1020.17
+Priority: optional
+Section: kernel
+Source: linux-meta-oem-5.6
+Origin: Ubuntu
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 9
+Provides: linux-image-oem-5.6, virtualbox-guest-modules (= 6.1.6-dfsg-1), zfs-modules (= 0.8.3-1ubuntu12)
+Depends: linux-image-5.6.0-1020-oem, linux-firmware, intel-microcode, amd64-microcode
+Recommends: thermald
+Filename: pool/main/l/linux-meta-oem-5.6/linux-image-oem-20.04_5.6.0.1020.17_amd64.deb
+Size: 2508
+SHA256: 37e35b0930e71a6630285713bb3f077bb33d7b5800135618592ec5e2cba371cd
+SHA512: 385276e02d881afbf8f55ff0018f15810936e36c4c6ff24bbae7106828ac7bb73002811cf0694fc88d400c3e5177575ebb6ad4d08986bc12b51921b0e204cbdb
+Description: OEM Linux kernel image
+ This package will always depend on the latest OEM kernel image
+ available.
+
+Package: linux-oem-20.04
+Architecture: amd64
+Version: 5.6.0.1020.17
+Priority: optional
+Section: kernel
+Source: linux-meta-oem-5.6
+Origin: Ubuntu
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 9
+Provides: linux-oem-5.6
+Depends: linux-image-oem-20.04 (= 5.6.0.1020.17), linux-headers-oem-20.04 (= 5.6.0.1020.17)
+Filename: pool/main/l/linux-meta-oem-5.6/linux-oem-20.04_5.6.0.1020.17_amd64.deb
+Size: 1876
+SHA256: 84af117ddef8c97d2c89f82b8a2c8ea12815445d181594b1e5327ea5177f508a
+SHA512: 5e842b2d0b958e16b2ee7d6cb9df565e668dc616c090601ba0743e9a4f99dee73afe273ebdf31c22aee65b825b862c64f0bbcd47115cb42977f0edcc0044a68c
+Description: Complete OEM Linux kernel and headers
+ This package will always depend on the latest complete OEM Linux kernel
+ and headers.
+
+Package: linux-headers-5.6.0-1020-oem
+Architecture: amd64
+Version: 5.6.0-1020.20
+Priority: optional
+Section: devel
+Source: linux-oem-5.6
+Origin: Ubuntu
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 13947
+Provides: linux-headers, linux-headers-3.0
+Depends: linux-oem-5.6-headers-5.6.0-1020, libc6 (>= 2.14), libelf1 (>= 0.142), libssl1.1 (>= 1.1.0)
+Filename: pool/main/l/linux-oem-5.6/linux-headers-5.6.0-1020-oem_5.6.0-1020.20_amd64.deb
+Size: 1241532
+SHA256: 7c2a2c8142d8c34b6e2973a005f1f9fa147ae412cea62318bc085f15a05fd9e6
+SHA512: f168f53bbe98b02249e6e033a4094a2d1f95b96b255343799482a984c85019e7af8bf44bb2c8d183419a2cf5758de8683f3cf6e32fe5638c65eb0049a1f402b4
+Description: Linux kernel headers for version 5.6.0 on 64 bit x86 SMP
+ This package provides kernel header files for version 5.6.0 on
+ 64 bit x86 SMP.
+ .
+ This is for sites that want the latest kernel headers.  Please read
+ /usr/share/doc/linux-headers-5.6.0-1020/debian.README.gz for details.
+
+Package: linux-modules-5.6.0-1020-oem
+Architecture: amd64
+Version: 5.6.0-1020.20
+Priority: optional
+Section: kernel
+Source: linux-oem-5.6
+Origin: Ubuntu
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 260095
+Filename: pool/main/l/linux-oem-5.6/linux-modules-5.6.0-1020-oem_5.6.0-1020.20_amd64.deb
+Size: 53578224
+SHA256: 66012bfa990c85102dacc79ac9e96c6a4b4afff7075d8976bb29ead0d7c7fd62
+SHA512: 9bb920d4c8eb7a2ed4ccdcb5a4d5ef7ea63895932e68ec66570f8ed33a9c84ad7c995537c3c52fc5b15f74aa94423f2784953ad6f98ca622e853ff454e956115
+Description: Linux kernel extra modules for version 5.6.0 on 64 bit x86 SMP
+ Contains the corresponding System.map file, the modules built by the
+ packager, and scripts that try to ensure that the system is not left in an
+ unbootable state after an update.
+ .
+ Supports OEM processors.
+ .
+ Geared toward desktop systems.
+ .
+ You likely do not want to install this package directly. Instead, install
+ the linux-oem meta-package, which will ensure that upgrades work
+ correctly, and that supporting packages are also installed.
+
+Package: linux-oem-5.6-headers-5.6.0-1020
+Architecture: all
+Version: 5.6.0-1020.20
+Multi-Arch: foreign
+Priority: optional
+Section: devel
+Source: linux-oem-5.6
+Origin: Ubuntu
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 70487
+Depends: coreutils
+Filename: pool/main/l/linux-oem-5.6/linux-oem-5.6-headers-5.6.0-1020_5.6.0-1020.20_all.deb
+Size: 11197328
+SHA256: 473a267a3c645755a7adaaca5a087b2711ef85e511f1f990a5833c78bae3444b
+SHA512: ec96eeb66bd235c7b766e0082c02ca81204c6d849557f8101b4c8798e1485d05fa9983b06bb63e8960ff4a329abf97d554c69479fdb7ce31847d43705bd974e7
+Description: Header files related to Linux kernel version 5.6.0
+ This package provides kernel header files for version 5.6.0, for sites
+ that want the latest kernel headers. Please read
+ /usr/share/doc/linux-oem-5.6-headers-5.6.0-1020/debian.README.gz for details
+
+Package: linux-image-5.6.0-1020-oem
+Architecture: amd64
+Version: 5.6.0-1020.20
+Built-Using: linux-oem-5.6 (= 5.6.0-1020.20)
+Priority: optional
+Section: kernel
+Source: linux-signed-oem-5.6
+Origin: Ubuntu
+Maintainer: Canonical Kernel Team <kernel-team@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 11657
+Provides: aufs-dkms, fuse-module, ivtv-modules, kvm-api-4, linux-image, redhat-cluster-modules, spl-dkms, spl-modules, virtualbox-guest-dkms, virtualbox-guest-modules, zfs-dkms, zfs-modules
+Depends: kmod, linux-base (>= 4.5ubuntu1~16.04.1), linux-modules-5.6.0-1020-oem
+Recommends: grub-pc | grub-efi-amd64 | grub-efi-ia32 | grub | lilo, initramfs-tools | linux-initramfs-tool
+Suggests: fdutils, linux-oem-5.6-tools, linux-headers-5.6.0-1020-oem
+Conflicts: linux-image-unsigned-5.6.0-1020-oem
+Filename: pool/main/l/linux-signed-oem-5.6/linux-image-5.6.0-1020-oem_5.6.0-1020.20_amd64.deb
+Size: 9043396
+SHA256: 00d51ec3d02987bff8b345d20798a051d5eb09ce6537aef272407337e5e34525
+SHA512: 48a6df84890921bcd1c54ecdf430b8e538c1ca925769564a6401256f5ed0e82d33da6b1541b5a5152ec870cd12860f4d49b2c4677614aa8f1fc2554f6e4422f6
+Description: Signed kernel image oem
+ A kernel image for oem.  This version of it is signed with
+ Canonical's UEFI signing key.
+
+Package: linux-libc-dev
+Architecture: amd64
+Version: 5.4.0-42.46
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: linux
+Origin: Ubuntu
+Maintainer: Ubuntu Kernel Team <kernel-team@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 5762
+Provides: aufs-dev, linux-kernel-headers
+Conflicts: linux-kernel-headers
+Replaces: linux-kernel-headers
+Filename: pool/main/l/linux/linux-libc-dev_5.4.0-42.46_amd64.deb
+Size: 1109436
+SHA256: 31fe3ef2724d92c491b26ae9b537c6d5f68741065adf072db7d16ecd12286b99
+SHA512: f3fae4b3f3e4edc2826e3aa034ee466a1970ad098858d332b1d04bd84845c3c1ecca5b58ea2657892ee225c746b9f2a5d5fc6a4cc02f7a640ffd34338941bec1
+Description: Linux Kernel Headers for development
+ This package provides headers from the Linux kernel.  These headers
+ are used by the installed headers for GNU glibc and other system
+ libraries. They are NOT meant to be used to build third-party modules for
+ your kernel. Use linux-headers-* packages for that.
+
+Package: lupin-support
+Architecture: amd64
+Version: 0.57build1
+Priority: extra
+Section: misc
+Source: lupin
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Agostino Russo <agostino.russo@gmail.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 67
+Depends: libc6 (>= 2.4), procps, lsb-base (>= 3.0-6), user-setup, grub-common (>= 2.00-5)
+Breaks: grub-pc (<< 1.99~20101122-1)
+Filename: pool/main/l/lupin/lupin-support_0.57build1_amd64.deb
+Size: 14032
+SHA256: d1a39ef1c8adbe2d23db54c333ff39b235ac0aede951f256eba32fe877bde510
+SHA512: 03d910383b18a7609cda8945e43864015fbdd17b9b37ceacc89dfea16a8e41ad723f0b9f4aeddc02a6feccd568411e8e3e8260f62303bc077f8f367a109b3ad9
+Description: Support files for loop-mount installations
+ The Wubi installer provides a means for installing Ubuntu into a
+ loop-mounted filesystem image hosted on a Windows filesystem. lupin-support
+ provides a few extra files needed in such installations to make them work
+ well.
+
+Package: libalgorithm-diff-perl
+Architecture: all
+Version: 1.19.03-2
+Priority: optional
+Section: perl
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 106
+Depends: perl
+Recommends: libalgorithm-diff-xs-perl
+Filename: pool/main/liba/libalgorithm-diff-perl/libalgorithm-diff-perl_1.19.03-2_all.deb
+Size: 46616
+SHA256: 6e774aa293dfa6c33222c9f7443354e94d86d86e2888b9e7a28a136f4c03a0c3
+SHA512: ff838c4d84dfcd03c3317b39087332565061bad3ae87e94e2d9d96704bd54b776725d8cc9b155586bf1220cf9299ec60e369daea38f50af987b2cdf16af8a576
+Homepage: https://metacpan.org/release/Algorithm-Diff
+Description: module to find differences between files
+ Algorithm::Diff is a Perl module that allows users to analyze text based on a
+ Longest Common Subsequence (LCS) algorithm. It can compare two files and find
+ the differences between them, which can produce the same information as the
+ common Unix tool 'diff'.
+ .
+ There is an XS-optimized implementation of the core loop, which accelerates
+ some types of diff output (see libalgorithm-diff-xs-perl).
+
+Package: libalgorithm-diff-xs-perl
+Architecture: amd64
+Version: 0.04-6
+Priority: optional
+Section: perl
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 46
+Depends: perl (>= 5.30.0-8), perlapi-5.30.0, libc6 (>= 2.14), libalgorithm-diff-perl
+Filename: pool/main/liba/libalgorithm-diff-xs-perl/libalgorithm-diff-xs-perl_0.04-6_amd64.deb
+Size: 11344
+SHA256: e32bb578b65b5e50ae14c1aa8fcea4c59d9dc6b93de5ae685b91ea0be9b54172
+SHA512: 81ae347feb6839278ac3c3ed2d6c161ead4c4eddd79630a58920844cc3900573f523d1d4dab7ff464f8b2e5a387d850feadf72dbc6fb9a8d699b7163c6e56801
+Homepage: https://metacpan.org/release/Algorithm-Diff-XS
+Description: module to find differences between files (XS accelerated)
+ Algorithm::Diff::XS is a Perl diff utility module based on Joe Schaefer's
+ excellent but not very well-known Algorithm::LCS module, with a drop-in
+ interface identical to Algorithm::Diff.
+ .
+ Note that only the LCSidx function is optimized in XS at the moment, which
+ means only compact_diff will get significantly faster for large data sets,
+ while diff and sdiff will run in identical speed as Algorithm::Diff.
+
+Package: libalgorithm-merge-perl
+Architecture: all
+Version: 0.08-3
+Priority: optional
+Section: perl
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian Perl Group <pkg-perl-maintainers@lists.alioth.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 42
+Depends: perl, libalgorithm-diff-perl
+Filename: pool/main/liba/libalgorithm-merge-perl/libalgorithm-merge-perl_0.08-3_all.deb
+Size: 11992
+SHA256: ff7a1922d430da383cc1ee20bee8fe464fb56605297dcbb3412338a356cc7ad6
+SHA512: 75b9718b025dee4264219254e3f63486088d5ac827ad1e7f7fff756a626edcdaca893aa8b7d4954250c26d140183c7bc8a52017cd33a8d84f4b8d3ed4b9603fb
+Homepage: https://metacpan.org/release/Algorithm-Merge
+Description: Perl module for three-way merge of textual data
+ Algorithm::Merge provides three-way merge and diff functions, complementing
+ the functionality offered by Algorithm::Diff (libalgorithm-diff-perl). Given
+ three sets of items, known as the original, left and right, this module can
+ take a three-way difference or merge them. Taking a difference provides an
+ array reference that is very similar to the behaviour of Algorithm::Diff. One
+ can also implement custom conflict resolution using the CONFLICT callback.
+
+Package: libvdpau1
+Architecture: amd64
+Version: 1.3-1ubuntu2
+Multi-Arch: same
+Priority: optional
+Section: libs
+Source: libvdpau
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 106
+Depends: libc6 (>= 2.17), libx11-6 (>= 2:1.4.99.1), libxext6
+Recommends: vdpau-driver-all | vdpau-driver
+Filename: pool/main/libv/libvdpau/libvdpau1_1.3-1ubuntu2_amd64.deb
+Size: 25624
+SHA256: 169f5babb7be0e38b600ca7aa6bd5923c3ea8ee09aadddd11ffe99599ddb0875
+SHA512: 6d436861ff1cb9ac5ba2a9162c5394de5ab85b5c032ec02186cf77d2ab5ea7f96be5cbf7e90f67b889096a8aff82901e5dd4d27e8c8348b0687e94e4d4914a88
+Homepage: https://gitlab.freedesktop.org/vdpau/libvdpau
+Description: Video Decode and Presentation API for Unix (libraries)
+ VDPAU (Video Decode and Presentation API for Unix) is an open source
+ library (libvdpau) and API designed by NVIDIA originally for its GeForce
+ 8 series and later GPU hardware, targeted at the X Window System on Unix
+ operating-systems (including Linux, FreeBSD, and Solaris). This VDPAU API
+ allows video programs to offload portions of the video decoding process
+ and video post-processing to the GPU video-hardware.
+ .
+ This package contains the VDPAU wrapper and trace libraries.
+
+Package: vdpau-driver-all
+Architecture: amd64
+Version: 1.3-1ubuntu2
+Multi-Arch: same
+Priority: optional
+Section: video
+Source: libvdpau
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 18
+Depends: mesa-vdpau-drivers
+Suggests: libvdpau-va-gl1, nvidia-vdpau-driver, nvidia-legacy-340xx-vdpau-driver, nvidia-legacy-304xx-vdpau-driver
+Filename: pool/main/libv/libvdpau/vdpau-driver-all_1.3-1ubuntu2_amd64.deb
+Size: 4596
+SHA256: 3ae3adb892667461fc1b45e169d7188dd9fe7184bf068654811493b3ec0a0707
+SHA512: a9765fb33739d3dccc5d9ef1e788d036bbd663175809af99bd83f21d280e0c419443ce44278d86fceb2c52309a69152f7fcd5460c2987a8c0405dad91b3cac66
+Homepage: https://gitlab.freedesktop.org/vdpau/libvdpau
+Description: Video Decode and Presentation API for Unix (driver metapackage)
+ VDPAU (Video Decode and Presentation API for Unix) is an open source
+ library (libvdpau) and API designed by NVIDIA originally for its GeForce
+ 8 series and later GPU hardware, targeted at the X Window System on Unix
+ operating-systems (including Linux, FreeBSD, and Solaris). This VDPAU API
+ allows video programs to offload portions of the video decoding process
+ and video post-processing to the GPU video-hardware.
+ .
+ This package depends on the full suite of drivers for the VDPAU API.
+ It does not provide any drivers itself, and may be removed if you wish to
+ only have certain drivers installed.
+
+Package: libcrypt-dev
+Architecture: amd64
+Version: 1:4.4.10-10ubuntu4
+Multi-Arch: same
+Priority: optional
+Build-Essential: yes
+Section: libdevel
+Source: libxcrypt
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Marco d'Itri <md@linux.it>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 321
+Provides: libcrypt1-dev
+Depends: libcrypt1 (= 1:4.4.10-10ubuntu4)
+Conflicts: libcrypt1-dev, libcrypt2-dev
+Breaks: libc6-dev (<< 2.31), manpages-dev (<< 5.01-1)
+Replaces: libc6-dev (<< 2.31), libcrypt1-dev, libcrypt2-dev, manpages-dev (<< 5.01-1)
+Filename: pool/main/libx/libxcrypt/libcrypt-dev_4.4.10-10ubuntu4_amd64.deb
+Size: 104104
+SHA256: f0a41d8e8cf379dbbdfc43169f34851ed452b3581e72c6654f2e290caf4e1b20
+SHA512: b3a47410604c22e7730761d16b2a770a3a59e563f3c23ca8a0713ce7cf4cc03211e7c2cd19de6756d5b0462f2abc05cd4fe7423a898a1056af24b495fe6bee08
+Description: libcrypt development files
+ This package contains the files needed for developing applications that
+ use libcrypt.
+
+Package: make
+Architecture: amd64
+Version: 4.2.1-1.2
+Multi-Arch: allowed
+Priority: optional
+Build-Essential: yes
+Section: devel
+Source: make-dfsg
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Manoj Srivastava <srivasta@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 384
+Depends: libc6 (>= 2.27)
+Suggests: make-doc
+Conflicts: make-guile
+Replaces: make-guile
+Filename: pool/main/m/make-dfsg/make_4.2.1-1.2_amd64.deb
+Size: 162292
+SHA256: 41e534af98cdb6219bc98fa4276d9c928a0862b8b373d49ee1fbe0ae5db64dc2
+SHA512: 7e47d0e0980d6e3e609b4e5ef18d7ff0588b53939e1bfb57edfe487f0f36556e4202bc08318f40a4450856fcc25fcd6786da0121cc201cdfc5e26a4fce620b4d
+Homepage: https://www.gnu.org/software/make/
+Description: utility for directing compilation
+ GNU Make is a utility which controls the generation of executables
+ and other target files of a program from the program's source
+ files. It determines automatically which pieces of a large program
+ need to be (re)created, and issues the commands to (re)create
+ them. Make can be used to organize any task in which targets (files)
+ are to be automatically updated based on input files whenever the
+ corresponding input is newer --- it is not limited to building
+ computer programs. Indeed, Make is a general purpose dependency
+ solver.
+
+Package: manpages-dev
+Architecture: all
+Version: 5.05-1
+Multi-Arch: foreign
+Priority: optional
+Section: doc
+Source: manpages
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Dr. Tobias Quathamer <toddy@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 3879
+Depends: manpages
+Suggests: man-browser
+Breaks: libattr1-dev (<< 1:2.4.47-3), libbsd-dev (<< 0.8.4-1), manpages (<< 4.13-3)
+Replaces: libattr1-dev (<< 1:2.4.47-3), libbsd-dev (<< 0.8.4-1), manpages (<< 4.13-3)
+Filename: pool/main/m/manpages/manpages-dev_5.05-1_all.deb
+Size: 2265524
+SHA256: 512c79390eb690ee9e60943f233d45141c04a511eee9573888e795f523979d25
+SHA512: 8115847c5a72d8c16bcd3b7bfbfb4217e81a3c45f78443da41dadd9d7679cc9001a3e5416d4206bb4d1742e71b0cc7cbb7bb3536db7d240940fa18a283fa5044
+Homepage: https://www.kernel.org/doc/man-pages/
+Description: Manual pages about using GNU/Linux for development
+ These man pages describe the Linux programming interface, including
+ these two sections:
+  2 = Linux system calls.
+  3 = Library calls (note that a more comprehensive source of information
+      may be found in the glibc-doc and glibc-doc-reference packages).
+
+Package: mesa-vdpau-drivers
+Architecture: amd64
+Version: 20.0.8-0ubuntu1~20.04.1
+Multi-Arch: same
+Priority: optional
+Section: libs
+Source: mesa
+Origin: Ubuntu
+Maintainer: Ubuntu X-SWAT <ubuntu-x@lists.ubuntu.com>
+Original-Maintainer: Debian X Strike Force <debian-x@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 36950
+Provides: vdpau-driver
+Depends: libvdpau1, libc6 (>= 2.29), libdrm-amdgpu1 (>= 2.4.100), libdrm-nouveau2 (>= 2.4.66), libdrm-radeon1 (>= 2.4.31), libdrm2 (>= 2.4.75), libelf1 (>= 0.142), libexpat1 (>= 2.0.1), libgcc-s1 (>= 3.4), libllvm10 (>= 1:9~svn298832-1~), libstdc++6 (>= 5.2), libx11-xcb1 (>= 2:1.6.9), libxcb-dri2-0 (>= 1.8), libxcb-dri3-0, libxcb-present0, libxcb-sync1, libxcb-xfixes0, libxcb1 (>= 1.9.2), libxshmfence1, libzstd1 (>= 1.3.2), zlib1g (>= 1:1.1.4)
+Enhances: libvdpau1
+Filename: pool/main/m/mesa/mesa-vdpau-drivers_20.0.8-0ubuntu1~20.04.1_amd64.deb
+Size: 2545640
+SHA256: 4b439e1caf1a73d1ea94543d3f5d8ef8cfd26f858e45d2efc33ef628f2e2e8e9
+SHA512: 66f02d778773b77cac798aa2e0c44784d202058a632f0f2e5f835b9a9a61d0e9fa22a9fe7a5fd7cff1bc7b2b20607e0bd4224a826d1ae0ff753c0e3d779e75c6
+Homepage: https://mesa3d.org/
+Description: Mesa VDPAU video acceleration drivers
+ These libraries provide the Video Decode and Presentation API for Unix.
+ They provide accelerated video playback (incl. H.264) and video
+ post-processing for the supported graphics cards.
+ .
+ This package enables support for VDPAU for some gallium drivers.
+
+Package: mouseemu
+Architecture: amd64
+Version: 0.16-0ubuntu10
+Priority: optional
+Section: utils
+Origin: Ubuntu
+Maintainer: Colin Watson <cjwatson@ubuntu.com>
+Original-Maintainer: Gaudenz Steinlin <gaudenz@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 58
+Depends: libc6 (>= 2.15), procps, dmidecode
+Breaks: udev (<< 136-1)
+Filename: pool/main/m/mouseemu/mouseemu_0.16-0ubuntu10_amd64.deb
+Size: 16558
+SHA256: 87100fcfa221b16188590b1d143e7b34d8aff7e246b5664f5e728e8547a3b127
+SHA512: 6426eeb7cb596b557af41a1d0e66516753ce2ceb219c13cf463bc047070c7b55c21f936814c4c924241e59274343f8e9a0c4fe10ec1758f9cb329dd19344c717
+Description: Emulate mouse buttons and mouse wheel
+ Mouseemu is a daemon to emulate mouse buttons on trackpads
+ with only one button. It lets you:
+  - emulate middle and right click
+  - emulate mouse wheel
+  - block trackpad while typing
+ .
+ It was initially developed for Apple PowerBooks
+ and iBooks, but it may be useful on other architectures
+ as well.
+ .
+ This program only works when booting a 2.6 kernel because
+ it uses the new uinput interface to emulate the mouse.
+
+Package: nvidia-prime
+Architecture: all
+Version: 0.8.14
+Priority: optional
+Section: admin
+Origin: Ubuntu
+Maintainer: Alberto Milone <alberto.milone@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 49
+Provides: hybrid-graphics
+Depends: python3:any
+Conflicts: hybrid-graphics
+Breaks: ubuntu-drivers-common (<< 1:0.2.89)
+Replaces: hybrid-graphics
+Filename: pool/main/n/nvidia-prime/nvidia-prime_0.8.14_all.deb
+Size: 9164
+SHA256: 31418aeb96b96b04b0e3f4dcccb3a65c794114910341aae0331c526cfe098993
+SHA512: 844a81fe6b53896ad17e235720d5ca5d65410cd7226bc6f5b2e4a58dcf05ea26ee1a047f095046c6d3a5034efd1ead9f58c21cac69b045baf490e293f9e9a8fe
+Description: Tools to enable NVIDIA's Prime
+ This is a set of tools which will enable
+ NVIDIA's Prime on MUXless systems.
+
+Package: libxnvctrl0
+Architecture: amd64
+Version: 440.82-0ubuntu0.20.04.1
+Multi-Arch: same
+Priority: optional
+Section: libs
+Source: nvidia-settings
+Origin: Ubuntu
+Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
+Original-Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 64
+Depends: libc6 (>= 2.14), libx11-6 (>= 2:1.4.99.1), libxext6
+Filename: pool/main/n/nvidia-settings/libxnvctrl0_440.82-0ubuntu0.20.04.1_amd64.deb
+Size: 11004
+SHA256: 13c65f5fd563e2a6955cb62e1df9dda7fb7e51752cf3fdadf1f32d4e4c82659d
+SHA512: 4dc2a24d21c5ee139606a600fec1e67ed2b17c6ad12491a6888421e901b641b908372ab14409561f130879d13ce7d8f46caf84f977381d1a75c9d826da736c94
+Description: NV-CONTROL X extension (runtime library)
+ The NV-CONTROL X extension provides a mechanism for X clients to
+ query and set configuration parameters of the NVIDIA X driver.
+ State set by the NV-CONTROL X extension is assumed to be persistent
+ only for the current server generation.
+ .
+ This package contains the shared library.
+
+Package: nvidia-settings
+Architecture: amd64
+Version: 440.82-0ubuntu0.20.04.1
+Priority: optional
+Section: x11
+Origin: Ubuntu
+Maintainer: Ubuntu MOTU Developers <ubuntu-motu@lists.ubuntu.com>
+Original-Maintainer: Debian NVIDIA Maintainers <pkg-nvidia-devel@lists.alioth.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 3237
+Provides: nvidia-settings-binary
+Depends: pkg-config, screen-resolution-extra (>= 0.18~), libvdpau1, libgtk-3-0 (>= 3.0.0) | libgtk2.0-0 (>= 2.8.0), libc6 (>= 2.29), libcairo2 (>= 1.2.4), libgdk-pixbuf2.0-0 (>= 2.22.0), libglib2.0-0 (>= 2.16.0), libjansson4 (>= 2.3), libpango-1.0-0 (>= 1.14.0), libpangocairo-1.0-0 (>= 1.14.0), libx11-6, libxnvctrl0, libxxf86vm1
+Conflicts: nvidia-settings-binary
+Replaces: nvidia-settings-binary
+Filename: pool/main/n/nvidia-settings/nvidia-settings_440.82-0ubuntu0.20.04.1_amd64.deb
+Size: 963460
+SHA256: b43fcad7d206997cbfbc893da9dde3c6a13c6437232be62ffc1186a5831ee301
+SHA512: f1f9178c7380af3fadeef79dea372b81a92a80fc6a59cd6a067173bfda6b575002194dd2d80ec02a5763b767a575ffe5579d7c8bd1bf0248b088ac8c29e8c82f
+Description: Tool for configuring the NVIDIA graphics driver
+ The nvidia-settings utility is a tool for configuring the NVIDIA
+ Linux graphics driver.  It operates by communicating with the NVIDIA
+ X driver, querying and updating state as appropriate.  This
+ communication is done with the NV-CONTROL X extension.
+ .
+ Values such as brightness and gamma, XVideo attributes, temperature,
+ and OpenGL settings can be queried and configured via nvidia-settings.
+
+Package: oem-qemu-meta
+Architecture: all
+Version: 20.04~ubuntu3
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 13
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-qemu-meta/oem-qemu-meta_20.04~ubuntu3_all.deb
+Size: 2072
+SHA256: b8c01bbc409feb3859af8560b1276c78255e2fb9d77421f7c31fa9d3a6207e1a
+SHA512: 3be00486ba0072450d5ef514e65e2d4836ddeca591d527fb93c894a3814372609e39aa79c625b45b78bb1109caab9214627fabe64ec66e5cc60caea3b89123a9
+Description: Meta package for QEMU
+ This is a metapackage for QEMU. It is intended for installer testing and
+ development only.
+Modaliases: meta(dmi:*:pnUBUNTUQEMUTEST:*)
+
+Package: oem-somerville-beric-icl-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-somerville-beric-icl-meta/oem-somerville-beric-icl-meta_20.04~ubuntu1_all.deb
+Size: 2068
+SHA256: ab04f3d863694813b19e823333462f3f263ad2bb213dab1b64ba7f332e6301cb
+SHA512: f40e3818dd17970223f930ca502ade29ad910ddaaca29938da13e85eaa495cd70e1256db1f2df15fea1f3bb263238e1ae6dc8c28000164748563af74c61bfc0c
+Description: hardware support for Somerville Beric-Icl platform
+ This is a metapackage for Somerville Beric-Icl platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(pci:*sv00001028sd00000A29*, pci:*sv00001028sd00000A2A*, pci:*sv00001028sd00000A2B*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-somerville-bulbasaur-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-somerville-bulbasaur-meta/oem-somerville-bulbasaur-meta_20.04~ubuntu1_all.deb
+Size: 2056
+SHA256: 6e16ff9b674b86265e9d1fdc54f9ac81f1080b83c2d5e94290191fca3bea4ebd
+SHA512: ba5d71cffd051ccd25649c315c534d13da5ee1cdf89eb8d28b620f605a35027a0faa00b81d85fabc6614d44263166937d108362c3a85521201906680056e890d
+Description: hardware support for Somerville Bulbasaur platform
+ This is a metapackage for Somerville Bulbasaur platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(pci:*sv00001028sd00000991*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-somerville-meera-tgl-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-somerville-meera-tgl-meta/oem-somerville-meera-tgl-meta_20.04~ubuntu1_all.deb
+Size: 2076
+SHA256: 9b6c624151781789223578538b431cf9c9e33405ae73fcababc0967bfabaa9b6
+SHA512: b25b17b18fef59b4ed0c0f8f221ec1e4f4879010a02b84399bedc6b57af93432b42de4883b61a4bd7ae29778f1048cbeb45e8d8987afc93f89afbcecbed0cbf4
+Description: hardware support for Somerville Meera-Tgl platform
+ This is a metapackage for Somerville Meera-Tgl platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(pci:*sv00001028sd00000A01*, pci:*sv00001028sd00000A02*, pci:*sv00001028sd00000A03*, pci:*sv00001028sd00000A04*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-somerville-melisa-meta
+Architecture: all
+Version: 20.04~ubuntu3
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 13
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-somerville-melisa-meta/oem-somerville-melisa-meta_20.04~ubuntu3_all.deb
+Size: 2220
+SHA256: 4f051f2b014f098e184525a1a8d31f4b59edc8e5ee699dd1bf37fbb7b82b9eef
+SHA512: 40fc35e62db30901ac7e00db487bbe03761f1a440070580b6e7c7a1f3087d5b7315b0eeea29568cbf51508694fe5c8798af09bbc4b14de813665f8279589d19d
+Description: hardware support for Somerville Melisa platform
+ This is a metapackage for Somerville Melisa platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(pci:*sv00001028sd0000096D*)
+Ubuntu-Oem-Kernel-Flavour: default
+
+Package: oem-somerville-samwell-tgl-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-somerville-samwell-tgl-meta/oem-somerville-samwell-tgl-meta_20.04~ubuntu1_all.deb
+Size: 2092
+SHA256: 16a1e682ba923f5ca2955ff614184743b7292e1de2c538c96e06acdfbabdf41e
+SHA512: 1006c82d06af0d0975af939365b5df48b1af6acefc1a8e182a9bf2cb761287e695d15e83c6d3c210291ae63e655a3b63435ad49933e0b2bd27b11b0ce04208cd
+Description: hardware support for Somerville Samwell-Tgl platform
+ This is a metapackage for Somerville Samwell-Tgl platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(pci:*sv00001028sd000009FB*, pci:*sv00001028sd000009FC*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-somerville-three-eyed-raven-meta
+Architecture: all
+Version: 20.04~ubuntu2
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-somerville-three-eyed-raven-meta/oem-somerville-three-eyed-raven-meta_20.04~ubuntu2_all.deb
+Size: 2156
+SHA256: 72a441d45105556026e22fa12ef160b8a03a9bc075aee0e2a3c9813472787b7a
+SHA512: 6fb98dacd02c7bd4466ede3d36b2d11520fc0bbaa2615f8d3d791c8d1942c10cde49da59c2805b92e0008d30fcf6c58e4a3463c7512101caa241b3256f58c1ed
+Description: hardware support for Somerville three-eyed-raven platform
+ This is a metapackage for Somerville three-eyed-raven platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(pci:*sv00001028sd00000962*)
+Ubuntu-Oem-Kernel-Flavour: default
+
+Package: oem-stella.cmit-charizard-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-stella.cmit-charizard-meta/oem-stella.cmit-charizard-meta_20.04~ubuntu1_all.deb
+Size: 2080
+SHA256: 7137c2048f09ba2a952e5b1854c981949e682590ee77897d8eccde763f3fbe1a
+SHA512: c209b764ef66c71167b9432d4dad71552d991df9db1ebb79338b1a58a717ee12e5e71276e9e78a84c2b609f950b38f060b96d19df9b3a330ecef213f20257ac3
+Description: hardware support for Stella Cmit Charizard platform
+ This is a metapackage for Stella Cmit Charizard platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(pci:*sv0000103Csd00008723*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-sutton.bachman-banaing-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-sutton.bachman-banaing-meta/oem-sutton.bachman-banaing-meta_20.04~ubuntu1_all.deb
+Size: 2072
+SHA256: edb98a8131454a8c2c1e4c092fddc73d17ad9b7fe61ac5dfd45abbedbd4d070c
+SHA512: 42004b8bcc4e9cca181c2af9969cfda40c0374a1d3206bdb95926d3eab39409b823f1b0001f308bf786adcdb6eb794146f89743bbd8d848da323e80819f0fab5
+Description: hardware support for Sutton Bachman Banaing platform
+ This is a metapackage for Sutton Bachman Banaing platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(dmi:*bvnLENOVO:bvrS08*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-sutton.newell-ace-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 13
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-sutton.newell-ace-meta/oem-sutton.newell-ace-meta_20.04~ubuntu1_all.deb
+Size: 2044
+SHA256: df81845964b3b5f7756d9b5888f6291cd760a8e3ad0b8744bdfe51bfa1cb6ee2
+SHA512: cf387f4b831dda7f9db335755699f9445675e541ce3ddc8c12c871549ed9b99c07ef1f0252ca40a32f50105ec15b50433570b04a0009e4c674221f3bd7799f14
+Description: hardware support for Sutton Newell Ace platform
+ This is a metapackage for Sutton Newell Ace platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(dmi:*bvnLENOVO:bvrN2W*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-sutton.newell-cadby-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-sutton.newell-cadby-meta/oem-sutton.newell-cadby-meta_20.04~ubuntu1_all.deb
+Size: 2056
+SHA256: 80b044508b42e943c53eaf1a8642aa1afb142c42f7eeb564161be34d0eb9b693
+SHA512: 56ac585e71452017cdf5906e7780d52e7c8cc22561b551d081c60c96c1b699cbd0e4c51e20e53e1fc39a23b144ee4beee4cd6a2c8ea7bf8bcd7f9b57938647cb
+Description: hardware support for Sutton Newell Cadby platform
+ This is a metapackage for Sutton Newell Cadby platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(dmi:*bvnLENOVO:bvrM2T*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-sutton.newell-cade-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-sutton.newell-cade-meta/oem-sutton.newell-cade-meta_20.04~ubuntu1_all.deb
+Size: 2052
+SHA256: 045ea39f389f27ca88634e3620001749de2a422234bd78493a1069f22128855f
+SHA512: d89e0c32e8393490fc32fa2c7d34e482ad9dccbf99f6e9abb61cf2f0f247a20cc16320814fa5d1c77fa808cc56f2bc634d01a27cdae084a265469e22158ed25f
+Description: hardware support for Sutton Newell Cade platform
+ This is a metapackage for Sutton Newell Cade platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(dmi:*bvnLENOVO:bvrM2W*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-sutton.newell-cadee-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-sutton.newell-cadee-meta/oem-sutton.newell-cadee-meta_20.04~ubuntu1_all.deb
+Size: 2060
+SHA256: 3db3254e65bad4e125f7e45ca6efe28aa1b148a914d87759ef285565c53cc71f
+SHA512: f1715176b6e5b6554653aad55af822941b1e3cd991a747079577ef073791fcc25dbade8a42addcb1c07c4335bb34eb375392fe2d48235378caebf8f335603b59
+Description: hardware support for Sutton Newell Cadee platform
+ This is a metapackage for Sutton Newell Cadee platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(dmi:*bvnLENOVO:bvrM2S*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: oem-sutton.newell-cadence-meta
+Architecture: all
+Version: 20.04~ubuntu1
+Priority: optional
+Section: misc
+Origin: Ubuntu
+Maintainer: Commercial Engineering <commercial-engineering@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 14
+Depends: ubuntu-oem-keyring
+Filename: pool/main/o/oem-sutton.newell-cadence-meta/oem-sutton.newell-cadence-meta_20.04~ubuntu1_all.deb
+Size: 2068
+SHA256: b0c4fc7ce4269eaa5ef4c1fce8d805a861888b3fd2a803b0388245ed2f2dcd74
+SHA512: 2d07982e7708f150f0201b593ddbcb668eeb347c555888ad30e694817cd9aacc4566181199072633061c5928903f756d36cec30337f6e2b68fc9e871120da7c4
+Description: hardware support for Sutton Newell Cadence platform
+ This is a metapackage for Sutton Newell Cadence platform. It installs
+ packages needed to support this hardware fully.
+Modaliases: meta(dmi:*bvnLENOVO:bvrM2R*)
+Ubuntu-Oem-Kernel-Flavour: oem
+
+Package: screen-resolution-extra
+Architecture: all
+Version: 0.18build1
+Priority: optional
+Section: x11
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Alberto Milone (tseliot) <albertomilone@alice.it>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 24
+Depends: python3:any (>= 3.2~), python3-xkit (>= 0.5.0), gnome-shell | policykit-1-gnome | polkit-1-auth-agent, python3-gi
+Filename: pool/main/s/screen-resolution-extra/screen-resolution-extra_0.18build1_all.deb
+Size: 4456
+SHA256: 675b64d1afa08cb65d47a3f04de48f062d427eec4c922156571fcab6df01ea81
+SHA512: f06341d569121a3c7df80b481184b6ea501d0c1ef48d760a6182807a6ff84625233583e733216d82768225042bde5d12b8c0e1a443b5984c4622555bbf218cb7
+Description: Extension for the nvidia-settings control panel
+ Extra features for the nvidia-settings control panel.
+
+Package: setserial
+Architecture: amd64
+Version: 2.17-52
+Priority: extra
+Section: comm
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Thorsten Alteholz <debian@alteholz.de>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 117
+Depends: libc6 (>= 2.7), debconf (>= 0.5) | debconf-2.0, lsb-base (>= 3.0-6)
+Filename: pool/main/s/setserial/setserial_2.17-52_amd64.deb
+Size: 35896
+SHA256: d534b298c895a8143a75baf2a11e4736c3669535d18dcc23b34b1231420928f8
+SHA512: 03b74dfdf69c378f6fed14e281ccf927a9a1003ae61054c51b0e33602c5d9f0836fd6ba7a2fbec89fd7d20c344656ed48bfa929d2c2a0d0d238defc1e0d0c34f
+Description: controls configuration of serial ports
+ Set and/or report the configuration information associated with
+ a serial port. This information includes what I/O port and which IRQ
+ a particular serial port is using.
+ .
+ This version has a completely new approach to configuration, so if you
+ have a setup other than the standard ttyS0 and 1, you will have to get
+ your hands dirty.
+ .
+ By default, only COM1-4 are configured by the kernel, using IRQ 3 and 4.
+ If you have other serial ports (such as an AST Fourport card), or
+ if you have mapped the IRQs differently (perhaps COM3 and 4 to other
+ IRQs to allow concurrent access with COM1 and 2) then you must have this
+ package.
+
+Package: shim-signed
+Architecture: amd64
+Version: 1.40.3+15+1533136590.3beb971-0ubuntu1
+Built-Using: shim (= 15+1533136590.3beb971-0ubuntu1)
+Priority: optional
+Section: utils
+Source: shim-signed (1.40.3)
+Origin: Ubuntu
+Maintainer: Steve Langasek <steve.langasek@ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 1357
+Depends: debconf (>= 0.5) | debconf-2.0, shim (= 15+1533136590.3beb971-0ubuntu1), grub-efi-amd64-signed | grub-efi-arm64-signed, grub2-common (>= 2.04-1ubuntu24), mokutil (>= 0.3.0+1538710437.fb6250f-0ubuntu2), sbsigntool
+Recommends: secureboot-db
+Filename: pool/main/s/shim-signed/shim-signed_1.40.3+15+1533136590.3beb971-0ubuntu1_amd64.deb
+Size: 343812
+SHA256: ec17a7a92e7fa5fc2c2ef4b6c2024d7ea98e2e64307d4e7ea29688b5974f7686
+SHA512: 355fdf680f2cfa77c90f2592e9293fb6d7a636840bb6c356fd1f758f027b561fcd8d940a1e7696e98c977d3361a50fcef54054965f6d07ff2a8b131016f0c62d
+Description: Secure Boot chain-loading bootloader (Microsoft-signed binary)
+ This package provides a minimalist boot loader which allows verifying
+ signatures of other UEFI binaries against either the Secure Boot DB/DBX or
+ against a built-in signature database.  Its purpose is to allow a small,
+ infrequently-changing binary to be signed by the UEFI CA, while allowing
+ an OS distributor to revision their main bootloader independently of the CA.
+ .
+ This package contains the version of the bootloader binary signed by the
+ Microsoft UEFI CA.
+Task: system-image
+
+Package: shim
+Architecture: amd64
+Version: 15+1533136590.3beb971-0ubuntu1
+Priority: optional
+Section: admin
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Steve Langasek <vorlon@debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 3744
+Breaks: shim-signed (<< 1.33~)
+Filename: pool/main/s/shim/shim_15+1533136590.3beb971-0ubuntu1_amd64.deb
+Size: 574704
+SHA256: 3099b90ba9d7bdf705a89a936b622633fe2a5141f24aa0af046b6c629d5475c5
+SHA512: 4b1aab8d6d37b653c01c627749ae0a6e56a1564c5ec6321d9dee71599257e4f947dda12efa2287b8379dcb36ccd715b5fad5e92d1629e5b4265b13e9c989fa1a
+Description: boot loader to chain-load signed boot loaders under Secure Boot
+ This package provides a minimalist boot loader which allows verifying
+ signatures of other UEFI binaries against either the Secure Boot DB/DBX or
+ against a built-in signature database.  Its purpose is to allow a small,
+ infrequently-changing binary to be signed by the UEFI CA, while allowing
+ an OS distributor to revision their main bootloader independently of the CA.
+Task: system-image
+
+Package: oem-config-slideshow-ubuntu
+Architecture: all
+Version: 160
+Priority: optional
+Section: x11
+Source: ubiquity-slideshow-ubuntu
+Origin: Ubuntu
+Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
+Original-Maintainer: Ubiquity Slideshow Team <ubiquity-slideshow@lists.launchpad.net>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 2624
+Provides: oem-config-slideshow
+Conflicts: oem-config-slideshow
+Replaces: oem-config-slideshow
+Filename: pool/main/u/ubiquity-slideshow-ubuntu/oem-config-slideshow-ubuntu_160_all.deb
+Size: 1234568
+SHA256: 2c94fda3aa36c13439f030f1034558a7c3affedefbafae5836b379ba39c8c2de
+SHA512: b944d07f111dacec0b76806c2bcc1a3f6562b7d1d20ca28a123e7abbc5091040691d8a537a40ac2da92aacf235085012f23ebf597484cfd0896f7849ac6e9785
+Homepage: https://launchpad.net/ubiquity-slideshow-ubuntu
+Description: OEM slideshow for Ubuntu
+ A slideshow intended for the post-OEM-install configuration, designed
+ as a quick introduction to Ubuntu.
+
+Package: oem-config-gtk
+Architecture: all
+Version: 20.04.15.2
+Priority: extra
+Section: admin
+Source: ubiquity
+Origin: Ubuntu
+Maintainer: Ubuntu Installer Team <ubuntu-installer@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 204
+Provides: oem-config-frontend-20.04.15.2
+Depends: aptdaemon, oem-config (= 20.04.15.2), python3-aptdaemon.gtk3widgets, ubiquity-frontend-gtk (= 20.04.15.2)
+Filename: pool/main/u/ubiquity/oem-config-gtk_20.04.15.2_all.deb
+Size: 4252
+SHA256: 98be6e6b56ee9484ab78035e206cc0621c8b65f506f68b7bcee85176e18bca88
+SHA512: a0a414fd569aeab772e2fec93698fafe0e4ef98d007f772df82da8b999b3a163dcd7b6275a5aa50740cafaf06888374f94a36167ac93d796fdc3be388847425f
+Description: GTK+ frontend for end-user post-OEM-install configuration
+ The oem-config script re-asks a number of questions that are normally asked
+ during installation, and reconfigures the system accordingly. This allows a
+ vendor to install a skeleton system, clone it onto a large number of
+ machines, and ship it to end users, while still allowing end users to set
+ up their own username and password, language, timezone, and so on.
+ .
+ This is a GTK+ frontend to oem-config.
+
+Package: oem-config
+Architecture: all
+Version: 20.04.15.2
+Priority: extra
+Section: admin
+Source: ubiquity
+Origin: Ubuntu
+Maintainer: Ubuntu Installer Team <ubuntu-installer@lists.ubuntu.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 240
+Depends: oem-config-frontend-20.04.15.2, procps, ubiquity (= 20.04.15.2), debconf (>= 0.5) | debconf-2.0
+Filename: pool/main/u/ubiquity/oem-config_20.04.15.2_all.deb
+Size: 14596
+SHA256: c20172861bc5ed4935ee59f0a33d70456aa5655399b2c971d7bb7192fa3b9634
+SHA512: 2d20df6656621f90efdfa3d267b383a2604e30ef635431b7ba8e947ca50acc979650bcedcf21e16b48552ee895fecb978f27c3694b1be7f00e3caf83fed51d53
+Description: Perform end-user configuration after initial OEM installation
+ The oem-config script re-asks a number of questions that are normally asked
+ during installation, and reconfigures the system accordingly. This allows a
+ vendor to install a skeleton system, clone it onto a large number of
+ machines, and ship it to end users, while still allowing end users to set
+ up their own username and password, language, timezone, and so on.
+
+Package: ubuntu-oem-keyring
+Architecture: all
+Version: 2020.02.11.2
+Priority: optional
+Section: misc
+Source: ubuntu-keyring
+Origin: Ubuntu
+Maintainer: Dimitri John Ledkov <dimitri.ledkov@canonical.com>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 20
+Filename: pool/main/u/ubuntu-keyring/ubuntu-oem-keyring_2020.02.11.2_all.deb
+Size: 5084
+SHA256: 45cab1d59996f8a7ee9132c067b351b542660ef5be0ff2fba9354c5ed37e2135
+SHA512: fdb6cb0f7bb2924760b75fa31e96c3299b541440833e09668815f6259643fd88ef5192a960f575de88b6d54436ef405257082be598f6b845cea1a779057fc8f4
+Description: GnuPG keys of the Ubuntu OEM Vendor Archive
+ The Ubuntu project digitally signs its Release files. This package
+ contains the archive keys used for the oem.archive.canonical.com
+ repository.
+
+Package: user-setup
+Architecture: all
+Version: 1.63ubuntu6
+Priority: extra
+Section: admin
+Origin: Ubuntu
+Maintainer: Ubuntu Installer Team <ubuntu-installer@lists.ubuntu.com>
+Original-Maintainer: Debian Install System Team <debian-boot@lists.debian.org>
+Bugs: https://bugs.launchpad.net/ubuntu/+filebug
+Installed-Size: 537
+Depends: debconf (>= 0.5) | debconf-2.0, passwd, adduser
+Filename: pool/main/u/user-setup/user-setup_1.63ubuntu6_all.deb
+Size: 137744
+SHA256: 51d6634f56f395a4b1bfa9fb599bc499edb71bd40aac61fe7a86fb61c17e83d6
+SHA512: 706341ef09d5bc4c76911e7fd4f819db662494d23351fb02bc1904318f56c553d56a7ee9f0ba88509fdfa5352d66d1c92d2525ff2ae3d0a738ba90a977b69be9
+Description: Set up initial user and password
+ This package creates an initial user, using the same code as is
+ responsible for creating the initial user in the installer. It is only
+ likely to be of any use if your system has no non-system users at all.
+
