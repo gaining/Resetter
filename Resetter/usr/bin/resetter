@@ -1,8 +1,18 @@
 #!/bin/bash
 LANG=en_US.UTF-8
+
+
 xhost +si:localuser:root > /dev/null
 export QT_X11_NO_MITSHM=1
-python /usr/lib/resetter/Resetter.py
 
-
+if [[ $EUID -ne 0 ]]; then
+    exec 2> /dev/null
+    echo $XDG_CURRENT_DESKTOP > /home/$USER/desktop_session
+    pkexec /usr/lib/resetter/Resetter.py
+else
+    USER_HOME=$(getent passwd $SUDO_USER | cut -d: -f6)
+    exec 2> /dev/null
+    echo $XDG_CURRENT_DESKTOP > /$USER_HOME/desktop_session
+    /usr/lib/resetter/Resetter.py
+fi
 

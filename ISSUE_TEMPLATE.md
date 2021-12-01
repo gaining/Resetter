@@ -6,4 +6,4 @@
 
 *Description of Issue
 
-*content of Log file located in /var/log/resetter/resetter.log if applicable
+*Content of log file located in /var/log/resetter/resetter.log if applicable
